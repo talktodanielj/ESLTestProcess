@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESLTestProcess", "ESLTestProcess\ESLTestProcess.csproj", "{42D15D04-2968-421E-AB6A-3CF42A8C4CC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESLTesProcess.Data", "ESLTesProcess.Data\ESLTesProcess.Data.csproj", "{C688E5E1-A333-4AFF-8865-7A1DA3A4D03D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42D15D04-2968-421E-AB6A-3CF42A8C4CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42D15D04-2968-421E-AB6A-3CF42A8C4CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42D15D04-2968-421E-AB6A-3CF42A8C4CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42D15D04-2968-421E-AB6A-3CF42A8C4CC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C688E5E1-A333-4AFF-8865-7A1DA3A4D03D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C688E5E1-A333-4AFF-8865-7A1DA3A4D03D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C688E5E1-A333-4AFF-8865-7A1DA3A4D03D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C688E5E1-A333-4AFF-8865-7A1DA3A4D03D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
