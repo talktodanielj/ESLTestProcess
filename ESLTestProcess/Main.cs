@@ -57,5 +57,31 @@ namespace ESLTestProcess
             cbTechnician.Items.AddRange(ProcessControl.Instance.GetTechnicianNames());
         }
 
+        private void wizardPageResultsStatus_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
+        {
+            AddRow(
+                  new Label() { Text = "Test:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font(tbllnitialStatus.Font, FontStyle.Bold) }
+                , new Label() { Text = "Value:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font(tbllnitialStatus.Font, FontStyle.Bold) }
+                , new Label() { Text = "Status:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font(tbllnitialStatus.Font, FontStyle.Bold) });
+
+        }
+
+
+        private void AddRow(Control label, Control value, Control status)
+        {
+            int rowIndex = AddTableRow();
+            tbllnitialStatus.Controls.Add(label, 0, rowIndex);
+            tbllnitialStatus.Controls.Add(value, 1, rowIndex);
+            tbllnitialStatus.Controls.Add(status, 2, rowIndex);
+        }
+
+        private int AddTableRow()
+        {
+            int index = tbllnitialStatus.RowCount++;
+            RowStyle style = new RowStyle(SizeType.AutoSize);
+            tbllnitialStatus.RowStyles.Add(style);
+            return index;
+        }
+
     }
 }

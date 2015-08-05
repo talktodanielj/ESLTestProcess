@@ -42,16 +42,19 @@
             this.themedLabel4 = new AeroWizard.ThemedLabel();
             this.themedLabel3 = new AeroWizard.ThemedLabel();
             this.wizardPageProgramPCB = new AeroWizard.WizardPage();
+            this.themedLabel11 = new AeroWizard.ThemedLabel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.themedLabel10 = new AeroWizard.ThemedLabel();
             this.themedLabel9 = new AeroWizard.ThemedLabel();
             this.themedLabel8 = new AeroWizard.ThemedLabel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.themedLabel11 = new AeroWizard.ThemedLabel();
+            this.wizardPageResultsStatus = new AeroWizard.WizardPage();
+            this.tbllnitialStatus = new AeroWizard.ThemedTableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
             this.wizardPageProgramPCB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.wizardPageResultsStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // stepWizardControl1
@@ -61,6 +64,7 @@
             this.stepWizardControl1.Pages.Add(this.wizardPageSignIn);
             this.stepWizardControl1.Pages.Add(this.wizardPageInsertPCB);
             this.stepWizardControl1.Pages.Add(this.wizardPageProgramPCB);
+            this.stepWizardControl1.Pages.Add(this.wizardPageResultsStatus);
             this.stepWizardControl1.Size = new System.Drawing.Size(806, 568);
             this.stepWizardControl1.StepListFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.stepWizardControl1.StepListWidth = 250;
@@ -197,6 +201,24 @@
             this.wizardPageProgramPCB.TabIndex = 4;
             this.wizardPageProgramPCB.Text = "Program PCB";
             // 
+            // themedLabel11
+            // 
+            this.themedLabel11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.themedLabel11.Location = new System.Drawing.Point(147, 267);
+            this.themedLabel11.Name = "themedLabel11";
+            this.themedLabel11.Size = new System.Drawing.Size(275, 23);
+            this.themedLabel11.TabIndex = 4;
+            this.themedLabel11.Text = "Waiting for a response from the PCB";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::ESLTestProcess.Properties.Resources.spinner;
+            this.pictureBox1.Location = new System.Drawing.Point(58, 242);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
             // themedLabel10
             // 
             this.themedLabel10.Location = new System.Drawing.Point(54, 153);
@@ -224,23 +246,29 @@
             this.themedLabel8.TabIndex = 0;
             this.themedLabel8.Text = "Program the trap node PCB";
             // 
-            // pictureBox1
+            // wizardPageResultsStatus
             // 
-            this.pictureBox1.Image = global::ESLTestProcess.Properties.Resources.spinner;
-            this.pictureBox1.Location = new System.Drawing.Point(58, 242);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
+            this.wizardPageResultsStatus.Controls.Add(this.tbllnitialStatus);
+            this.wizardPageResultsStatus.Name = "wizardPageResultsStatus";
+            this.wizardPageResultsStatus.Size = new System.Drawing.Size(508, 414);
+            this.stepWizardControl1.SetStepText(this.wizardPageResultsStatus, "PCB initial status");
+            this.wizardPageResultsStatus.TabIndex = 5;
+            this.wizardPageResultsStatus.Text = "Initial Status";
+            this.wizardPageResultsStatus.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageResultsStatus_Initialize);
             // 
-            // themedLabel11
+            // tbllnitialStatus
             // 
-            this.themedLabel11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.themedLabel11.Location = new System.Drawing.Point(147, 267);
-            this.themedLabel11.Name = "themedLabel11";
-            this.themedLabel11.Size = new System.Drawing.Size(275, 23);
-            this.themedLabel11.TabIndex = 4;
-            this.themedLabel11.Text = "Waiting for response from PCB";
+            this.tbllnitialStatus.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tbllnitialStatus.ColumnCount = 3;
+            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tbllnitialStatus.Location = new System.Drawing.Point(25, 154);
+            this.tbllnitialStatus.Name = "tbllnitialStatus";
+            this.tbllnitialStatus.RowCount = 1;
+            this.tbllnitialStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tbllnitialStatus.Size = new System.Drawing.Size(462, 100);
+            this.tbllnitialStatus.TabIndex = 0;
             // 
             // Main
             // 
@@ -257,6 +285,7 @@
             this.wizardPageInsertPCB.PerformLayout();
             this.wizardPageProgramPCB.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.wizardPageResultsStatus.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -282,6 +311,8 @@
         private AeroWizard.ThemedLabel themedLabel8;
         private System.Windows.Forms.PictureBox pictureBox1;
         private AeroWizard.ThemedLabel themedLabel11;
+        private AeroWizard.WizardPage wizardPageResultsStatus;
+        private AeroWizard.ThemedTableLayoutPanel tbllnitialStatus;
 
 
     }
