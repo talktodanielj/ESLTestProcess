@@ -43,18 +43,19 @@
             this.themedLabel3 = new AeroWizard.ThemedLabel();
             this.wizardPageProgramPCB = new AeroWizard.WizardPage();
             this.themedLabel11 = new AeroWizard.ThemedLabel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.themedLabel10 = new AeroWizard.ThemedLabel();
             this.themedLabel9 = new AeroWizard.ThemedLabel();
             this.themedLabel8 = new AeroWizard.ThemedLabel();
             this.wizardPageResultsStatus = new AeroWizard.WizardPage();
-            this.tbllnitialStatus = new AeroWizard.ThemedTableLayoutPanel();
+            this.themedLabel12 = new AeroWizard.ThemedLabel();
+            this.tbllnitialStatus = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
             this.wizardPageProgramPCB.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.wizardPageResultsStatus.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // stepWizardControl1
@@ -210,15 +211,6 @@
             this.themedLabel11.TabIndex = 4;
             this.themedLabel11.Text = "Waiting for a response from the PCB";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::ESLTestProcess.Properties.Resources.spinner;
-            this.pictureBox1.Location = new System.Drawing.Point(58, 242);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
-            // 
             // themedLabel10
             // 
             this.themedLabel10.Location = new System.Drawing.Point(54, 153);
@@ -248,6 +240,7 @@
             // 
             // wizardPageResultsStatus
             // 
+            this.wizardPageResultsStatus.Controls.Add(this.themedLabel12);
             this.wizardPageResultsStatus.Controls.Add(this.tbllnitialStatus);
             this.wizardPageResultsStatus.Name = "wizardPageResultsStatus";
             this.wizardPageResultsStatus.Size = new System.Drawing.Size(508, 414);
@@ -256,19 +249,36 @@
             this.wizardPageResultsStatus.Text = "Initial Status";
             this.wizardPageResultsStatus.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageResultsStatus_Initialize);
             // 
+            // themedLabel12
+            // 
+            this.themedLabel12.Location = new System.Drawing.Point(43, 41);
+            this.themedLabel12.Name = "themedLabel12";
+            this.themedLabel12.Size = new System.Drawing.Size(311, 42);
+            this.themedLabel12.TabIndex = 1;
+            this.themedLabel12.Text = "Detecting the status of the initial test parameters. ";
+            // 
             // tbllnitialStatus
             // 
-            this.tbllnitialStatus.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tbllnitialStatus.ColumnCount = 3;
-            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tbllnitialStatus.Location = new System.Drawing.Point(25, 154);
+            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.tbllnitialStatus.Location = new System.Drawing.Point(43, 99);
             this.tbllnitialStatus.Name = "tbllnitialStatus";
             this.tbllnitialStatus.RowCount = 1;
             this.tbllnitialStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tbllnitialStatus.Size = new System.Drawing.Size(462, 100);
+            this.tbllnitialStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 125F));
+            this.tbllnitialStatus.Size = new System.Drawing.Size(443, 125);
             this.tbllnitialStatus.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::ESLTestProcess.Properties.Resources.spinner;
+            this.pictureBox1.Location = new System.Drawing.Point(58, 242);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
             // 
             // Main
             // 
@@ -284,8 +294,8 @@
             this.wizardPageInsertPCB.ResumeLayout(false);
             this.wizardPageInsertPCB.PerformLayout();
             this.wizardPageProgramPCB.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.wizardPageResultsStatus.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -312,7 +322,8 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private AeroWizard.ThemedLabel themedLabel11;
         private AeroWizard.WizardPage wizardPageResultsStatus;
-        private AeroWizard.ThemedTableLayoutPanel tbllnitialStatus;
+        private System.Windows.Forms.TableLayoutPanel tbllnitialStatus;
+        private AeroWizard.ThemedLabel themedLabel12;
 
 
     }

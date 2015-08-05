@@ -125,9 +125,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ESLTesProcess.Data\ESLTesProcess.Data.csproj">
+    <ProjectReference Include="..\ESLTesProcess.Data\ESLTestProcess.Data.csproj">
       <Project>{c688e5e1-a333-4aff-8865-7a1da3a4d03d}</Project>
-      <Name>ESLTesProcess.Data</Name>
+      <Name>ESLTestProcess.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +135,12 @@
       <Link>MyDatabase#1.sdf</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="cross.png" />
+    <None Include="exclamation.png" />
+    <None Include="alert.png" />
+    <Content Include="test_spinner.gif" />
+    <Content Include="tick.gif" />
+    <None Include="Resources\test_spinner.bmp" />
     <Content Include="spinner.gif" />
   </ItemGroup>
   <ItemGroup>
