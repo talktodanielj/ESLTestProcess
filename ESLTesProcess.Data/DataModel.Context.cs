@@ -27,7 +27,7 @@ namespace ESLTesProcess.Data
     
         public DbSet<run> runs { get; set; }
         public DbSet<result> results { get; set; }
-        public DbSet<user> users { get; set; }
+        public DbSet<technician> technicians { get; set; }
         public DbSet<configuration> configurations { get; set; }
         public DbSet<session> sessions { get; set; }
         public DbSet<pcb_unit> pcb_unit { get; set; }

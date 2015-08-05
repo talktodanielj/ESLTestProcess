@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="Entities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="runs" EntityType="Model.run" />
+    <EntitySet Name="results" EntityType="Model.result" />
+    <EntitySet Name="users" EntityType="Model.user" />
+    <EntitySet Name="configurations" EntityType="Model.configuration" />
+    <EntitySet Name="sessions" EntityType="Model.session" />
+    <EntitySet Name="pcb_unit" EntityType="Model.pcb_unit" />
+  </EntityContainer>
+  <EntityType Name="run">
+    <Key>
+      <PropertyRef Name="run_id" />
+    </Key>
+    <Property Type="Int32" Name="run_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+    <Property Type="String" Name="run_pcb_unit_id" Nullable="false" />
+    <Property Type="DateTime" Name="run_start_timestamp" Nullable="false" />
+    <Property Type="String" Name="run_complete_timestamp" Nullable="false" />
+    <Property Type="String" Name="run_session_id" Nullable="false" />
+  </EntityType>
+  <EntityType Name="result">
+    <Key>
+      <PropertyRef Name="result_id" />
+    </Key>
+    <Property Type="Int32" Name="result_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+    <Property Type="String" Name="result_cmdId" Nullable="false" />
+    <Property Type="String" Name="result_response" Nullable="false" />
+    <Property Type="String" Name="result_run_id" Nullable="false" />
+  </EntityType>
+  <EntityType Name="user">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Type="Int32" Name="user_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+    <Property Type="String" Name="user_name" Nullable="false" />
+  </EntityType>
+  <EntityType Name="configuration">
+    <Key>
+      <PropertyRef Name="config_id" />
+    </Key>
+    <Property Type="Int32" Name="config_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+    <Property Type="String" Name="config_key" Nullable="false" />
+    <Property Type="String" Name="config_value" Nullable="false" />
+  </EntityType>
+  <EntityType Name="session">
+    <Key>
+      <PropertyRef Name="session_id" />
+    </Key>
+    <Property Type="Int32" Name="session_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+    <Property Type="String" Name="session_time_stamp" Nullable="false" />
+    <Property Type="String" Name="session_user_id" Nullable="false" />
+  </EntityType>
+  <EntityType Name="pcb_unit">
+    <Key>
+      <PropertyRef Name="pcb_unit_id" />
+    </Key>
+    <Property Type="Int32" Name="pcb_unit_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+    <Property Type="String" Name="pcb_unit_serial_number" Nullable="false" />
+    <Property Type="String" Name="pcb_unit_serial_sticker_manufacture" Nullable="false" />
+    <Property Type="String" Name="pcb_unit_serial_sticker_test" Nullable="false" />
+  </EntityType>
+</Schema>

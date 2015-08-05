@@ -29,26 +29,26 @@
         private void InitializeComponent()
         {
             this.themedLabel1 = new AeroWizard.ThemedLabel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtTechnicianName = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // themedLabel1
             // 
-            this.themedLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.themedLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.themedLabel1.Location = new System.Drawing.Point(12, 32);
             this.themedLabel1.Name = "themedLabel1";
             this.themedLabel1.Size = new System.Drawing.Size(252, 25);
             this.themedLabel1.TabIndex = 0;
             this.themedLabel1.Text = "Please enter your name...";
             // 
-            // textBox1
+            // txtTechnicianName
             // 
-            this.textBox1.Location = new System.Drawing.Point(14, 61);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(276, 20);
-            this.textBox1.TabIndex = 1;
+            this.txtTechnicianName.Location = new System.Drawing.Point(14, 61);
+            this.txtTechnicianName.Name = "txtTechnicianName";
+            this.txtTechnicianName.Size = new System.Drawing.Size(276, 20);
+            this.txtTechnicianName.TabIndex = 1;
             // 
             // button1
             // 
@@ -62,6 +62,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(218, 102);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
@@ -76,11 +77,13 @@
             this.ClientSize = new System.Drawing.Size(303, 132);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtTechnicianName);
             this.Controls.Add(this.themedLabel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MinimizeBox = false;
             this.Name = "AddTechnician";
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "AddTechnician";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -90,7 +93,7 @@
         #endregion
 
         private AeroWizard.ThemedLabel themedLabel1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtTechnicianName;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnCancel;
     }
