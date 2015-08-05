@@ -56,5 +56,6 @@ namespace ESLTestProcess
             cbTechnician.Items.Clear();
             cbTechnician.Items.AddRange(ProcessControl.Instance.GetTechnicianNames());
         }
+
     }
 }

@@ -41,9 +41,17 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.themedLabel4 = new AeroWizard.ThemedLabel();
             this.themedLabel3 = new AeroWizard.ThemedLabel();
+            this.wizardPageProgramPCB = new AeroWizard.WizardPage();
+            this.themedLabel10 = new AeroWizard.ThemedLabel();
+            this.themedLabel9 = new AeroWizard.ThemedLabel();
+            this.themedLabel8 = new AeroWizard.ThemedLabel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.themedLabel11 = new AeroWizard.ThemedLabel();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
+            this.wizardPageProgramPCB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // stepWizardControl1
@@ -52,6 +60,7 @@
             this.stepWizardControl1.Name = "stepWizardControl1";
             this.stepWizardControl1.Pages.Add(this.wizardPageSignIn);
             this.stepWizardControl1.Pages.Add(this.wizardPageInsertPCB);
+            this.stepWizardControl1.Pages.Add(this.wizardPageProgramPCB);
             this.stepWizardControl1.Size = new System.Drawing.Size(806, 568);
             this.stepWizardControl1.StepListFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.stepWizardControl1.StepListWidth = 250;
@@ -175,6 +184,64 @@
             this.themedLabel3.TabIndex = 0;
             this.themedLabel3.Text = "Then insert the PCB under test into the test jig and click next to continue.";
             // 
+            // wizardPageProgramPCB
+            // 
+            this.wizardPageProgramPCB.Controls.Add(this.themedLabel11);
+            this.wizardPageProgramPCB.Controls.Add(this.pictureBox1);
+            this.wizardPageProgramPCB.Controls.Add(this.themedLabel10);
+            this.wizardPageProgramPCB.Controls.Add(this.themedLabel9);
+            this.wizardPageProgramPCB.Controls.Add(this.themedLabel8);
+            this.wizardPageProgramPCB.Name = "wizardPageProgramPCB";
+            this.wizardPageProgramPCB.Size = new System.Drawing.Size(508, 414);
+            this.stepWizardControl1.SetStepText(this.wizardPageProgramPCB, "Program the node PCB");
+            this.wizardPageProgramPCB.TabIndex = 4;
+            this.wizardPageProgramPCB.Text = "Program PCB";
+            // 
+            // themedLabel10
+            // 
+            this.themedLabel10.Location = new System.Drawing.Point(54, 153);
+            this.themedLabel10.Name = "themedLabel10";
+            this.themedLabel10.Size = new System.Drawing.Size(356, 70);
+            this.themedLabel10.TabIndex = 2;
+            this.themedLabel10.Text = "The next step is to receive the internal serial number of the PCB.  If a serial n" +
+    "umber is already present it signals that the current process is a retest.";
+            // 
+            // themedLabel9
+            // 
+            this.themedLabel9.Location = new System.Drawing.Point(53, 82);
+            this.themedLabel9.Name = "themedLabel9";
+            this.themedLabel9.Size = new System.Drawing.Size(359, 67);
+            this.themedLabel9.TabIndex = 1;
+            this.themedLabel9.Text = "Program the trap node PCB with the Microchip PickIt2 programmer.  Once the PCB is" +
+    " repowered it will begin the test process.";
+            // 
+            // themedLabel8
+            // 
+            this.themedLabel8.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.themedLabel8.Location = new System.Drawing.Point(54, 32);
+            this.themedLabel8.Name = "themedLabel8";
+            this.themedLabel8.Size = new System.Drawing.Size(259, 23);
+            this.themedLabel8.TabIndex = 0;
+            this.themedLabel8.Text = "Program the trap node PCB";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::ESLTestProcess.Properties.Resources.spinner;
+            this.pictureBox1.Location = new System.Drawing.Point(58, 242);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
+            // themedLabel11
+            // 
+            this.themedLabel11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.themedLabel11.Location = new System.Drawing.Point(147, 267);
+            this.themedLabel11.Name = "themedLabel11";
+            this.themedLabel11.Size = new System.Drawing.Size(275, 23);
+            this.themedLabel11.TabIndex = 4;
+            this.themedLabel11.Text = "Waiting for response from PCB";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -188,6 +255,8 @@
             this.wizardPageSignIn.ResumeLayout(false);
             this.wizardPageInsertPCB.ResumeLayout(false);
             this.wizardPageInsertPCB.PerformLayout();
+            this.wizardPageProgramPCB.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -207,6 +276,12 @@
         private System.Windows.Forms.TextBox textBox2;
         private AeroWizard.ThemedLabel themedLabel6;
         private AeroWizard.ThemedLabel themedLabel7;
+        private AeroWizard.WizardPage wizardPageProgramPCB;
+        private AeroWizard.ThemedLabel themedLabel10;
+        private AeroWizard.ThemedLabel themedLabel9;
+        private AeroWizard.ThemedLabel themedLabel8;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private AeroWizard.ThemedLabel themedLabel11;
 
 
     }
