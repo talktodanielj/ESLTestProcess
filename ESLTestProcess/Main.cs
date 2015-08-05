@@ -1,4 +1,4 @@
-﻿using ESLTesProcess.Data;
+﻿using ESLTestProcess.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,11 +33,11 @@ namespace ESLTestProcess
 
             if (dialogResult == DialogResult.OK)
             {
-                ProcessControl.Instance.AddTechnician(addTechnicianWindow.TechnicianName);
+                DataManager.Instance.AddTechnician(addTechnicianWindow.TechnicianName);
                 cbTechnician.Text = "";
                 cbTechnician.SelectedIndex = -1;
                 cbTechnician.Items.Clear();
-                cbTechnician.Items.AddRange(ProcessControl.Instance.GetTechnicianNames());
+                cbTechnician.Items.AddRange(DataManager.Instance.GetTechnicianNames());
             }
         }
 
@@ -55,23 +55,23 @@ namespace ESLTestProcess
         private void wizardPageSignIn_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             cbTechnician.Items.Clear();
-            cbTechnician.Items.AddRange(ProcessControl.Instance.GetTechnicianNames());
+            cbTechnician.Items.AddRange(DataManager.Instance.GetTechnicianNames());
         }
 
         private void DemoTimerCallback(Object state)
         {
-            var icon = (PictureBox)tbllnitialStatus.Controls.Find("eprom_id_status_icon", true).FirstOrDefault();
+            var icon = (PictureBox)tbllnitialStatus.Controls.Find(TestParameters.GetIconName(TestParameters.EPROM_ID), true).FirstOrDefault();
 
             if (icon != null)
                 icon.Image = ESLTestProcess.Properties.Resources.tick;
 
-            icon = (PictureBox)tbllnitialStatus.Controls.Find("pic24_id_status_icon", true).FirstOrDefault();
+            icon = (PictureBox)tbllnitialStatus.Controls.Find(TestParameters.GetIconName(TestParameters.ACCELEROMETER_ID), true).FirstOrDefault();
 
             if (icon != null)
                 icon.Image = ESLTestProcess.Properties.Resources.alert;
 
 
-            icon = (PictureBox)tbllnitialStatus.Controls.Find("battery_voltage_status_icon", true).FirstOrDefault();
+            icon = (PictureBox)tbllnitialStatus.Controls.Find(TestParameters.GetIconName(TestParameters.BATTERY_VOLTAGE), true).FirstOrDefault();
 
             if (icon != null)
                 icon.Image = ESLTestProcess.Properties.Resources.cross;
@@ -112,28 +112,28 @@ namespace ESLTestProcess
 
             AddRow(
                   new Label() { Text = "EPROM Id", Anchor = AnchorStyles.Left, AutoSize = true }
-                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = "eprom_id_status" }
-                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = "eprom_id_status_icon" });
+                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = TestParameters.EPROM_ID }
+                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = TestParameters.GetIconName(TestParameters.EPROM_ID) });
             AddRow(
                   new Label() { Text = "Accelerometer ID", Anchor = AnchorStyles.Left, AutoSize = true }
-                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = "accelerometer_id" }
-                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = "accelerometer_id_status_icon" });
+                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = TestParameters.ACCELEROMETER_ID }
+                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = TestParameters.GetIconName(TestParameters.ACCELEROMETER_ID) });
             AddRow(
                   new Label() { Text = "PIC24 Id", Anchor = AnchorStyles.Left, AutoSize = true }
-                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = "pic24_id" }
-                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = "pic24_id_status_icon" });
+                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = TestParameters.PIC24_ID }
+                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = TestParameters.GetIconName(TestParameters.PIC24_ID) });
             AddRow(
                   new Label() { Text = "Transceveier ID", Anchor = AnchorStyles.Left, AutoSize = true }
-                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = "transceveier_id" }
-                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = "transceveier_id_status_icon" });
+                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = TestParameters.TRANSCEVEIER_ID }
+                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = TestParameters.GetIconName(TestParameters.TRANSCEVEIER_ID) });
             AddRow(
                   new Label() { Text = "Battery Volatge", Anchor = AnchorStyles.Left, AutoSize = true }
-                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name="battery_voltage" }
-                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = "battery_voltage_status_icon" });
+                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name= TestParameters.BATTERY_VOLTAGE }
+                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = TestParameters.GetIconName(TestParameters.BATTERY_VOLTAGE)});
             AddRow(
                  new Label() { Text = "Temperature", Anchor = AnchorStyles.Left, AutoSize = true }
-                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = "temperature_status" }
-                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = "temperature_status_icon" });
+                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = TestParameters.TEMPERATURE_READING }
+                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = TestParameters.GetIconName(TestParameters.TEMPERATURE_READING) });
 
             tbllnitialStatus.AutoSize = true;
             tbllnitialStatus.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;

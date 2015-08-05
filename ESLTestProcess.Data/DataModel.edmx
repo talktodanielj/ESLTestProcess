@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="configurations" EntityType="Model.Store.configurations" store:Type="Tables" />
+          <EntitySet Name="pcb_unit" EntityType="Model.Store.pcb_unit" store:Type="Tables" />
+          <EntitySet Name="results" EntityType="Model.Store.results" store:Type="Tables" />
+          <EntitySet Name="runs" EntityType="Model.Store.runs" store:Type="Tables" />
+          <EntitySet Name="sessions" EntityType="Model.Store.sessions" store:Type="Tables" />
+          <EntitySet Name="technicians" EntityType="Model.Store.technicians" store:Type="Tables" />
+          <AssociationSet Name="FK_pcb_unitrun" Association="Model.Store.FK_pcb_unitrun">
+            <End Role="pcb_unit" EntitySet="pcb_unit" />
+            <End Role="runs" EntitySet="runs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_runresult" Association="Model.Store.FK_runresult">
+            <End Role="runs" EntitySet="runs" />
+            <End Role="results" EntitySet="results" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sessionrun" Association="Model.Store.FK_sessionrun">
+            <End Role="sessions" EntitySet="sessions" />
+            <End Role="runs" EntitySet="runs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_techniciansession" Association="Model.Store.FK_techniciansession">
+            <End Role="technicians" EntitySet="technicians" />
+            <End Role="sessions" EntitySet="sessions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="configurations">
+          <Key>
+            <PropertyRef Name="config_id" />
+          </Key>
+          <Property Name="config_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="config_key" Type="nvarchar" Nullable="false" />
+          <Property Name="config_value" Type="nvarchar" Nullable="false" />
+        </EntityType>
+        <EntityType Name="pcb_unit">
+          <Key>
+            <PropertyRef Name="pcb_unit_id" />
+          </Key>
+          <Property Name="pcb_unit_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="pcb_unit_serial_number" Type="nvarchar" Nullable="false" />
+          <Property Name="pcb_unit_serial_sticker_manufacture" Type="nvarchar" Nullable="false" />
+          <Property Name="pcb_unit_serial_sticker_test" Type="nvarchar" Nullable="false" />
+        </EntityType>
+        <EntityType Name="results">
+          <Key>
+            <PropertyRef Name="result_id" />
+          </Key>
+          <Property Name="result_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="result_cmdId" Type="int" Nullable="false" />
+          <Property Name="result_response_raw" Type="varbinary" />
+          <Property Name="result_response_json" Type="nvarchar" Nullable="false" />
+          <Property Name="result_run_id" Type="int" Nullable="false" />
+          <Property Name="run_run_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="runs">
+          <Key>
+            <PropertyRef Name="run_id" />
+          </Key>
+          <Property Name="run_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="run_pcb_unit_id" Type="nvarchar" Nullable="false" />
+          <Property Name="run_start_timestamp" Type="datetime" Nullable="false" />
+          <Property Name="run_complete_timestamp" Type="datetime" Nullable="false" />
+          <Property Name="run_session_id" Type="int" Nullable="false" />
+          <Property Name="session_session_id" Type="int" Nullable="false" />
+          <Property Name="pcb_unit_pcb_unit_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sessions">
+          <Key>
+            <PropertyRef Name="session_id" />
+          </Key>
+          <Property Name="session_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="session_time_stamp" Type="datetime" Nullable="false" />
+          <Property Name="session_technician_id" Type="int" Nullable="false" />
+          <Property Name="technician_technicain_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="technicians">
+          <Key>
+            <PropertyRef Name="technicain_id" />
+          </Key>
+          <Property Name="technicain_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="technician_name" Type="nvarchar" Nullable="false" />
+          <Property Name="technician_create_timestamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_pcb_unitrun">
+          <End Role="pcb_unit" Type="Model.Store.pcb_unit" Multiplicity="1" />
+          <End Role="runs" Type="Model.Store.runs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pcb_unit">
+              <PropertyRef Name="pcb_unit_id" />
+            </Principal>
+            <Dependent Role="runs">
+              <PropertyRef Name="pcb_unit_pcb_unit_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_runresult">
+          <End Role="runs" Type="Model.Store.runs" Multiplicity="1" />
+          <End Role="results" Type="Model.Store.results" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="runs">
+              <PropertyRef Name="run_id" />
+            </Principal>
+            <Dependent Role="results">
+              <PropertyRef Name="run_run_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sessionrun">
+          <End Role="sessions" Type="Model.Store.sessions" Multiplicity="1" />
+          <End Role="runs" Type="Model.Store.runs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sessions">
+              <PropertyRef Name="session_id" />
+            </Principal>
+            <Dependent Role="runs">
+              <PropertyRef Name="session_session_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_techniciansession">
+          <End Role="technicians" Type="Model.Store.technicians" Multiplicity="1" />
+          <End Role="sessions" Type="Model.Store.sessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="technicians">
+              <PropertyRef Name="technicain_id" />
+            </Principal>
+            <Dependent Role="sessions">
+              <PropertyRef Name="technician_technicain_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="Entities" p1:LazyLoadingEnabled="true" >
+          <EntitySet Name="runs" EntityType="Model.run" />
+          <EntitySet Name="responses" EntityType="Model.response" />
+          <EntitySet Name="technicians" EntityType="Model.technician" />
+          <EntitySet Name="configurations" EntityType="Model.configuration" />
+          <EntitySet Name="sessions" EntityType="Model.session" />
+          <EntitySet Name="pcb_unit" EntityType="Model.pcb_unit" />
+          <AssociationSet Name="sessionrun" Association="Model.sessionrun">
+            <End Role="session" EntitySet="sessions" />
+            <End Role="run" EntitySet="runs" />
+          </AssociationSet>
+          <AssociationSet Name="runresult" Association="Model.runresult">
+            <End Role="run" EntitySet="runs" />
+            <End Role="result" EntitySet="responses" />
+          </AssociationSet>
+          <AssociationSet Name="pcb_unitrun" Association="Model.pcb_unitrun">
+            <End Role="pcb_unit" EntitySet="pcb_unit" />
+            <End Role="run" EntitySet="runs" />
+          </AssociationSet>
+          <AssociationSet Name="techniciansession" Association="Model.techniciansession">
+            <End Role="technician" EntitySet="technicians" />
+            <End Role="session" EntitySet="sessions" />
+          </AssociationSet>
+          <EntitySet Name="configuration1" EntityType="Model.configuration1" />
+          <EntitySet Name="pcb_unit1" EntityType="Model.pcb_unit1" />
+          <EntitySet Name="results" EntityType="Model.result" />
+          <EntitySet Name="run1" EntityType="Model.run1" />
+          <EntitySet Name="session1" EntityType="Model.session1" />
+          <EntitySet Name="technician1" EntityType="Model.technician1" />
+          <AssociationSet Name="FK_pcb_unitrun" Association="Model.FK_pcb_unitrun">
+            <End Role="pcb_unit1" EntitySet="pcb_unit1" />
+            <End Role="run1" EntitySet="run1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_runresult" Association="Model.FK_runresult">
+            <End Role="run1" EntitySet="run1" />
+            <End Role="result" EntitySet="results" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sessionrun" Association="Model.FK_sessionrun">
+            <End Role="session1" EntitySet="session1" />
+            <End Role="run1" EntitySet="run1" />
+          </AssociationSet>
+          <AssociationSet Name="FK_techniciansession" Association="Model.FK_techniciansession">
+            <End Role="technician1" EntitySet="technician1" />
+            <End Role="session1" EntitySet="session1" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="run">
+          <Key>
+            <PropertyRef Name="run_id" />
+          </Key>
+          <Property Type="Int32" Name="run_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Type="String" Name="run_pcb_unit_id" Nullable="false" />
+          <Property Type="DateTime" Name="run_start_timestamp" Nullable="false" />
+          <Property Type="DateTime" Name="run_complete_timestamp" Nullable="false" />
+          <Property Type="Int32" Name="run_session_id" Nullable="false" />
+          <NavigationProperty Name="session" Relationship="Model.sessionrun" FromRole="run" ToRole="session" />
+          <NavigationProperty Name="results" Relationship="Model.runresult" FromRole="run" ToRole="result" />
+          <NavigationProperty Name="pcb_unit" Relationship="Model.pcb_unitrun" FromRole="run" ToRole="pcb_unit" />
+        </EntityType>
+        <EntityType Name="response">
+          <Key>
+            <PropertyRef Name="response_id" />
+          </Key>
+          <Property Type="Int32" Name="response_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Type="Int32" Name="response_parameter" Nullable="false" />
+          <Property Type="Binary" Name="response_raw" Nullable="true" />
+          <Property Type="String" Name="response_value" Nullable="false" DefaultValue="" />
+          <Property Type="Int32" Name="response_run_id" Nullable="false" />
+          <NavigationProperty Name="run" Relationship="Model.runresult" FromRole="result" ToRole="run" />
+          <Property Type="Model.TestStatus" Name="response_outcome" Nullable="false" DefaultValue="Unknown" />
+          <Property Type="Int16" Name="response_report_column" Nullable="false" />
+        </EntityType>
+        <EntityType Name="technician">
+          <Key>
+            <PropertyRef Name="technicain_id" />
+          </Key>
+          <Property Type="Int32" Name="technicain_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Type="String" Name="technician_name" Nullable="false" />
+          <Property Type="DateTime" Name="technician_create_timestamp" Nullable="false" />
+          <NavigationProperty Name="sessions" Relationship="Model.techniciansession" FromRole="technician" ToRole="session" />
+        </EntityType>
+        <EntityType Name="configuration">
+          <Key>
+            <PropertyRef Name="config_id" />
+          </Key>
+          <Property Type="Int32" Name="config_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Type="String" Name="config_key" Nullable="false" />
+          <Property Type="String" Name="config_value" Nullable="false" />
+        </EntityType>
+        <EntityType Name="session">
+          <Key>
+            <PropertyRef Name="session_id" />
+          </Key>
+          <Property Type="Int32" Name="session_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Type="DateTime" Name="session_time_stamp" Nullable="false" />
+          <Property Type="Int32" Name="session_technician_id" Nullable="false" />
+          <NavigationProperty Name="runs" Relationship="Model.sessionrun" FromRole="session" ToRole="run" />
+          <NavigationProperty Name="technician" Relationship="Model.techniciansession" FromRole="session" ToRole="technician" />
+        </EntityType>
+        <EntityType Name="pcb_unit">
+          <Key>
+            <PropertyRef Name="pcb_unit_id" />
+          </Key>
+          <Property Type="Int32" Name="pcb_unit_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Type="String" Name="pcb_unit_serial_number" Nullable="false" />
+          <Property Type="String" Name="pcb_unit_serial_sticker_manufacture" Nullable="false" />
+          <Property Type="String" Name="pcb_unit_serial_sticker_test" Nullable="false" />
+          <NavigationProperty Name="runs" Relationship="Model.pcb_unitrun" FromRole="pcb_unit" ToRole="run" />
+        </EntityType>
+        <Association Name="sessionrun">
+          <End Type="Model.session" Role="session" Multiplicity="1" />
+          <End Type="Model.run" Role="run" Multiplicity="*" />
+        </Association>
+        <Association Name="runresult">
+          <End Type="Model.run" Role="run" Multiplicity="1" />
+          <End Type="Model.response" Role="result" Multiplicity="*" />
+        </Association>
+        <Association Name="pcb_unitrun">
+          <End Type="Model.pcb_unit" Role="pcb_unit" Multiplicity="1" />
+          <End Type="Model.run" Role="run" Multiplicity="*" />
+        </Association>
+        <Association Name="techniciansession">
+          <End Type="Model.technician" Role="technician" Multiplicity="1" />
+          <End Type="Model.session" Role="session" Multiplicity="*" />
+        </Association>
+        <EnumType Name="TestStatus" UnderlyingType="Int16" a:ExternalTypeName="ESLTestProcess.Data.TestStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+        <EntityType Name="configuration1">
+          <Key>
+            <PropertyRef Name="config_id" />
+          </Key>
+          <Property Type="Int32" Name="config_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="config_key" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="config_value" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="pcb_unit1">
+          <Key>
+            <PropertyRef Name="pcb_unit_id" />
+          </Key>
+          <Property Type="Int32" Name="pcb_unit_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="pcb_unit_serial_number" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="pcb_unit_serial_sticker_manufacture" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="pcb_unit_serial_sticker_test" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="runs" Relationship="Model.FK_pcb_unitrun" FromRole="pcb_unit1" ToRole="run1" />
+        </EntityType>
+        <EntityType Name="result">
+          <Key>
+            <PropertyRef Name="result_id" />
+          </Key>
+          <Property Type="Int32" Name="result_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="result_cmdId" Nullable="false" />
+          <Property Type="Binary" Name="result_response_raw" MaxLength="8000" FixedLength="false" />
+          <Property Type="String" Name="result_response_json" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="result_run_id" Nullable="false" />
+          <Property Type="Int32" Name="run_run_id" Nullable="false" />
+          <NavigationProperty Name="run" Relationship="Model.FK_runresult" FromRole="result" ToRole="run1" />
+        </EntityType>
+        <EntityType Name="run1">
+          <Key>
+            <PropertyRef Name="run_id" />
+          </Key>
+          <Property Type="Int32" Name="run_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="run_pcb_unit_id" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="run_start_timestamp" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="run_complete_timestamp" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="run_session_id" Nullable="false" />
+          <Property Type="Int32" Name="session_session_id" Nullable="false" />
+          <Property Type="Int32" Name="pcb_unit_pcb_unit_id" Nullable="false" />
+          <NavigationProperty Name="pcb_unit" Relationship="Model.FK_pcb_unitrun" FromRole="run1" ToRole="pcb_unit1" />
+          <NavigationProperty Name="results" Relationship="Model.FK_runresult" FromRole="run1" ToRole="result" />
+          <NavigationProperty Name="session" Relationship="Model.FK_sessionrun" FromRole="run1" ToRole="session1" />
+        </EntityType>
+        <EntityType Name="session1">
+          <Key>
+            <PropertyRef Name="session_id" />
+          </Key>
+          <Property Type="Int32" Name="session_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="session_time_stamp" Nullable="false" Precision="3" />
+          <Property Type="Int32" Name="session_technician_id" Nullable="false" />
+          <Property Type="Int32" Name="technician_technicain_id" Nullable="false" />
+          <NavigationProperty Name="runs" Relationship="Model.FK_sessionrun" FromRole="session1" ToRole="run1" />
+          <NavigationProperty Name="technician" Relationship="Model.FK_techniciansession" FromRole="session1" ToRole="technician1" />
+        </EntityType>
+        <EntityType Name="technician1">
+          <Key>
+            <PropertyRef Name="technicain_id" />
+          </Key>
+          <Property Type="Int32" Name="technicain_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="technician_name" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="technician_create_timestamp" Nullable="false" Precision="3" />
+          <NavigationProperty Name="sessions" Relationship="Model.FK_techniciansession" FromRole="technician1" ToRole="session1" />
+        </EntityType>
+        <Association Name="FK_pcb_unitrun">
+          <End Type="Model.pcb_unit1" Role="pcb_unit1" Multiplicity="1" />
+          <End Type="Model.run1" Role="run1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pcb_unit1">
+              <PropertyRef Name="pcb_unit_id" />
+            </Principal>
+            <Dependent Role="run1">
+              <PropertyRef Name="pcb_unit_pcb_unit_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_runresult">
+          <End Type="Model.run1" Role="run1" Multiplicity="1" />
+          <End Type="Model.result" Role="result" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="run1">
+              <PropertyRef Name="run_id" />
+            </Principal>
+            <Dependent Role="result">
+              <PropertyRef Name="run_run_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sessionrun">
+          <End Type="Model.session1" Role="session1" Multiplicity="1" />
+          <End Type="Model.run1" Role="run1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="session1">
+              <PropertyRef Name="session_id" />
+            </Principal>
+            <Dependent Role="run1">
+              <PropertyRef Name="session_session_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_techniciansession">
+          <End Type="Model.technician1" Role="technician1" Multiplicity="1" />
+          <End Type="Model.session1" Role="session1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="technician1">
+              <PropertyRef Name="technicain_id" />
+            </Principal>
+            <Dependent Role="session1">
+              <PropertyRef Name="technician_technicain_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="configuration1">
+            <EntityTypeMapping TypeName="Model.configuration1">
+              <MappingFragment StoreEntitySet="configurations">
+                <ScalarProperty Name="config_value" ColumnName="config_value" />
+                <ScalarProperty Name="config_key" ColumnName="config_key" />
+                <ScalarProperty Name="config_id" ColumnName="config_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pcb_unit1">
+            <EntityTypeMapping TypeName="Model.pcb_unit1">
+              <MappingFragment StoreEntitySet="pcb_unit">
+                <ScalarProperty Name="pcb_unit_serial_sticker_test" ColumnName="pcb_unit_serial_sticker_test" />
+                <ScalarProperty Name="pcb_unit_serial_sticker_manufacture" ColumnName="pcb_unit_serial_sticker_manufacture" />
+                <ScalarProperty Name="pcb_unit_serial_number" ColumnName="pcb_unit_serial_number" />
+                <ScalarProperty Name="pcb_unit_id" ColumnName="pcb_unit_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="results">
+            <EntityTypeMapping TypeName="Model.result">
+              <MappingFragment StoreEntitySet="results">
+                <ScalarProperty Name="run_run_id" ColumnName="run_run_id" />
+                <ScalarProperty Name="result_run_id" ColumnName="result_run_id" />
+                <ScalarProperty Name="result_response_json" ColumnName="result_response_json" />
+                <ScalarProperty Name="result_response_raw" ColumnName="result_response_raw" />
+                <ScalarProperty Name="result_cmdId" ColumnName="result_cmdId" />
+                <ScalarProperty Name="result_id" ColumnName="result_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="run1">
+            <EntityTypeMapping TypeName="Model.run1">
+              <MappingFragment StoreEntitySet="runs">
+                <ScalarProperty Name="pcb_unit_pcb_unit_id" ColumnName="pcb_unit_pcb_unit_id" />
+                <ScalarProperty Name="session_session_id" ColumnName="session_session_id" />
+                <ScalarProperty Name="run_session_id" ColumnName="run_session_id" />
+                <ScalarProperty Name="run_complete_timestamp" ColumnName="run_complete_timestamp" />
+                <ScalarProperty Name="run_start_timestamp" ColumnName="run_start_timestamp" />
+                <ScalarProperty Name="run_pcb_unit_id" ColumnName="run_pcb_unit_id" />
+                <ScalarProperty Name="run_id" ColumnName="run_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="session1">
+            <EntityTypeMapping TypeName="Model.session1">
+              <MappingFragment StoreEntitySet="sessions">
+                <ScalarProperty Name="technician_technicain_id" ColumnName="technician_technicain_id" />
+                <ScalarProperty Name="session_technician_id" ColumnName="session_technician_id" />
+                <ScalarProperty Name="session_time_stamp" ColumnName="session_time_stamp" />
+                <ScalarProperty Name="session_id" ColumnName="session_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="technician1">
+            <EntityTypeMapping TypeName="Model.technician1">
+              <MappingFragment StoreEntitySet="technicians">
+                <ScalarProperty Name="technician_create_timestamp" ColumnName="technician_create_timestamp" />
+                <ScalarProperty Name="technician_name" ColumnName="technician_name" />
+                <ScalarProperty Name="technicain_id" ColumnName="technicain_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="DDLGenerationTemplate" Value="$(VSEFTools)\DBGen\SSDLToSQL10GOFixed.tt" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

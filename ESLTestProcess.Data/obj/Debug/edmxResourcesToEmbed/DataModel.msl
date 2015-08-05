@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="runs">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.run)">
+        <MappingFragment StoreEntitySet="runs">
+          <ScalarProperty Name="run_id" ColumnName="run_id" />
+          <ScalarProperty Name="run_pcb_unit_id" ColumnName="run_pcb_unit_id" />
+          <ScalarProperty Name="run_start_timestamp" ColumnName="run_start_timestamp" />
+          <ScalarProperty Name="run_complete_timestamp" ColumnName="run_complete_timestamp" />
+          <ScalarProperty Name="run_session_id" ColumnName="run_session_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="responses">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.response)">
+        <MappingFragment StoreEntitySet="results">
+          <ScalarProperty Name="response_id" ColumnName="result_id" />
+          <ScalarProperty Name="response_parameter" ColumnName="result_cmdId" />
+          <ScalarProperty Name="response_raw" ColumnName="result_response_raw" />
+          <ScalarProperty Name="response_value" ColumnName="result_response_json" />
+          <ScalarProperty Name="response_run_id" ColumnName="result_run_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="technicians">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.technician)">
+        <MappingFragment StoreEntitySet="technicians">
+          <ScalarProperty Name="technicain_id" ColumnName="technicain_id" />
+          <ScalarProperty Name="technician_name" ColumnName="technician_name" />
+          <ScalarProperty Name="technician_create_timestamp" ColumnName="technician_create_timestamp" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="configurations">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.configuration)">
+        <MappingFragment StoreEntitySet="configurations">
+          <ScalarProperty Name="config_id" ColumnName="config_id" />
+          <ScalarProperty Name="config_key" ColumnName="config_key" />
+          <ScalarProperty Name="config_value" ColumnName="config_value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sessions">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.session)">
+        <MappingFragment StoreEntitySet="sessions">
+          <ScalarProperty Name="session_id" ColumnName="session_id" />
+          <ScalarProperty Name="session_time_stamp" ColumnName="session_time_stamp" />
+          <ScalarProperty Name="session_technician_id" ColumnName="session_technician_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="pcb_unit">
+      <EntityTypeMapping TypeName="IsTypeOf(Model.pcb_unit)">
+        <MappingFragment StoreEntitySet="pcb_unit">
+          <ScalarProperty Name="pcb_unit_id" ColumnName="pcb_unit_id" />
+          <ScalarProperty Name="pcb_unit_serial_number" ColumnName="pcb_unit_serial_number" />
+          <ScalarProperty Name="pcb_unit_serial_sticker_manufacture" ColumnName="pcb_unit_serial_sticker_manufacture" />
+          <ScalarProperty Name="pcb_unit_serial_sticker_test" ColumnName="pcb_unit_serial_sticker_test" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="sessionrun" TypeName="Model.sessionrun" StoreEntitySet="runs">
+      <EndProperty Name="session">
+        <ScalarProperty Name="session_id" ColumnName="session_session_id" />
+      </EndProperty>
+      <EndProperty Name="run">
+        <ScalarProperty Name="run_id" ColumnName="run_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="runresult" TypeName="Model.runresult" StoreEntitySet="results">
+      <EndProperty Name="run">
+        <ScalarProperty Name="run_id" ColumnName="run_run_id" />
+      </EndProperty>
+      <EndProperty Name="result">
+        <ScalarProperty Name="response_id" ColumnName="result_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="pcb_unitrun" TypeName="Model.pcb_unitrun" StoreEntitySet="runs">
+      <EndProperty Name="pcb_unit">
+        <ScalarProperty Name="pcb_unit_id" ColumnName="pcb_unit_pcb_unit_id" />
+      </EndProperty>
+      <EndProperty Name="run">
+        <ScalarProperty Name="run_id" ColumnName="run_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="techniciansession" TypeName="Model.techniciansession" StoreEntitySet="sessions">
+      <EndProperty Name="technician">
+        <ScalarProperty Name="technicain_id" ColumnName="technician_technicain_id" />
+      </EndProperty>
+      <EndProperty Name="session">
+        <ScalarProperty Name="session_id" ColumnName="session_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>
