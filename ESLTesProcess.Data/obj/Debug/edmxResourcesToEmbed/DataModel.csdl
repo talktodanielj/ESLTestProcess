@@ -3,10 +3,26 @@
   <EntityContainer Name="Entities" p1:LazyLoadingEnabled="true">
     <EntitySet Name="runs" EntityType="Model.run" />
     <EntitySet Name="results" EntityType="Model.result" />
-    <EntitySet Name="users" EntityType="Model.user" />
+    <EntitySet Name="technicians" EntityType="Model.technician" />
     <EntitySet Name="configurations" EntityType="Model.configuration" />
     <EntitySet Name="sessions" EntityType="Model.session" />
     <EntitySet Name="pcb_unit" EntityType="Model.pcb_unit" />
+    <AssociationSet Name="sessionrun" Association="Model.sessionrun">
+      <End Role="session" EntitySet="sessions" />
+      <End Role="run" EntitySet="runs" />
+    </AssociationSet>
+    <AssociationSet Name="runresult" Association="Model.runresult">
+      <End Role="run" EntitySet="runs" />
+      <End Role="result" EntitySet="results" />
+    </AssociationSet>
+    <AssociationSet Name="pcb_unitrun" Association="Model.pcb_unitrun">
+      <End Role="pcb_unit" EntitySet="pcb_unit" />
+      <End Role="run" EntitySet="runs" />
+    </AssociationSet>
+    <AssociationSet Name="techniciansession" Association="Model.techniciansession">
+      <End Role="technician" EntitySet="technicians" />
+      <End Role="session" EntitySet="sessions" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="run">
     <Key>
@@ -15,24 +31,31 @@
     <Property Type="Int32" Name="run_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
     <Property Type="String" Name="run_pcb_unit_id" Nullable="false" />
     <Property Type="DateTime" Name="run_start_timestamp" Nullable="false" />
-    <Property Type="String" Name="run_complete_timestamp" Nullable="false" />
-    <Property Type="String" Name="run_session_id" Nullable="false" />
+    <Property Type="DateTime" Name="run_complete_timestamp" Nullable="false" />
+    <Property Type="Int32" Name="run_session_id" Nullable="false" />
+    <NavigationProperty Name="session" Relationship="Model.sessionrun" FromRole="run" ToRole="session" />
+    <NavigationProperty Name="results" Relationship="Model.runresult" FromRole="run" ToRole="result" />
+    <NavigationProperty Name="pcb_unit" Relationship="Model.pcb_unitrun" FromRole="run" ToRole="pcb_unit" />
   </EntityType>
   <EntityType Name="result">
     <Key>
       <PropertyRef Name="result_id" />
     </Key>
     <Property Type="Int32" Name="result_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-    <Property Type="String" Name="result_cmdId" Nullable="false" />
-    <Property Type="String" Name="result_response" Nullable="false" />
-    <Property Type="String" Name="result_run_id" Nullable="false" />
+    <Property Type="Int32" Name="result_cmdId" Nullable="false" />
+    <Property Type="Binary" Name="result_response_raw" Nullable="true" />
+    <Property Type="String" Name="result_response_json" Nullable="false" DefaultValue="" />
+    <Property Type="Int32" Name="result_run_id" Nullable="false" />
+    <NavigationProperty Name="run" Relationship="Model.runresult" FromRole="result" ToRole="run" />
   </EntityType>
-  <EntityType Name="user">
+  <EntityType Name="technician">
     <Key>
-      <PropertyRef Name="user_id" />
+      <PropertyRef Name="technicain_id" />
     </Key>
-    <Property Type="Int32" Name="user_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-    <Property Type="String" Name="user_name" Nullable="false" />
+    <Property Type="Int32" Name="technicain_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+    <Property Type="String" Name="technician_name" Nullable="false" />
+    <Property Type="DateTime" Name="technician_create_timestamp" Nullable="false" />
+    <NavigationProperty Name="sessions" Relationship="Model.techniciansession" FromRole="technician" ToRole="session" />
   </EntityType>
   <EntityType Name="configuration">
     <Key>
@@ -47,8 +70,10 @@
       <PropertyRef Name="session_id" />
     </Key>
     <Property Type="Int32" Name="session_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-    <Property Type="String" Name="session_time_stamp" Nullable="false" />
-    <Property Type="String" Name="session_user_id" Nullable="false" />
+    <Property Type="DateTime" Name="session_time_stamp" Nullable="false" />
+    <Property Type="Int32" Name="session_technician_id" Nullable="false" />
+    <NavigationProperty Name="runs" Relationship="Model.sessionrun" FromRole="session" ToRole="run" />
+    <NavigationProperty Name="technician" Relationship="Model.techniciansession" FromRole="session" ToRole="technician" />
   </EntityType>
   <EntityType Name="pcb_unit">
     <Key>
@@ -58,5 +83,22 @@
     <Property Type="String" Name="pcb_unit_serial_number" Nullable="false" />
     <Property Type="String" Name="pcb_unit_serial_sticker_manufacture" Nullable="false" />
     <Property Type="String" Name="pcb_unit_serial_sticker_test" Nullable="false" />
+    <NavigationProperty Name="runs" Relationship="Model.pcb_unitrun" FromRole="pcb_unit" ToRole="run" />
   </EntityType>
+  <Association Name="sessionrun">
+    <End Type="Model.session" Role="session" Multiplicity="1" />
+    <End Type="Model.run" Role="run" Multiplicity="*" />
+  </Association>
+  <Association Name="runresult">
+    <End Type="Model.run" Role="run" Multiplicity="1" />
+    <End Type="Model.result" Role="result" Multiplicity="*" />
+  </Association>
+  <Association Name="pcb_unitrun">
+    <End Type="Model.pcb_unit" Role="pcb_unit" Multiplicity="1" />
+    <End Type="Model.run" Role="run" Multiplicity="*" />
+  </Association>
+  <Association Name="techniciansession">
+    <End Type="Model.technician" Role="technician" Multiplicity="1" />
+    <End Type="Model.session" Role="session" Multiplicity="*" />
+  </Association>
 </Schema>

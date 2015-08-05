@@ -30,17 +30,17 @@
         {
             this.stepWizardControl1 = new AeroWizard.StepWizardControl();
             this.wizardPageSignIn = new AeroWizard.WizardPage();
+            this.themedLabel7 = new AeroWizard.ThemedLabel();
             this.btnAddTechnician = new System.Windows.Forms.Button();
             this.themedLabel2 = new AeroWizard.ThemedLabel();
             this.cbTechnician = new System.Windows.Forms.ComboBox();
             this.themedLabel1 = new AeroWizard.ThemedLabel();
             this.wizardPageInsertPCB = new AeroWizard.WizardPage();
-            this.themedLabel3 = new AeroWizard.ThemedLabel();
-            this.themedLabel4 = new AeroWizard.ThemedLabel();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.themedLabel5 = new AeroWizard.ThemedLabel();
             this.themedLabel6 = new AeroWizard.ThemedLabel();
-            this.themedLabel7 = new AeroWizard.ThemedLabel();
+            this.themedLabel5 = new AeroWizard.ThemedLabel();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.themedLabel4 = new AeroWizard.ThemedLabel();
+            this.themedLabel3 = new AeroWizard.ThemedLabel();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
@@ -72,6 +72,16 @@
             this.stepWizardControl1.SetStepText(this.wizardPageSignIn, "Technician Sign In");
             this.wizardPageSignIn.TabIndex = 2;
             this.wizardPageSignIn.Text = "Begin testing...";
+            this.wizardPageSignIn.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageSignIn_Initialize);
+            // 
+            // themedLabel7
+            // 
+            this.themedLabel7.Location = new System.Drawing.Point(77, 85);
+            this.themedLabel7.Name = "themedLabel7";
+            this.themedLabel7.Size = new System.Drawing.Size(309, 36);
+            this.themedLabel7.TabIndex = 5;
+            this.themedLabel7.Text = "Please select your name from the cobo list below or click \"Add Technician\" to ins" +
+    "ert your name in the list.";
             // 
             // btnAddTechnician
             // 
@@ -91,11 +101,11 @@
             this.themedLabel2.TabIndex = 3;
             this.themedLabel2.Text = "Technician";
             // 
-            // comboBox1
+            // cbTechnician
             // 
             this.cbTechnician.FormattingEnabled = true;
             this.cbTechnician.Location = new System.Drawing.Point(74, 165);
-            this.cbTechnician.Name = "comboBox1";
+            this.cbTechnician.Name = "cbTechnician";
             this.cbTechnician.Size = new System.Drawing.Size(312, 23);
             this.cbTechnician.TabIndex = 2;
             this.cbTechnician.SelectedIndexChanged += new System.EventHandler(this.cbTechnician_SelectedIndexChanged);
@@ -123,38 +133,6 @@
             this.wizardPageInsertPCB.Text = "Insert PCB";
             this.wizardPageInsertPCB.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageInsertPCB_Commit);
             // 
-            // themedLabel3
-            // 
-            this.themedLabel3.Location = new System.Drawing.Point(115, 216);
-            this.themedLabel3.Name = "themedLabel3";
-            this.themedLabel3.Size = new System.Drawing.Size(283, 48);
-            this.themedLabel3.TabIndex = 0;
-            this.themedLabel3.Text = "Then insert the PCB under test into the test jig and click next to continue.";
-            // 
-            // themedLabel4
-            // 
-            this.themedLabel4.Location = new System.Drawing.Point(118, 102);
-            this.themedLabel4.Name = "themedLabel4";
-            this.themedLabel4.Size = new System.Drawing.Size(280, 38);
-            this.themedLabel4.TabIndex = 1;
-            this.themedLabel4.Text = "Enter the manufacturers number from the sticker on the PCB into the text box belo" +
-    "w.";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(118, 181);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(228, 23);
-            this.textBox2.TabIndex = 2;
-            // 
-            // themedLabel5
-            // 
-            this.themedLabel5.Location = new System.Drawing.Point(119, 154);
-            this.themedLabel5.Name = "themedLabel5";
-            this.themedLabel5.Size = new System.Drawing.Size(214, 23);
-            this.themedLabel5.TabIndex = 3;
-            this.themedLabel5.Text = "Manufacturers serial number";
-            // 
             // themedLabel6
             // 
             this.themedLabel6.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -165,14 +143,37 @@
             this.themedLabel6.TabIndex = 4;
             this.themedLabel6.Text = "Get serial number and insert PCB";
             // 
-            // themedLabel7
+            // themedLabel5
             // 
-            this.themedLabel7.Location = new System.Drawing.Point(77, 85);
-            this.themedLabel7.Name = "themedLabel7";
-            this.themedLabel7.Size = new System.Drawing.Size(309, 36);
-            this.themedLabel7.TabIndex = 5;
-            this.themedLabel7.Text = "Please select your name from the cobo list below or click \"Add Technician\" to ins" +
-    "ert your name in the list.";
+            this.themedLabel5.Location = new System.Drawing.Point(119, 154);
+            this.themedLabel5.Name = "themedLabel5";
+            this.themedLabel5.Size = new System.Drawing.Size(214, 23);
+            this.themedLabel5.TabIndex = 3;
+            this.themedLabel5.Text = "Manufacturers serial number";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(118, 181);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(228, 23);
+            this.textBox2.TabIndex = 2;
+            // 
+            // themedLabel4
+            // 
+            this.themedLabel4.Location = new System.Drawing.Point(118, 102);
+            this.themedLabel4.Name = "themedLabel4";
+            this.themedLabel4.Size = new System.Drawing.Size(280, 38);
+            this.themedLabel4.TabIndex = 1;
+            this.themedLabel4.Text = "Enter the manufacturers number from the sticker on the PCB into the text box belo" +
+    "w.";
+            // 
+            // themedLabel3
+            // 
+            this.themedLabel3.Location = new System.Drawing.Point(115, 216);
+            this.themedLabel3.Name = "themedLabel3";
+            this.themedLabel3.Size = new System.Drawing.Size(283, 48);
+            this.themedLabel3.TabIndex = 0;
+            this.themedLabel3.Text = "Then insert the PCB under test into the test jig and click next to continue.";
             // 
             // Main
             // 

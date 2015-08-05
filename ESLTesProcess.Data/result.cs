@@ -14,9 +14,15 @@ namespace ESLTesProcess.Data
     
     public partial class result
     {
+        public result()
+        {
+            this.result_response_json = "";
+        }
+    
         public int result_id { get; internal set; }
         public int result_cmdId { get; set; }
-        public string result_response { get; set; }
+        public byte[] result_response_raw { get; set; }
+        public string result_response_json { get; set; }
         public int result_run_id { get; set; }
     
         public virtual run run { get; set; }

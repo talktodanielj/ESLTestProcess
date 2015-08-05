@@ -31,8 +31,13 @@ namespace ESLTestProcess
             var dialogResult = addTechnicianWindow.ShowDialog();
 
             if (dialogResult == DialogResult.OK)
+            {
                 ProcessControl.Instance.AddTechnician(addTechnicianWindow.TechnicianName);
-
+                cbTechnician.Text = "";
+                cbTechnician.SelectedIndex = -1;
+                cbTechnician.Items.Clear();
+                cbTechnician.Items.AddRange(ProcessControl.Instance.GetTechnicianNames());
+            }
         }
 
         private void wizardPageInsertPCB_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
@@ -44,6 +49,12 @@ namespace ESLTestProcess
         {
             if (cbTechnician.SelectedIndex > -1)
                 wizardPageSignIn.AllowNext = true;
+        }
+
+        private void wizardPageSignIn_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
+        {
+            cbTechnician.Items.Clear();
+            cbTechnician.Items.AddRange(ProcessControl.Instance.GetTechnicianNames());
         }
     }
 }

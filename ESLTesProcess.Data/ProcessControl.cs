@@ -34,7 +34,35 @@ namespace ESLTesProcess.Data
 
         public bool AddTechnician(string technicianName)
         {
-            return true;
+            try
+            {
+                using (Entities entities = new Entities())
+                {
+                    entities.technicians.Add(new technician { technician_name = technicianName, technician_create_timestamp = DateTime.Now });
+                    return entities.SaveChanges() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Error(ex);
+            }
+            return false;
+        }
+
+        public string[] GetTechnicianNames()
+        {
+            try
+            {
+                using (Entities entities = new Entities())
+                {
+                    return entities.technicians.Select(t => t.technician_name).ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Error(ex);
+            }
+            return new string[0];
         }
     }
 }
