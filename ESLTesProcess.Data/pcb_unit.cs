@@ -14,9 +14,16 @@ namespace ESLTesProcess.Data
     
     public partial class pcb_unit
     {
+        public pcb_unit()
+        {
+            this.runs = new HashSet<run>();
+        }
+    
         public int pcb_unit_id { get; internal set; }
         public string pcb_unit_serial_number { get; set; }
         public string pcb_unit_serial_sticker_manufacture { get; set; }
         public string pcb_unit_serial_sticker_test { get; set; }
+    
+        public virtual ICollection<run> runs { get; set; }
     }
 }

@@ -14,8 +14,16 @@ namespace ESLTesProcess.Data
     
     public partial class session
     {
+        public session()
+        {
+            this.runs = new HashSet<run>();
+        }
+    
         public int session_id { get; internal set; }
-        public string session_time_stamp { get; set; }
-        public string session_user_id { get; set; }
+        public System.DateTime session_time_stamp { get; set; }
+        public int session_technician_id { get; set; }
+    
+        public virtual ICollection<run> runs { get; set; }
+        public virtual technician technician { get; set; }
     }
 }

@@ -14,8 +14,15 @@ namespace ESLTesProcess.Data
     
     public partial class technician
     {
+        public technician()
+        {
+            this.sessions = new HashSet<session>();
+        }
+    
         public int technicain_id { get; internal set; }
         public string technician_name { get; set; }
         public string technician_create_timestamp { get; set; }
+    
+        public virtual ICollection<session> sessions { get; set; }
     }
 }

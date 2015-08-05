@@ -15,8 +15,10 @@ namespace ESLTesProcess.Data
     public partial class result
     {
         public int result_id { get; internal set; }
-        public string result_cmdId { get; set; }
+        public int result_cmdId { get; set; }
         public string result_response { get; set; }
-        public string result_run_id { get; set; }
+        public int result_run_id { get; set; }
+    
+        public virtual run run { get; set; }
     }
 }
