@@ -19,7 +19,7 @@ namespace ESLTestProcess
         }
 
         private AddTechnician addTechnicianWindow = new AddTechnician();
-        private System.Threading.Timer _demoTimer;
+        private System.Threading.Timer _timeOutTimer;
 
 
         private void stepWizardControl1_SelectedPageChanged(object sender, EventArgs e)
@@ -29,6 +29,7 @@ namespace ESLTestProcess
 
         private void btnAddTechnician_Click(object sender, EventArgs e)
         {
+            addTechnicianWindow.TechnicianName = "";
             var dialogResult = addTechnicianWindow.ShowDialog();
 
             if (dialogResult == DialogResult.OK)
@@ -58,25 +59,26 @@ namespace ESLTestProcess
             cbTechnician.Items.AddRange(DataManager.Instance.GetTechnicianNames());
         }
 
-        private void DemoTimerCallback(Object state)
+        private void TimerOutCallback(Object state)
         {
-            var icon = (PictureBox)tbllnitialStatus.Controls.Find(TestParameters.GetIconName(TestParameters.EPROM_ID), true).FirstOrDefault();
+            var testRun = ProcessControl.Instance.GetCurrentTestRun();
+            // Process timed out
+            // Update the display to the current state
 
-            if (icon != null)
-                icon.Image = ESLTestProcess.Properties.Resources.tick;
-
-            icon = (PictureBox)tbllnitialStatus.Controls.Find(TestParameters.GetIconName(TestParameters.ACCELEROMETER_ID), true).FirstOrDefault();
-
-            if (icon != null)
-                icon.Image = ESLTestProcess.Properties.Resources.alert;
-
-
-            icon = (PictureBox)tbllnitialStatus.Controls.Find(TestParameters.GetIconName(TestParameters.BATTERY_VOLTAGE), true).FirstOrDefault();
-
-            if (icon != null)
-                icon.Image = ESLTestProcess.Properties.Resources.cross;
-
-
+            _testExpired = true;
+            if (testRun != null)
+            {
+                foreach (response response in testRun.responses)
+                {
+                    Instance_TestResponseHandler(null, new TestResponseEventArgs
+                    {
+                        Parameter = response.response_parameter,
+                        Status = (TestStatus)response.response_outcome,
+                        Value = response.response_value,
+                        RawValue = response.response_raw
+                    });
+                }
+            }
         }
 
         private void wizardPageResultsStatus_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
@@ -84,15 +86,72 @@ namespace ESLTestProcess
             if (tbllnitialStatus.RowCount == 1)
             {
                 GenerateTable();
-                _demoTimer = new System.Threading.Timer(DemoTimerCallback, this, 3000, 0);
             }
+
+            _timeOutTimer = new System.Threading.Timer(TimerOutCallback, this, 10000, 0);   
+            ProcessControl.Instance.TestResponseHandler += Instance_TestResponseHandler;
+
+            // Start the test process
+            _testExpired = false;
+            ProcessControl.Instance.TestGetIntialStatus();
+        }
+
+        private void wizardPageResultsStatus_Leave(object sender, EventArgs e)
+        {
+            ProcessControl.Instance.TestResponseHandler -= Instance_TestResponseHandler;
+        }
+
+        private bool _testExpired = false;
+
+        private void Instance_TestResponseHandler(object sender, TestResponseEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new Action<object, TestResponseEventArgs>(Instance_TestResponseHandler), new object[] { null, e });
+                return;
+            }
+            
+
+            var iconControl = (PictureBox)tbllnitialStatus.Controls.Find(TestParameters.GetIconName(e.Parameter), true).FirstOrDefault();
+
+            if (iconControl != null)
+            {
+                switch (e.Status)
+                {
+                    case TestStatus.Unknown:
+                        if(_testExpired)
+                            iconControl.Image = ESLTestProcess.Properties.Resources.question;
+                        else
+                            iconControl.Image = ESLTestProcess.Properties.Resources.test_spinner;
+                        break;
+                    case TestStatus.Fail:
+                        iconControl.Image = ESLTestProcess.Properties.Resources.cross;
+                        break;
+                    case TestStatus.Warning:
+                        iconControl.Image = ESLTestProcess.Properties.Resources.alert;
+                        break;
+                    case TestStatus.Pass:
+                        iconControl.Image = ESLTestProcess.Properties.Resources.tick;
+                        break;
+                    default:
+                        iconControl.Image = ESLTestProcess.Properties.Resources.question;
+                        break;
+                }
+            }
+
+            var valueLabel = (Label)tbllnitialStatus.Controls.Find(e.Parameter, true).FirstOrDefault();
+            if (valueLabel != null)
+            {
+                valueLabel.Text = e.Value;
+            }
+
         }
 
         private void GenerateTable()
         {
             tbllnitialStatus.SuspendLayout();
 
-            //Clear out the existing controls, we are generating a new table layout
+            // Clear out the existing controls, we are generating a new table layout
             tbllnitialStatus.Controls.Clear();
 
             tbllnitialStatus.ColumnStyles.Clear();
@@ -158,6 +217,8 @@ namespace ESLTestProcess
             tbllnitialStatus.RowStyles.Add(style);
             return index;
         }
+
+
 
     }
 }

@@ -15,17 +15,7 @@
         <AssociationConnector Association="Model.runresult" />
         <AssociationConnector Association="Model.pcb_unitrun" />
         <AssociationConnector Association="Model.techniciansession" />
-        <EntityTypeShape EntityType="Model.configuration1" Width="1.5" PointX="3.4553832297471274" PointY="11.79872391177282" />
-        <EntityTypeShape EntityType="Model.pcb_unit1" Width="1.5" PointX="2.7147368410205175" PointY="28.44301900101966" />
-        <EntityTypeShape EntityType="Model.result" Width="1.5" PointX="0.26236789126990728" PointY="14.430240086480156" />
-        <EntityTypeShape EntityType="Model.run1" Width="1.5" PointX="1.4553222439509455" PointY="10.504846205238646" />
-        <EntityTypeShape EntityType="Model.session1" Width="1.5" PointX="2.8761138407867932" PointY="22.477856646514432" />
-        <EntityTypeShape EntityType="Model.technician1" Width="1.5" PointX="5.9644804419784254" PointY="29.173232092137091" />
-        <AssociationConnector Association="Model.FK_pcb_unitrun" />
-        <AssociationConnector Association="Model.FK_runresult" />
-        <AssociationConnector Association="Model.FK_sessionrun" />
-        <AssociationConnector Association="Model.FK_techniciansession" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

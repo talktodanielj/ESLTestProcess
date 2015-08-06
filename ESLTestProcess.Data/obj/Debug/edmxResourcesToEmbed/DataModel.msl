@@ -14,12 +14,14 @@
     </EntitySetMapping>
     <EntitySetMapping Name="responses">
       <EntityTypeMapping TypeName="IsTypeOf(Model.response)">
-        <MappingFragment StoreEntitySet="results">
-          <ScalarProperty Name="response_id" ColumnName="result_id" />
-          <ScalarProperty Name="response_parameter" ColumnName="result_cmdId" />
-          <ScalarProperty Name="response_raw" ColumnName="result_response_raw" />
-          <ScalarProperty Name="response_value" ColumnName="result_response_json" />
-          <ScalarProperty Name="response_run_id" ColumnName="result_run_id" />
+        <MappingFragment StoreEntitySet="responses">
+          <ScalarProperty Name="response_id" ColumnName="response_id" />
+          <ScalarProperty Name="response_parameter" ColumnName="response_parameter" />
+          <ScalarProperty Name="response_raw" ColumnName="response_raw" />
+          <ScalarProperty Name="response_value" ColumnName="response_value" />
+          <ScalarProperty Name="response_run_id" ColumnName="response_run_id" />
+          <ScalarProperty Name="response_outcome" ColumnName="response_outcome" />
+          <ScalarProperty Name="response_report_column" ColumnName="response_report_column" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -68,12 +70,12 @@
         <ScalarProperty Name="run_id" ColumnName="run_id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="runresult" TypeName="Model.runresult" StoreEntitySet="results">
+    <AssociationSetMapping Name="runresult" TypeName="Model.runresult" StoreEntitySet="responses">
       <EndProperty Name="run">
         <ScalarProperty Name="run_id" ColumnName="run_run_id" />
       </EndProperty>
       <EndProperty Name="result">
-        <ScalarProperty Name="response_id" ColumnName="result_id" />
+        <ScalarProperty Name="response_id" ColumnName="response_id" />
       </EndProperty>
     </AssociationSetMapping>
     <AssociationSetMapping Name="pcb_unitrun" TypeName="Model.pcb_unitrun" StoreEntitySet="runs">

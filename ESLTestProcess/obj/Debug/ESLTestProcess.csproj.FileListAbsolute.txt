@@ -17,7 +17,6 @@ C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess\obj\Debug\ESLTest
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess\obj\Debug\ESLTestProcess.pdb
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess\obj\Debug\ESLTestProcess.AddTechnician.resources
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess\obj\Debug\ESLTestProcess.Main.resources
-C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess\bin\Debug\MyDatabase#1.sdf
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess\bin\Debug\log4net.dll
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess\bin\Debug\log4net.xml
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess\bin\Debug\ESLTestProcess.Data.dll

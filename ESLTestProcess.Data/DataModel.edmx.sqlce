@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 08/05/2015 13:54:38
+-- Date Created: 08/06/2015 16:54:45
 -- Generated from EDMX file: C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\DataModel.edmx
 -- --------------------------------------------------
 
@@ -14,7 +14,7 @@
 
     ALTER TABLE [runs] DROP CONSTRAINT [FK_sessionrun];
 GO
-    ALTER TABLE [results] DROP CONSTRAINT [FK_runresult];
+    ALTER TABLE [responses] DROP CONSTRAINT [FK_runresult];
 GO
     ALTER TABLE [runs] DROP CONSTRAINT [FK_pcb_unitrun];
 GO
@@ -28,7 +28,7 @@ GO
 
     DROP TABLE [runs];
 GO
-    DROP TABLE [results];
+    DROP TABLE [responses];
 GO
     DROP TABLE [technicians];
 GO
@@ -55,13 +55,15 @@ CREATE TABLE [runs] (
 );
 GO
 
--- Creating table 'results'
-CREATE TABLE [results] (
-    [result_id] int IDENTITY(1,1) NOT NULL,
-    [result_cmdId] int  NOT NULL,
-    [result_response_raw] varbinary(8000)  NULL,
-    [result_response_json] nvarchar(4000)  NOT NULL,
-    [result_run_id] int  NOT NULL,
+-- Creating table 'responses'
+CREATE TABLE [responses] (
+    [response_id] int IDENTITY(1,1) NOT NULL,
+    [response_parameter] nvarchar(4000)  NOT NULL,
+    [response_raw] varbinary(8000)  NULL,
+    [response_value] nvarchar(4000)  NOT NULL,
+    [response_run_id] int  NOT NULL,
+    [response_outcome] smallint  NOT NULL,
+    [response_report_column] smallint  NOT NULL,
     [run_run_id] int  NOT NULL
 );
 GO
@@ -110,10 +112,10 @@ ADD CONSTRAINT [PK_runs]
     PRIMARY KEY ([run_id] );
 GO
 
--- Creating primary key on [result_id] in table 'results'
-ALTER TABLE [results]
-ADD CONSTRAINT [PK_results]
-    PRIMARY KEY ([result_id] );
+-- Creating primary key on [response_id] in table 'responses'
+ALTER TABLE [responses]
+ADD CONSTRAINT [PK_responses]
+    PRIMARY KEY ([response_id] );
 GO
 
 -- Creating primary key on [technicain_id] in table 'technicians'
@@ -159,8 +161,8 @@ ON [runs]
     ([session_session_id]);
 GO
 
--- Creating foreign key on [run_run_id] in table 'results'
-ALTER TABLE [results]
+-- Creating foreign key on [run_run_id] in table 'responses'
+ALTER TABLE [responses]
 ADD CONSTRAINT [FK_runresult]
     FOREIGN KEY ([run_run_id])
     REFERENCES [runs]
@@ -170,7 +172,7 @@ GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_runresult'
 CREATE INDEX [IX_FK_runresult]
-ON [results]
+ON [responses]
     ([run_run_id]);
 GO
 

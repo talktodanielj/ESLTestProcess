@@ -248,6 +248,7 @@
             this.wizardPageResultsStatus.TabIndex = 5;
             this.wizardPageResultsStatus.Text = "Initial Status";
             this.wizardPageResultsStatus.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageResultsStatus_Initialize);
+            this.wizardPageResultsStatus.Leave += new System.EventHandler(this.wizardPageResultsStatus_Leave);
             // 
             // themedLabel12
             // 

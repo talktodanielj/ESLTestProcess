@@ -14,7 +14,6 @@ C:\development\elex\trap_network\ESLTestProcess\ESLTesProcess.Data\bin\Debug\log
 C:\development\elex\trap_network\ESLTestProcess\ESLTesProcess.Data\obj\Debug\ESLTestProcess.Data.csprojResolveAssemblyReference.cache
 C:\development\elex\trap_network\ESLTestProcess\ESLTesProcess.Data\obj\Debug\ESLTesProcess.Data.dll
 C:\development\elex\trap_network\ESLTestProcess\ESLTesProcess.Data\obj\Debug\ESLTesProcess.Data.pdb
-C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\bin\Debug\MyDatabase#1.sdf
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\bin\Debug\ESLTestProcess.Data.dll.config
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\bin\Debug\ESLTestProcess.Data.dll
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\bin\Debug\ESLTestProcess.Data.pdb

@@ -34,7 +34,7 @@
     <Property Type="DateTime" Name="run_complete_timestamp" Nullable="false" />
     <Property Type="Int32" Name="run_session_id" Nullable="false" />
     <NavigationProperty Name="session" Relationship="Model.sessionrun" FromRole="run" ToRole="session" />
-    <NavigationProperty Name="results" Relationship="Model.runresult" FromRole="run" ToRole="result" />
+    <NavigationProperty Name="responses" Relationship="Model.runresult" FromRole="run" ToRole="result" />
     <NavigationProperty Name="pcb_unit" Relationship="Model.pcb_unitrun" FromRole="run" ToRole="pcb_unit" />
   </EntityType>
   <EntityType Name="response">
@@ -42,12 +42,12 @@
       <PropertyRef Name="response_id" />
     </Key>
     <Property Type="Int32" Name="response_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-    <Property Type="Int32" Name="response_parameter" Nullable="false" />
+    <Property Type="String" Name="response_parameter" Nullable="false" />
     <Property Type="Binary" Name="response_raw" Nullable="true" />
     <Property Type="String" Name="response_value" Nullable="false" DefaultValue="" />
     <Property Type="Int32" Name="response_run_id" Nullable="false" />
     <NavigationProperty Name="run" Relationship="Model.runresult" FromRole="result" ToRole="run" />
-    <Property Type="Model.TestStatus" Name="response_outcome" Nullable="false" />
+    <Property Type="Int16" Name="response_outcome" Nullable="false" DefaultValue="0" />
     <Property Type="Int16" Name="response_report_column" Nullable="false" />
   </EntityType>
   <EntityType Name="technician">
@@ -103,5 +103,4 @@
     <End Type="Model.technician" Role="technician" Multiplicity="1" />
     <End Type="Model.session" Role="session" Multiplicity="*" />
   </Association>
-  <EnumType Name="TestStatus" UnderlyingType="Int16" a:ExternalTypeName="ESLTestProcess.Data.TestStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
 </Schema>

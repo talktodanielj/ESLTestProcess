@@ -128,6 +128,7 @@
     <None Include="cross.png" />
     <None Include="exclamation.png" />
     <None Include="alert.png" />
+    <Content Include="question.png" />
     <Content Include="test_spinner.gif" />
     <Content Include="tick.gif" />
     <None Include="Resources\test_spinner.bmp" />

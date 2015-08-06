@@ -2,7 +2,7 @@
 <Schema Namespace="Model.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="ModelStoreContainer">
     <EntitySet Name="runs" EntityType="Model.Store.runs" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="results" EntityType="Model.Store.results" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="responses" EntityType="Model.Store.responses" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="technicians" EntityType="Model.Store.technicians" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="configurations" EntityType="Model.Store.configurations" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="sessions" EntityType="Model.Store.sessions" store:Type="Tables" Schema="dbo" />
@@ -13,7 +13,7 @@
     </AssociationSet>
     <AssociationSet Name="runresult" Association="Model.Store.runresult">
       <End Role="run" EntitySet="runs" />
-      <End Role="result" EntitySet="results" />
+      <End Role="result" EntitySet="responses" />
     </AssociationSet>
     <AssociationSet Name="pcb_unitrun" Association="Model.Store.pcb_unitrun">
       <End Role="pcb_unit" EntitySet="pcb_unit" />
@@ -36,15 +36,17 @@
     <Property Name="session_session_id" Type="int" Nullable="false" />
     <Property Name="pcb_unit_pcb_unit_id" Type="int" Nullable="false" />
   </EntityType>
-  <EntityType Name="results">
+  <EntityType Name="responses">
     <Key>
-      <PropertyRef Name="result_id" />
+      <PropertyRef Name="response_id" />
     </Key>
-    <Property Name="result_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="result_cmdId" Type="int" Nullable="false" />
-    <Property Name="result_response_raw" Type="varbinary" Nullable="true" />
-    <Property Name="result_response_json" Type="nvarchar" Nullable="false" DefaultValue="" />
-    <Property Name="result_run_id" Type="int" Nullable="false" />
+    <Property Name="response_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="response_parameter" Type="nvarchar" Nullable="false" />
+    <Property Name="response_raw" Type="varbinary" Nullable="true" />
+    <Property Name="response_value" Type="nvarchar" Nullable="false" DefaultValue="" />
+    <Property Name="response_run_id" Type="int" Nullable="false" />
+    <Property Name="response_outcome" Type="smallint" Nullable="false" DefaultValue="0" />
+    <Property Name="response_report_column" Type="smallint" Nullable="false" />
     <Property Name="run_run_id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="technicians">
@@ -95,7 +97,7 @@
   </Association>
   <Association Name="runresult">
     <End Role="run" Type="Model.Store.runs" Multiplicity="1" />
-    <End Role="result" Type="Model.Store.results" Multiplicity="*" />
+    <End Role="result" Type="Model.Store.responses" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="run">
         <PropertyRef Name="run_id" />

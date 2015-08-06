@@ -17,6 +17,6 @@ namespace ESLTestProcess
             InitializeComponent();
         }
 
-        public string TechnicianName { get { return txtTechnicianName.Text; } }
+        public string TechnicianName { get { return txtTechnicianName.Text; } set { txtTechnicianName.Text = value; } }
     }
 }
