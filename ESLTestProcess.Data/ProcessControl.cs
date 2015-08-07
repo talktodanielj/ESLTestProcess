@@ -94,6 +94,101 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.ACCELEROMETER_X_BASE,
+                response_report_column = 6,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.ACCELEROMETER_Y_BASE,
+                response_report_column = 7,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.ACCELEROMETER_Z_BASE,
+                response_report_column = 8,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.ACCELEROMETER_X_LONG_EDGE,
+                response_report_column = 9,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.ACCELEROMETER_Y_LONG_EDGE,
+                response_report_column = 10,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.ACCELEROMETER_Z_LONG_EDGE,
+                response_report_column = 11,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.ACCELEROMETER_X_SHORT_EDGE,
+                response_report_column = 12,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.ACCELEROMETER_Y_SHORT_EDGE,
+                response_report_column = 13,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.ACCELEROMETER_Z_SHORT_EDGE,
+                response_report_column = 14,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.TRANS_MSG_TX,
+                response_report_column = 15,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.TRANS_MSG_RX,
+                response_report_column = 16,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.TRANS_RSSI,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
         }
 
 
@@ -107,7 +202,7 @@ namespace ESLTestProcess.Data
 
             BeginNewTestRun();
 
-            Task.Factory.StartNew(() => 
+            Task.Factory.StartNew(() =>
             {
                 var responsePicID = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.PIC24_ID);
 
@@ -148,6 +243,116 @@ namespace ESLTestProcess.Data
             });
 
         }
+
+        public void TestBaseAccelerometerValues()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(1000);
+                var responseAccelX = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_X_BASE);
+                if (responseAccelX != null)
+                {
+                    responseAccelX.response_outcome = (Int16)TestStatus.Pass;
+                    responseAccelX.response_raw = new byte[] { 0x00, 0x00 };
+                    responseAccelX.response_value = BitConverter.ToString(responseAccelX.response_raw);
+                    SignalResponse(responseAccelX);
+                }
+
+                Thread.Sleep(2000);
+                var responseAccelY = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Y_BASE);
+                if (responseAccelY != null)
+                {
+                    responseAccelY.response_outcome = (Int16)TestStatus.Pass;
+                    responseAccelY.response_raw = new byte[] { 0x00, 0xFF };
+                    responseAccelY.response_value = BitConverter.ToString(responseAccelY.response_raw);
+                    SignalResponse(responseAccelY);
+                }
+
+                Thread.Sleep(2000);
+                var responseAccelZ = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Z_BASE);
+                if (responseAccelZ != null)
+                {
+                    responseAccelZ.response_outcome = (Int16)TestStatus.Pass;
+                    responseAccelZ.response_raw = new byte[] { 0xFF, 0xFF };
+                    responseAccelZ.response_value = BitConverter.ToString(responseAccelZ.response_raw);
+                    SignalResponse(responseAccelZ);
+                }
+            });
+        }
+
+        public void TestXYAccelerometerValues()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(1000);
+                var responseAccelX = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_X_LONG_EDGE);
+                if (responseAccelX != null)
+                {
+                    responseAccelX.response_outcome = (Int16)TestStatus.Pass;
+                    responseAccelX.response_raw = new byte[] { 0x00, 0x00 };
+                    responseAccelX.response_value = BitConverter.ToString(responseAccelX.response_raw);
+                    SignalResponse(responseAccelX);
+                }
+
+                Thread.Sleep(2000);
+                var responseAccelY = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Y_LONG_EDGE);
+                if (responseAccelY != null)
+                {
+                    responseAccelY.response_outcome = (Int16)TestStatus.Pass;
+                    responseAccelY.response_raw = new byte[] { 0x00, 0xFF };
+                    responseAccelY.response_value = BitConverter.ToString(responseAccelY.response_raw);
+                    SignalResponse(responseAccelY);
+                }
+
+                Thread.Sleep(2000);
+                var responseAccelZ = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Z_LONG_EDGE);
+                if (responseAccelZ != null)
+                {
+                    responseAccelZ.response_outcome = (Int16)TestStatus.Pass;
+                    responseAccelZ.response_raw = new byte[] { 0xFF, 0xFF };
+                    responseAccelZ.response_value = BitConverter.ToString(responseAccelZ.response_raw);
+                    SignalResponse(responseAccelZ);
+                }
+            });
+        }
+
+        public void TestYZAccelerometerValues()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(1000);
+                var responseAccelX = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_X_SHORT_EDGE);
+                if (responseAccelX != null)
+                {
+                    responseAccelX.response_outcome = (Int16)TestStatus.Pass;
+                    responseAccelX.response_raw = new byte[] { 0x00, 0x00 };
+                    responseAccelX.response_value = BitConverter.ToString(responseAccelX.response_raw);
+                    SignalResponse(responseAccelX);
+                }
+
+                Thread.Sleep(2000);
+                var responseAccelY = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Y_SHORT_EDGE);
+                if (responseAccelY != null)
+                {
+                    responseAccelY.response_outcome = (Int16)TestStatus.Pass;
+                    responseAccelY.response_raw = new byte[] { 0x00, 0xFF };
+                    responseAccelY.response_value = BitConverter.ToString(responseAccelY.response_raw);
+                    SignalResponse(responseAccelY);
+                }
+
+                Thread.Sleep(2000);
+                var responseAccelZ = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Z_SHORT_EDGE);
+                if (responseAccelZ != null)
+                {
+                    responseAccelZ.response_outcome = (Int16)TestStatus.Pass;
+                    responseAccelZ.response_raw = new byte[] { 0xFF, 0xFF };
+                    responseAccelZ.response_value = BitConverter.ToString(responseAccelZ.response_raw);
+                    SignalResponse(responseAccelZ);
+                }
+
+            });
+        }
+
 
         private void SignalResponse(response response)
         {

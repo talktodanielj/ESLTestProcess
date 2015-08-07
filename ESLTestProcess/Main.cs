@@ -76,8 +76,93 @@ namespace ESLTestProcess
             return index;
         }
 
+        private bool _testExpired = false;
 
-        
+        private void TestResponseHandler(object sender, TestResponseEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new Action<object, TestResponseEventArgs>(TestResponseHandler), new object[] { null, e });
+                return;
+            }
+
+            var iconControl = (PictureBox)_activeTblLayoutPanel.Controls.Find(TestParameters.GetIconName(e.Parameter), true).FirstOrDefault();
+
+            if (iconControl != null)
+            {
+                switch (e.Status)
+                {
+                    case TestStatus.Unknown:
+                        if (_testExpired)
+                            iconControl.Image = ESLTestProcess.Properties.Resources.question;
+                        else
+                            iconControl.Image = ESLTestProcess.Properties.Resources.test_spinner;
+                        break;
+                    case TestStatus.Fail:
+                        iconControl.Image = ESLTestProcess.Properties.Resources.cross;
+                        break;
+                    case TestStatus.Warning:
+                        iconControl.Image = ESLTestProcess.Properties.Resources.alert;
+                        break;
+                    case TestStatus.Pass:
+                        iconControl.Image = ESLTestProcess.Properties.Resources.tick;
+                        break;
+                    default:
+                        iconControl.Image = ESLTestProcess.Properties.Resources.question;
+                        break;
+                }
+            }
+
+            var valueLabel = (Label)_activeTblLayoutPanel.Controls.Find(e.Parameter, true).FirstOrDefault();
+            if (valueLabel != null)
+            {
+                valueLabel.Text = e.Value;
+            }
+
+        }
+
+        private void TimeOutCallback(Object state)
+        {
+            var testRun = ProcessControl.Instance.GetCurrentTestRun();
+            // Process timed out
+            // Update the display to the current state
+
+            _testExpired = true;
+
+            bool allPassed = true;
+
+            if (testRun != null)
+            {
+                // Only check the parameters currently under test
+                foreach(var parameter in _testParameters)
+                {
+                    var testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == parameter.Item2);
+
+                    if (testResponse != null)
+                    {
+                        if ((TestStatus)testResponse.response_outcome != TestStatus.Pass)
+                            allPassed = false;
+
+                        TestResponseHandler(null, new TestResponseEventArgs
+                        {
+                            Parameter = testResponse.response_parameter,
+                            Status = (TestStatus)testResponse.response_outcome,
+                            Value = testResponse.response_value,
+                            RawValue = testResponse.response_raw
+                        });
+                    }
+                }
+            }
+
+            if (allPassed)
+            {
+                this.BeginInvoke(new MethodInvoker( delegate
+                    {
+                        stepWizardControl1.NextPage();
+                    }));
+            }
+        }
+
         private void stepWizardControl1_SelectedPageChanged(object sender, EventArgs e)
         {
 
@@ -115,54 +200,25 @@ namespace ESLTestProcess
             cbTechnician.Items.AddRange(DataManager.Instance.GetTechnicianNames());
         }
 
-        private void TimerOutCallback(Object state)
-        {
-            var testRun = ProcessControl.Instance.GetCurrentTestRun();
-            // Process timed out
-            // Update the display to the current state
-
-            _testExpired = true;
-
-            bool allPassed = false;
-
-            if (testRun != null)
-            {
-                foreach (response response in testRun.responses)
-                {
-                    if ((TestStatus)response.response_outcome != TestStatus.Pass)
-                        allPassed = false;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = response.response_parameter,
-                        Status = (TestStatus)response.response_outcome,
-                        Value = response.response_value,
-                        RawValue = response.response_raw
-                    });
-                }
-            }
-
-            if (allPassed)
-                stepWizardControl1.NextPage();
-        }
+        private List<Tuple<string, string>> _testParameters = new List<Tuple<string, string>>();
 
         private void wizardPageResultsStatus_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             if (tbllnitialStatus.RowCount == 1)
             {
-                List<Tuple<string, string>> parameters = new List<Tuple<string, string>>();
-                parameters.Add(new Tuple<string, string>("EPROM Id", TestParameters.EPROM_ID));
-                parameters.Add(new Tuple<string, string>("Accelerometer ID", TestParameters.ACCELEROMETER_ID));
-                parameters.Add(new Tuple<string, string>("PIC24 Id", TestParameters.PIC24_ID));
-                parameters.Add(new Tuple<string, string>("Transceveier ID", TestParameters.TRANSCEVEIER_ID));
-                parameters.Add(new Tuple<string, string>("Battery Volatge", TestParameters.BATTERY_VOLTAGE));
-                parameters.Add(new Tuple<string, string>("Temperature", TestParameters.TEMPERATURE_READING));
+                _testParameters.Clear();
+                _testParameters.Add(new Tuple<string, string>("EPROM Id", TestParameters.EPROM_ID));
+                _testParameters.Add(new Tuple<string, string>("Accelerometer ID", TestParameters.ACCELEROMETER_ID));
+                _testParameters.Add(new Tuple<string, string>("PIC24 Id", TestParameters.PIC24_ID));
+                _testParameters.Add(new Tuple<string, string>("Transceveier ID", TestParameters.TRANSCEVEIER_ID));
+                _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestParameters.BATTERY_VOLTAGE));
+                _testParameters.Add(new Tuple<string, string>("Temperature", TestParameters.TEMPERATURE_READING));
 
                 _activeTblLayoutPanel = tbllnitialStatus;
-                GenerateTable(parameters.ToArray());
+                GenerateTable(_testParameters.ToArray());
             }
 
-            _timeOutTimer = new System.Threading.Timer(TimerOutCallback, this, 10000, 0);
+            _timeOutTimer = new System.Threading.Timer(TimeOutCallback, null, 10000, 0);
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
 
             // Start the test process
@@ -175,104 +231,95 @@ namespace ESLTestProcess
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
         }
 
-        private bool _testExpired = false;
-
-        private void TestResponseHandler(object sender, TestResponseEventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                this.Invoke(new Action<object, TestResponseEventArgs>(TestResponseHandler), new object[] { null, e });
-                return;
-            }
-
-           var iconControl = (PictureBox)tbllnitialStatus.Controls.Find(TestParameters.GetIconName(e.Parameter), true).FirstOrDefault();
-
-            if (iconControl != null)
-            {
-                switch (e.Status)
-                {
-                    case TestStatus.Unknown:
-                        if (_testExpired)
-                            iconControl.Image = ESLTestProcess.Properties.Resources.question;
-                        else
-                            iconControl.Image = ESLTestProcess.Properties.Resources.test_spinner;
-                        break;
-                    case TestStatus.Fail:
-                        iconControl.Image = ESLTestProcess.Properties.Resources.cross;
-                        break;
-                    case TestStatus.Warning:
-                        iconControl.Image = ESLTestProcess.Properties.Resources.alert;
-                        break;
-                    case TestStatus.Pass:
-                        iconControl.Image = ESLTestProcess.Properties.Resources.tick;
-                        break;
-                    default:
-                        iconControl.Image = ESLTestProcess.Properties.Resources.question;
-                        break;
-                }
-            }
-
-            var valueLabel = (Label)tbllnitialStatus.Controls.Find(e.Parameter, true).FirstOrDefault();
-            if (valueLabel != null)
-            {
-                valueLabel.Text = e.Value;
-            }
-
-        }
-
         private void wizardPageAccelerometerBase_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             if (tblAccelerometerBasline.RowCount == 1)
             {
-                List<Tuple<string, string>> parameters = new List<Tuple<string, string>>();
-                parameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_BASE));
-                parameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_BASE));
-                parameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_BASE));
+                _testParameters.Clear();
+                _testParameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_BASE));
+                _testParameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_BASE));
+                _testParameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_BASE));
 
                 _activeTblLayoutPanel = tblAccelerometerBasline;
-                GenerateTable(parameters.ToArray());
+                GenerateTable(_testParameters.ToArray());
             }
+
+            _timeOutTimer = new System.Threading.Timer(TimeOutCallback, this, 8000, 0);
+            ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
+
+            // Start the test process
+            _testExpired = false;
+            ProcessControl.Instance.TestBaseAccelerometerValues();
+        }
+
+        private void wizardPageAccelerometerBase_Leave(object sender, EventArgs e)
+        {
+            ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
         }
 
         private void wizardPageAccelTestXY_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             if (tblAccelerometerXY.RowCount == 1)
             {
-                List<Tuple<string, string>> parameters = new List<Tuple<string, string>>();
-                parameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_LONG_EDGE));
-                parameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_LONG_EDGE));
-                parameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_LONG_EDGE));
+                _testParameters.Clear();
+                _testParameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_LONG_EDGE));
+                _testParameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_LONG_EDGE));
+                _testParameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_LONG_EDGE));
 
                 _activeTblLayoutPanel = tblAccelerometerXY;
-                GenerateTable(parameters.ToArray());
+                GenerateTable(_testParameters.ToArray());
             }
+
+            _timeOutTimer = new System.Threading.Timer(TimeOutCallback, this, 8000, 0);
+            ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
+
+            // Start the test process
+            _testExpired = false;
+            ProcessControl.Instance.TestXYAccelerometerValues();
+        }
+
+        private void wizardPageAccelTestXY_Leave(object sender, EventArgs e)
+        {
+            ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
         }
 
         private void wizardPageAccelTestYZ_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             if (tblAccelerometerYZ.RowCount == 1)
             {
-                List<Tuple<string, string>> parameters = new List<Tuple<string, string>>();
-                parameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_SHORT_EDGE));
-                parameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_SHORT_EDGE));
-                parameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_SHORT_EDGE));
+                _testParameters.Clear();
+                _testParameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_SHORT_EDGE));
+                _testParameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_SHORT_EDGE));
+                _testParameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_SHORT_EDGE));
 
                 _activeTblLayoutPanel = tblAccelerometerYZ;
-                GenerateTable(parameters.ToArray());
+                GenerateTable(_testParameters.ToArray());
             }
+
+            _timeOutTimer = new System.Threading.Timer(TimeOutCallback, this, 8000, 0);
+            ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
+
+            // Start the test process
+            _testExpired = false;
+            ProcessControl.Instance.TestYZAccelerometerValues();
         }
 
-        private void wizardPageTransceveier_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
+        private void wizardPageAccelTestYZ_Leave(object sender, EventArgs e)
         {
-            if (tblTransceveierTest.RowCount == 1)
-            {
-                List<Tuple<string, string>> parameters = new List<Tuple<string, string>>();
-                parameters.Add(new Tuple<string, string>("Message Sent", TestParameters.TRANS_MSG_TX));
-                parameters.Add(new Tuple<string, string>("Receveied Response", TestParameters.TRANS_MSG_RX));
-                parameters.Add(new Tuple<string, string>("RSSI value", TestParameters.TRANS_RSSI));
+            ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
+        }
 
-                _activeTblLayoutPanel = tblTransceveierTest;
-                GenerateTable(parameters.ToArray());
+        private void wizardPageTransceiver_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
+        {
+            if (tblTransceiverTest.RowCount == 1)
+            {
+                _testParameters.Clear();
+                _testParameters.Add(new Tuple<string, string>("Message Sent", TestParameters.TRANS_MSG_TX));
+                _testParameters.Add(new Tuple<string, string>("Receveied Response", TestParameters.TRANS_MSG_RX));
+                _testParameters.Add(new Tuple<string, string>("RSSI value", TestParameters.TRANS_RSSI));
+
+                _activeTblLayoutPanel = tblTransceiverTest;
+                GenerateTable(_testParameters.ToArray());
             }
         }
 
