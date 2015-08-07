@@ -43,19 +43,31 @@
             this.themedLabel3 = new AeroWizard.ThemedLabel();
             this.wizardPageProgramPCB = new AeroWizard.WizardPage();
             this.themedLabel11 = new AeroWizard.ThemedLabel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.themedLabel10 = new AeroWizard.ThemedLabel();
             this.themedLabel9 = new AeroWizard.ThemedLabel();
             this.themedLabel8 = new AeroWizard.ThemedLabel();
             this.wizardPageResultsStatus = new AeroWizard.WizardPage();
             this.themedLabel12 = new AeroWizard.ThemedLabel();
             this.tbllnitialStatus = new System.Windows.Forms.TableLayoutPanel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.wizardPageAccelerometerBase = new AeroWizard.WizardPage();
+            this.tblAccelerometerBasline = new System.Windows.Forms.TableLayoutPanel();
+            this.themedLabel13 = new AeroWizard.ThemedLabel();
+            this.wizardPageAccelTestXY = new AeroWizard.WizardPage();
+            this.themedLabel14 = new AeroWizard.ThemedLabel();
+            this.tblAccelerometerXY = new System.Windows.Forms.TableLayoutPanel();
+            this.wizardPageAccelTestYZ = new AeroWizard.WizardPage();
+            this.tblAccelerometerYZ = new System.Windows.Forms.TableLayoutPanel();
+            this.themedLabel15 = new AeroWizard.ThemedLabel();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
             this.wizardPageProgramPCB.SuspendLayout();
-            this.wizardPageResultsStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.wizardPageResultsStatus.SuspendLayout();
+            this.wizardPageAccelerometerBase.SuspendLayout();
+            this.wizardPageAccelTestXY.SuspendLayout();
+            this.wizardPageAccelTestYZ.SuspendLayout();
             this.SuspendLayout();
             // 
             // stepWizardControl1
@@ -66,6 +78,9 @@
             this.stepWizardControl1.Pages.Add(this.wizardPageInsertPCB);
             this.stepWizardControl1.Pages.Add(this.wizardPageProgramPCB);
             this.stepWizardControl1.Pages.Add(this.wizardPageResultsStatus);
+            this.stepWizardControl1.Pages.Add(this.wizardPageAccelerometerBase);
+            this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestXY);
+            this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestYZ);
             this.stepWizardControl1.Size = new System.Drawing.Size(806, 568);
             this.stepWizardControl1.StepListFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.stepWizardControl1.StepListWidth = 250;
@@ -211,6 +226,15 @@
             this.themedLabel11.TabIndex = 4;
             this.themedLabel11.Text = "Waiting for a response from the PCB";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::ESLTestProcess.Properties.Resources.spinner;
+            this.pictureBox1.Location = new System.Drawing.Point(58, 242);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
             // themedLabel10
             // 
             this.themedLabel10.Location = new System.Drawing.Point(54, 153);
@@ -272,14 +296,104 @@
             this.tbllnitialStatus.Size = new System.Drawing.Size(443, 125);
             this.tbllnitialStatus.TabIndex = 0;
             // 
-            // pictureBox1
+            // wizardPageAccelerometerBase
             // 
-            this.pictureBox1.Image = global::ESLTestProcess.Properties.Resources.spinner;
-            this.pictureBox1.Location = new System.Drawing.Point(58, 242);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
+            this.wizardPageAccelerometerBase.Controls.Add(this.tblAccelerometerBasline);
+            this.wizardPageAccelerometerBase.Controls.Add(this.themedLabel13);
+            this.wizardPageAccelerometerBase.Name = "wizardPageAccelerometerBase";
+            this.wizardPageAccelerometerBase.Size = new System.Drawing.Size(508, 414);
+            this.stepWizardControl1.SetStepText(this.wizardPageAccelerometerBase, "Accelerometer baseline");
+            this.wizardPageAccelerometerBase.TabIndex = 6;
+            this.wizardPageAccelerometerBase.Text = "Accelerometer Baseline Measurements";
+            this.wizardPageAccelerometerBase.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageAccelerometerBase_Initialize);
+            // 
+            // tblAccelerometerBasline
+            // 
+            this.tblAccelerometerBasline.ColumnCount = 1;
+            this.tblAccelerometerBasline.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerBasline.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tblAccelerometerBasline.Location = new System.Drawing.Point(37, 74);
+            this.tblAccelerometerBasline.Name = "tblAccelerometerBasline";
+            this.tblAccelerometerBasline.RowCount = 1;
+            this.tblAccelerometerBasline.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerBasline.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 117F));
+            this.tblAccelerometerBasline.Size = new System.Drawing.Size(446, 117);
+            this.tblAccelerometerBasline.TabIndex = 1;
+            // 
+            // themedLabel13
+            // 
+            this.themedLabel13.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.themedLabel13.Location = new System.Drawing.Point(33, 25);
+            this.themedLabel13.Name = "themedLabel13";
+            this.themedLabel13.Size = new System.Drawing.Size(326, 27);
+            this.themedLabel13.TabIndex = 0;
+            this.themedLabel13.Text = "Requesting basline accelerometer values";
+            // 
+            // wizardPageAccelTestXY
+            // 
+            this.wizardPageAccelTestXY.Controls.Add(this.themedLabel14);
+            this.wizardPageAccelTestXY.Controls.Add(this.tblAccelerometerXY);
+            this.wizardPageAccelTestXY.Name = "wizardPageAccelTestXY";
+            this.wizardPageAccelTestXY.Size = new System.Drawing.Size(508, 414);
+            this.stepWizardControl1.SetStepText(this.wizardPageAccelTestXY, "Accelerometer XY axis");
+            this.wizardPageAccelTestXY.TabIndex = 7;
+            this.wizardPageAccelTestXY.Text = "Accelerometer XY axis";
+            this.wizardPageAccelTestXY.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageAccelTestXY_Initialize);
+            // 
+            // themedLabel14
+            // 
+            this.themedLabel14.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.themedLabel14.Location = new System.Drawing.Point(26, 23);
+            this.themedLabel14.Name = "themedLabel14";
+            this.themedLabel14.Size = new System.Drawing.Size(410, 23);
+            this.themedLabel14.TabIndex = 1;
+            this.themedLabel14.Text = "Hold the PCB under test vertically on the longest edge ";
+            // 
+            // tblAccelerometerXY
+            // 
+            this.tblAccelerometerXY.ColumnCount = 1;
+            this.tblAccelerometerXY.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerXY.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tblAccelerometerXY.Location = new System.Drawing.Point(26, 66);
+            this.tblAccelerometerXY.Name = "tblAccelerometerXY";
+            this.tblAccelerometerXY.RowCount = 1;
+            this.tblAccelerometerXY.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerXY.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 123F));
+            this.tblAccelerometerXY.Size = new System.Drawing.Size(458, 123);
+            this.tblAccelerometerXY.TabIndex = 0;
+            // 
+            // wizardPageAccelTestYZ
+            // 
+            this.wizardPageAccelTestYZ.Controls.Add(this.tblAccelerometerYZ);
+            this.wizardPageAccelTestYZ.Controls.Add(this.themedLabel15);
+            this.wizardPageAccelTestYZ.Name = "wizardPageAccelTestYZ";
+            this.wizardPageAccelTestYZ.Size = new System.Drawing.Size(508, 414);
+            this.stepWizardControl1.SetStepText(this.wizardPageAccelTestYZ, "Acceleromter YZ axis");
+            this.wizardPageAccelTestYZ.TabIndex = 8;
+            this.wizardPageAccelTestYZ.Text = "Acceleromter YZ axis";
+            this.wizardPageAccelTestYZ.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageAccelTestYZ_Initialize);
+            // 
+            // tblAccelerometerYZ
+            // 
+            this.tblAccelerometerYZ.ColumnCount = 1;
+            this.tblAccelerometerYZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerYZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tblAccelerometerYZ.Location = new System.Drawing.Point(26, 55);
+            this.tblAccelerometerYZ.Name = "tblAccelerometerYZ";
+            this.tblAccelerometerYZ.RowCount = 1;
+            this.tblAccelerometerYZ.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerYZ.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 146F));
+            this.tblAccelerometerYZ.Size = new System.Drawing.Size(465, 146);
+            this.tblAccelerometerYZ.TabIndex = 1;
+            // 
+            // themedLabel15
+            // 
+            this.themedLabel15.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.themedLabel15.Location = new System.Drawing.Point(22, 19);
+            this.themedLabel15.Name = "themedLabel15";
+            this.themedLabel15.Size = new System.Drawing.Size(417, 23);
+            this.themedLabel15.TabIndex = 0;
+            this.themedLabel15.Text = "Hold the PCB under test vertically on its shortest edge";
             // 
             // Main
             // 
@@ -295,8 +409,11 @@
             this.wizardPageInsertPCB.ResumeLayout(false);
             this.wizardPageInsertPCB.PerformLayout();
             this.wizardPageProgramPCB.ResumeLayout(false);
-            this.wizardPageResultsStatus.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.wizardPageResultsStatus.ResumeLayout(false);
+            this.wizardPageAccelerometerBase.ResumeLayout(false);
+            this.wizardPageAccelTestXY.ResumeLayout(false);
+            this.wizardPageAccelTestYZ.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -325,6 +442,15 @@
         private AeroWizard.WizardPage wizardPageResultsStatus;
         private System.Windows.Forms.TableLayoutPanel tbllnitialStatus;
         private AeroWizard.ThemedLabel themedLabel12;
+        private AeroWizard.WizardPage wizardPageAccelerometerBase;
+        private AeroWizard.ThemedLabel themedLabel13;
+        private AeroWizard.WizardPage wizardPageAccelTestXY;
+        private AeroWizard.WizardPage wizardPageAccelTestYZ;
+        private System.Windows.Forms.TableLayoutPanel tblAccelerometerBasline;
+        private AeroWizard.ThemedLabel themedLabel14;
+        private System.Windows.Forms.TableLayoutPanel tblAccelerometerXY;
+        private System.Windows.Forms.TableLayoutPanel tblAccelerometerYZ;
+        private AeroWizard.ThemedLabel themedLabel15;
 
 
     }

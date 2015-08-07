@@ -15,6 +15,10 @@ namespace ESLTestProcess.Data
         public const string BATTERY_VOLTAGE = "battery_voltage";
         public const string TEMPERATURE_READING = "temperature_reading";
 
+        public const string ACCELEROMETER_X = "accelerometer_x";
+        public const string ACCELEROMETER_Y = "accelerometer_y";
+        public const string ACCELEROMETER_Z = "accelerometer_z";
+
         public static string GetStatusName(string parameter)
         {
             return parameter + "_status";
