@@ -59,6 +59,9 @@
             this.wizardPageAccelTestYZ = new AeroWizard.WizardPage();
             this.tblAccelerometerYZ = new System.Windows.Forms.TableLayoutPanel();
             this.themedLabel15 = new AeroWizard.ThemedLabel();
+            this.wizardPageTransceveier = new AeroWizard.WizardPage();
+            this.tblTransceveierTest = new System.Windows.Forms.TableLayoutPanel();
+            this.themedLabel16 = new AeroWizard.ThemedLabel();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
@@ -68,6 +71,7 @@
             this.wizardPageAccelerometerBase.SuspendLayout();
             this.wizardPageAccelTestXY.SuspendLayout();
             this.wizardPageAccelTestYZ.SuspendLayout();
+            this.wizardPageTransceveier.SuspendLayout();
             this.SuspendLayout();
             // 
             // stepWizardControl1
@@ -81,6 +85,7 @@
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelerometerBase);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestXY);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestYZ);
+            this.stepWizardControl1.Pages.Add(this.wizardPageTransceveier);
             this.stepWizardControl1.Size = new System.Drawing.Size(806, 568);
             this.stepWizardControl1.StepListFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.stepWizardControl1.StepListWidth = 250;
@@ -395,6 +400,37 @@
             this.themedLabel15.TabIndex = 0;
             this.themedLabel15.Text = "Hold the PCB under test vertically on its shortest edge";
             // 
+            // wizardPageTransceveier
+            // 
+            this.wizardPageTransceveier.Controls.Add(this.themedLabel16);
+            this.wizardPageTransceveier.Controls.Add(this.tblTransceveierTest);
+            this.wizardPageTransceveier.Name = "wizardPageTransceveier";
+            this.wizardPageTransceveier.Size = new System.Drawing.Size(508, 414);
+            this.stepWizardControl1.SetStepText(this.wizardPageTransceveier, "Tranceveier test");
+            this.wizardPageTransceveier.TabIndex = 9;
+            this.wizardPageTransceveier.Text = "Tranceveier Test";
+            this.wizardPageTransceveier.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageTransceveier_Initialize);
+            // 
+            // tblTransceveierTest
+            // 
+            this.tblTransceveierTest.ColumnCount = 1;
+            this.tblTransceveierTest.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblTransceveierTest.Location = new System.Drawing.Point(25, 87);
+            this.tblTransceveierTest.Name = "tblTransceveierTest";
+            this.tblTransceveierTest.RowCount = 1;
+            this.tblTransceveierTest.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblTransceveierTest.Size = new System.Drawing.Size(463, 159);
+            this.tblTransceveierTest.TabIndex = 0;
+            // 
+            // themedLabel16
+            // 
+            this.themedLabel16.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.themedLabel16.Location = new System.Drawing.Point(25, 23);
+            this.themedLabel16.Name = "themedLabel16";
+            this.themedLabel16.Size = new System.Drawing.Size(450, 23);
+            this.themedLabel16.TabIndex = 1;
+            this.themedLabel16.Text = "Sending data through the transcevier and waiting for a reply";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -414,6 +450,7 @@
             this.wizardPageAccelerometerBase.ResumeLayout(false);
             this.wizardPageAccelTestXY.ResumeLayout(false);
             this.wizardPageAccelTestYZ.ResumeLayout(false);
+            this.wizardPageTransceveier.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -451,6 +488,9 @@
         private System.Windows.Forms.TableLayoutPanel tblAccelerometerXY;
         private System.Windows.Forms.TableLayoutPanel tblAccelerometerYZ;
         private AeroWizard.ThemedLabel themedLabel15;
+        private AeroWizard.WizardPage wizardPageTransceveier;
+        private AeroWizard.ThemedLabel themedLabel16;
+        private System.Windows.Forms.TableLayoutPanel tblTransceveierTest;
 
 
     }

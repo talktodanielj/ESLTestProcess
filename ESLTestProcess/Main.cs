@@ -21,6 +21,62 @@ namespace ESLTestProcess
         private AddTechnician addTechnicianWindow = new AddTechnician();
         private System.Threading.Timer _timeOutTimer;
         private TableLayoutPanel _activeTblLayoutPanel;
+
+        private void GenerateTable(Tuple<string, string>[] parameters)
+        {
+            _activeTblLayoutPanel.SuspendLayout();
+
+            // Clear out the existing controls, we are generating a new table layout
+            _activeTblLayoutPanel.Controls.Clear();
+
+            _activeTblLayoutPanel.ColumnStyles.Clear();
+            _activeTblLayoutPanel.RowStyles.Clear();
+            _activeTblLayoutPanel.ColumnCount = 3;
+
+            // Add the columns
+            _activeTblLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3F));
+            _activeTblLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3F));
+            _activeTblLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3F));
+
+            // Add the rows
+            AddRow(
+                  new Label() { Text = "Test:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font(_activeTblLayoutPanel.Font, FontStyle.Bold) }
+                , new Label() { Text = "Value:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font(_activeTblLayoutPanel.Font, FontStyle.Bold) }
+                , new Label() { Text = "Status:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font(_activeTblLayoutPanel.Font, FontStyle.Bold) });
+
+            foreach (Tuple<string, string> parameter in parameters)
+            {
+                AddRow(
+                  new Label() { Text = parameter.Item1, Anchor = AnchorStyles.Left, AutoSize = true }
+                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = parameter.Item2 }
+                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = TestParameters.GetIconName(parameter.Item2) });
+            }
+
+            _activeTblLayoutPanel.AutoSize = true;
+            _activeTblLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            _activeTblLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            _activeTblLayoutPanel.ResumeLayout();
+            _activeTblLayoutPanel.PerformLayout();
+
+        }
+
+        private void AddRow(Control label, Control value, Control status)
+        {
+            int rowIndex = AddTableRow();
+            _activeTblLayoutPanel.Controls.Add(label, 0, rowIndex);
+            _activeTblLayoutPanel.Controls.Add(value, 1, rowIndex);
+            _activeTblLayoutPanel.Controls.Add(status, 2, rowIndex);
+        }
+
+        private int AddTableRow()
+        {
+            int index = _activeTblLayoutPanel.RowCount++;
+            RowStyle style = new RowStyle(SizeType.AutoSize);
+            _activeTblLayoutPanel.RowStyles.Add(style);
+            return index;
+        }
+
+
         
         private void stepWizardControl1_SelectedPageChanged(object sender, EventArgs e)
         {
@@ -164,68 +220,14 @@ namespace ESLTestProcess
 
         }
 
-        private void GenerateTable(Tuple<string, string>[] parameters)
-        {
-            _activeTblLayoutPanel.SuspendLayout();
-
-            // Clear out the existing controls, we are generating a new table layout
-            _activeTblLayoutPanel.Controls.Clear();
-
-            _activeTblLayoutPanel.ColumnStyles.Clear();
-            _activeTblLayoutPanel.RowStyles.Clear();
-            _activeTblLayoutPanel.ColumnCount = 3;
-
-            // Add the columns
-            _activeTblLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3F));
-            _activeTblLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3F));
-            _activeTblLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3F));
-
-            // Add the rows
-            AddRow(
-                  new Label() { Text = "Test:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font(_activeTblLayoutPanel.Font, FontStyle.Bold) }
-                , new Label() { Text = "Value:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font(_activeTblLayoutPanel.Font, FontStyle.Bold) }
-                , new Label() { Text = "Status:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font(_activeTblLayoutPanel.Font, FontStyle.Bold) });
-
-            foreach (Tuple<string, string> parameter in parameters)
-            {
-                AddRow(
-                  new Label() { Text = parameter.Item1, Anchor = AnchorStyles.Left, AutoSize = true }
-                , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = parameter.Item2 }
-                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = TestParameters.GetIconName(parameter.Item2) });
-            }
-
-            _activeTblLayoutPanel.AutoSize = true;
-            _activeTblLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            _activeTblLayoutPanel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
-            _activeTblLayoutPanel.ResumeLayout();
-            _activeTblLayoutPanel.PerformLayout();
-
-        }
-
-        private void AddRow(Control label, Control value, Control status)
-        {
-            int rowIndex = AddTableRow();
-            _activeTblLayoutPanel.Controls.Add(label, 0, rowIndex);
-            _activeTblLayoutPanel.Controls.Add(value, 1, rowIndex);
-            _activeTblLayoutPanel.Controls.Add(status, 2, rowIndex);
-        }
-
-        private int AddTableRow()
-        {
-            int index = _activeTblLayoutPanel.RowCount++;
-            RowStyle style = new RowStyle(SizeType.AutoSize);
-            _activeTblLayoutPanel.RowStyles.Add(style);
-            return index;
-        }
-
         private void wizardPageAccelerometerBase_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             if (tblAccelerometerBasline.RowCount == 1)
             {
                 List<Tuple<string, string>> parameters = new List<Tuple<string, string>>();
-                parameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X));
-                parameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y));
-                parameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z));
+                parameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_BASE));
+                parameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_BASE));
+                parameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_BASE));
 
                 _activeTblLayoutPanel = tblAccelerometerBasline;
                 GenerateTable(parameters.ToArray());
@@ -237,9 +239,9 @@ namespace ESLTestProcess
             if (tblAccelerometerXY.RowCount == 1)
             {
                 List<Tuple<string, string>> parameters = new List<Tuple<string, string>>();
-                parameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X));
-                parameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y));
-                parameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z));
+                parameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_LONG_EDGE));
+                parameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_LONG_EDGE));
+                parameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_LONG_EDGE));
 
                 _activeTblLayoutPanel = tblAccelerometerXY;
                 GenerateTable(parameters.ToArray());
@@ -251,16 +253,28 @@ namespace ESLTestProcess
             if (tblAccelerometerYZ.RowCount == 1)
             {
                 List<Tuple<string, string>> parameters = new List<Tuple<string, string>>();
-                parameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X));
-                parameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y));
-                parameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z));
+                parameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_SHORT_EDGE));
+                parameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_SHORT_EDGE));
+                parameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_SHORT_EDGE));
 
                 _activeTblLayoutPanel = tblAccelerometerYZ;
                 GenerateTable(parameters.ToArray());
             }
         }
 
+        private void wizardPageTransceveier_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
+        {
+            if (tblTransceveierTest.RowCount == 1)
+            {
+                List<Tuple<string, string>> parameters = new List<Tuple<string, string>>();
+                parameters.Add(new Tuple<string, string>("Message Sent", TestParameters.TRANS_MSG_TX));
+                parameters.Add(new Tuple<string, string>("Receveied Response", TestParameters.TRANS_MSG_RX));
+                parameters.Add(new Tuple<string, string>("RSSI value", TestParameters.TRANS_RSSI));
 
+                _activeTblLayoutPanel = tblTransceveierTest;
+                GenerateTable(parameters.ToArray());
+            }
+        }
 
     }
 }
