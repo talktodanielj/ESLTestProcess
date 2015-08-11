@@ -18,5 +18,10 @@ namespace ESLTestProcess
         }
 
         public string TechnicianName { get { return txtTechnicianName.Text; } set { txtTechnicianName.Text = value; } }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

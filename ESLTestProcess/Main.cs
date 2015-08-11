@@ -16,6 +16,7 @@ namespace ESLTestProcess
         public Main()
         {
             InitializeComponent();
+            _timeOutTimer = new System.Threading.Timer(TimeOutCallback);
         }
 
         private AddTechnician addTechnicianWindow = new AddTechnician();
@@ -86,39 +87,41 @@ namespace ESLTestProcess
                 return;
             }
 
-            var iconControl = (PictureBox)_activeTblLayoutPanel.Controls.Find(TestParameters.GetIconName(e.Parameter), true).FirstOrDefault();
-
-            if (iconControl != null)
+            if (_activeTblLayoutPanel != null)
             {
-                switch (e.Status)
+                var iconControl = (PictureBox)_activeTblLayoutPanel.Controls.Find(TestParameters.GetIconName(e.Parameter), true).FirstOrDefault();
+
+                if (iconControl != null)
                 {
-                    case TestStatus.Unknown:
-                        if (_testExpired)
+                    switch (e.Status)
+                    {
+                        case TestStatus.Unknown:
+                            if (_testExpired)
+                                iconControl.Image = ESLTestProcess.Properties.Resources.question;
+                            else
+                                iconControl.Image = ESLTestProcess.Properties.Resources.test_spinner;
+                            break;
+                        case TestStatus.Fail:
+                            iconControl.Image = ESLTestProcess.Properties.Resources.cross;
+                            break;
+                        case TestStatus.Warning:
+                            iconControl.Image = ESLTestProcess.Properties.Resources.alert;
+                            break;
+                        case TestStatus.Pass:
+                            iconControl.Image = ESLTestProcess.Properties.Resources.tick;
+                            break;
+                        default:
                             iconControl.Image = ESLTestProcess.Properties.Resources.question;
-                        else
-                            iconControl.Image = ESLTestProcess.Properties.Resources.test_spinner;
-                        break;
-                    case TestStatus.Fail:
-                        iconControl.Image = ESLTestProcess.Properties.Resources.cross;
-                        break;
-                    case TestStatus.Warning:
-                        iconControl.Image = ESLTestProcess.Properties.Resources.alert;
-                        break;
-                    case TestStatus.Pass:
-                        iconControl.Image = ESLTestProcess.Properties.Resources.tick;
-                        break;
-                    default:
-                        iconControl.Image = ESLTestProcess.Properties.Resources.question;
-                        break;
+                            break;
+                    }
+                }
+
+                var valueLabel = (Label)_activeTblLayoutPanel.Controls.Find(e.Parameter, true).FirstOrDefault();
+                if (valueLabel != null)
+                {
+                    valueLabel.Text = e.Value;
                 }
             }
-
-            var valueLabel = (Label)_activeTblLayoutPanel.Controls.Find(e.Parameter, true).FirstOrDefault();
-            if (valueLabel != null)
-            {
-                valueLabel.Text = e.Value;
-            }
-
         }
 
         private void TimeOutCallback(Object state)
@@ -175,17 +178,32 @@ namespace ESLTestProcess
 
             if (dialogResult == DialogResult.OK)
             {
-                DataManager.Instance.AddTechnician(addTechnicianWindow.TechnicianName);
-                cbTechnician.Text = "";
-                cbTechnician.SelectedIndex = -1;
-                cbTechnician.Items.Clear();
-                cbTechnician.Items.AddRange(DataManager.Instance.GetTechnicianNames());
+                var technicianName = addTechnicianWindow.TechnicianName.Trim();
+                var existingTechnicians = DataManager.Instance.GetTechnicianNames();
+
+                // Unique names only
+                if (existingTechnicians.FirstOrDefault(s => s == technicianName) == null)
+                {
+                    DataManager.Instance.AddTechnician(addTechnicianWindow.TechnicianName.Trim());
+                    cbTechnician.Text = "";
+                    cbTechnician.SelectedIndex = -1;
+                    cbTechnician.Items.Clear();
+                    cbTechnician.Items.AddRange(DataManager.Instance.GetTechnicianNames());
+                }
             }
+        }
+
+        private void wizardPageInsertPCB_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
+        {
+            if (txtManufactureSerial.Text.Trim().Length > 0)
+                wizardPageInsertPCB.AllowNext = true;
+            else
+                wizardPageInsertPCB.AllowNext = false;
         }
 
         private void wizardPageInsertPCB_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
-
+            ProcessControl.Instance.InitialiaseTestRun(txtManufactureSerial.Text.Trim());
         }
 
         private void cbTechnician_SelectedIndexChanged(object sender, EventArgs e)
@@ -218,7 +236,7 @@ namespace ESLTestProcess
                 GenerateTable(_testParameters.ToArray());
             }
 
-            _timeOutTimer = new System.Threading.Timer(TimeOutCallback, null, 10000, 0);
+            _timeOutTimer.Change(10000, 0);
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
 
             // Start the test process
@@ -244,7 +262,7 @@ namespace ESLTestProcess
                 GenerateTable(_testParameters.ToArray());
             }
 
-            _timeOutTimer = new System.Threading.Timer(TimeOutCallback, this, 8000, 0);
+            _timeOutTimer.Change(8000, 0);
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
 
             // Start the test process
@@ -270,7 +288,7 @@ namespace ESLTestProcess
                 GenerateTable(_testParameters.ToArray());
             }
 
-            _timeOutTimer = new System.Threading.Timer(TimeOutCallback, this, 8000, 0);
+            _timeOutTimer.Change(8000, 0);
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
 
             // Start the test process
@@ -296,7 +314,7 @@ namespace ESLTestProcess
                 GenerateTable(_testParameters.ToArray());
             }
 
-            _timeOutTimer = new System.Threading.Timer(TimeOutCallback, this, 8000, 0);
+            _timeOutTimer.Change(8000, 0);
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
 
             // Start the test process
@@ -322,6 +340,51 @@ namespace ESLTestProcess
                 GenerateTable(_testParameters.ToArray());
             }
         }
+
+        private void wizardPageProgramPCB_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
+        {
+            if (tblPCBUnitId.RowCount == 1)
+            {
+                _activeTblLayoutPanel = tblPCBUnitId;
+
+                _testParameters.Clear();
+                _testParameters.Add(new Tuple<string, string>("PCB Id", TestParameters.PCB_ID));
+                GenerateTable(_testParameters.ToArray());
+            }
+
+            
+            ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
+            _timeOutTimer.Change(8000, 0);
+            // Start the test process
+            _testExpired = false;
+            //ProcessControl.Instance.PrepareForTestRun();
+
+        }
+
+        private void wizardPageProgramPCB_Leave(object sender, EventArgs e)
+        {
+            ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
+        }
+
+        private void txtManufactureSerial_TextChanged(object sender, EventArgs e)
+        {
+            if (txtManufactureSerial.Text.Trim().Length > 0)
+                wizardPageInsertPCB.AllowNext = true;
+            else
+                wizardPageInsertPCB.AllowNext = false;
+        }
+
+        private void wizardPageProgramPCB_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+            
+        }
+
+        private void wizardPageSignIn_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+            ProcessControl.Instance.StartTestSession(cbTechnician.Text);
+        }
+
+
 
     }
 }

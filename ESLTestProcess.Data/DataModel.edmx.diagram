@@ -7,9 +7,9 @@
       <Diagram DiagramId="8a7e76ed36e14778955233529ec386c7" Name="Diagram1" >
         <EntityTypeShape EntityType="Model.run" Width="2.5" PointX="7.125" PointY="0.75" />
         <EntityTypeShape EntityType="Model.response" Width="2.25" PointX="10.875" PointY="0.875" />
-        <EntityTypeShape EntityType="Model.technician" Width="1.5" PointX="1.375" PointY="1.5" />
+        <EntityTypeShape EntityType="Model.technician" Width="1.5" PointX="2.25" PointY="2.375" />
         <EntityTypeShape EntityType="Model.configuration" Width="1.5" PointX="11" PointY="4.25" />
-        <EntityTypeShape EntityType="Model.session" Width="1.5" PointX="4.5" PointY="1.125" />
+        <EntityTypeShape EntityType="Model.session" Width="2" PointX="4.375" PointY="1.25" />
         <EntityTypeShape EntityType="Model.pcb_unit" Width="3" PointX="6.75" PointY="4" />
         <AssociationConnector Association="Model.sessionrun" />
         <AssociationConnector Association="Model.runresult" />

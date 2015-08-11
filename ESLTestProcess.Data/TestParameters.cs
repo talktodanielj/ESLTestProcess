@@ -8,6 +8,7 @@ namespace ESLTestProcess.Data
 {
     public static class TestParameters
     {
+        public const string PCB_ID = "pcb_id";
         public const string EPROM_ID            = "eprom_id";
         public const string ACCELEROMETER_ID    = "accelerometer_id";
         public const string PIC24_ID            = "pic24_id";

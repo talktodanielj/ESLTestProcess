@@ -32,6 +32,33 @@ namespace ESLTestProcess.Data
             }
         }
 
+        private DataManager()
+        {
+            try
+            {
+                using (Entities entities = new Entities())
+                {
+                    entities.Database.ExecuteSqlCommand("ALTER TABLE technicians DROP CONSTRAINT UC_technician_name");
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Debug(ex);
+            }
+
+            try
+            {
+                using (Entities entities = new Entities())
+                {
+                    entities.Database.ExecuteSqlCommand("ALTER TABLE technicians ADD CONSTRAINT UC_technician_name UNIQUE (technician_name)");
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Debug(ex);
+            }
+        }
+
         public bool AddTechnician(string technicianName)
         {
             try
@@ -63,6 +90,58 @@ namespace ESLTestProcess.Data
                 _log.Error(ex);
             }
             return new string[0];
+        }
+
+        public technician GetTechnician(string technicianName)
+        {
+            try
+            {
+                using (Entities entities = new Entities())
+                {
+                    return entities.technicians.FirstOrDefault(t => t.technician_name == technicianName);
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Error(ex);
+            }
+            return null;
+        }
+
+        public bool AddSession(session currentSession)
+        {
+            try
+            {
+                using (Entities entities = new Entities())
+                {
+                    // Attach first so that the child objects (technician in this case) is bound to the new data context
+                    entities.sessions.Attach(currentSession);
+                    entities.sessions.Add(currentSession);
+                    return entities.SaveChanges() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Error(ex);
+                throw;
+            }
+        }
+
+        public bool SaveSession(session currentSession)
+        {
+            try
+            {
+                using (Entities entities = new Entities())
+                {
+                    entities.sessions.Attach(currentSession);
+                    return entities.SaveChanges() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Error(ex);
+                throw;
+            }
         }
     }
 }
