@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="TestSaveData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSerialComms.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

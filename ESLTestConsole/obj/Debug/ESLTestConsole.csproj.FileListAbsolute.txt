@@ -1,0 +1,12 @@
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\bin\Debug\ESLTestConsole.exe.config
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\bin\Debug\ESLTestConsole.exe
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\bin\Debug\ESLTestConsole.pdb
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\bin\Debug\ESLTestProcess.Data.dll
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\bin\Debug\EntityFramework.dll
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\bin\Debug\log4net.dll
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\bin\Debug\ESLTestProcess.Data.pdb
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\bin\Debug\EntityFramework.xml
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\bin\Debug\log4net.xml
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\obj\Debug\ESLTestConsole.csprojResolveAssemblyReference.cache
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\obj\Debug\ESLTestConsole.exe
+C:\development\elex\trap_network\ESLTestProcess\ESLTestConsole\obj\Debug\ESLTestConsole.pdb

@@ -90,12 +90,12 @@ namespace ESLTestProcess.Data
             bool success = false;
             try
             {
-                byte checkSum = CreateChecksum(buffer);
+                //byte checkSum = CreateChecksum(buffer);
 
-                List<byte> command = new List<byte>();
-                command.AddRange(buffer);
-                command.Add(checkSum); 
-                _serialPort.Write(command.ToArray(), 0, command.Count);
+                //List<byte> command = new List<byte>();
+                //command.AddRange(buffer);
+                //command.Add(checkSum); 
+                _serialPort.Write(buffer, 0, buffer.Length);
                 
             }
             catch (Exception ex)

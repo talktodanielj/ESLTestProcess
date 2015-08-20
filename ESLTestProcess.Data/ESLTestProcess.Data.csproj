@@ -90,6 +90,7 @@
     <Compile Include="response.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Responses.cs" />
     <Compile Include="run.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
