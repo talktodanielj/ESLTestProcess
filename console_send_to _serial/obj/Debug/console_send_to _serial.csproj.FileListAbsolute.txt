@@ -1,0 +1,12 @@
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\bin\Debug\console_send_to _serial.exe.config
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\bin\Debug\console_send_to _serial.exe
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\bin\Debug\console_send_to _serial.pdb
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\bin\Debug\ESLTestProcess.Data.dll
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\bin\Debug\EntityFramework.dll
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\bin\Debug\log4net.dll
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\bin\Debug\ESLTestProcess.Data.pdb
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\bin\Debug\EntityFramework.xml
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\bin\Debug\log4net.xml
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\obj\Debug\console_send_to _serial.csprojResolveAssemblyReference.cache
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\obj\Debug\console_send_to _serial.exe
+C:\development\elex\trap_network\ESLTestProcess\console_send_to _serial\obj\Debug\console_send_to _serial.pdb

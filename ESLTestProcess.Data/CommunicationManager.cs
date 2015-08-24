@@ -95,7 +95,12 @@ namespace ESLTestProcess.Data
                 //List<byte> command = new List<byte>();
                 //command.AddRange(buffer);
                 //command.Add(checkSum); 
-                _serialPort.Write(buffer, 0, buffer.Length);
+                foreach (var dataByte in buffer)
+                {
+                    // Need this sleep or else we can't send more than 1 byte at a time to the node
+                    System.Threading.Thread.Sleep(1);
+                    _serialPort.Write(new[] {dataByte}, 0, 1);
+                }
                 
             }
             catch (Exception ex)

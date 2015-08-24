@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESLTestProcess.UnitTest", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESLTestConsole", "ESLTestConsole\ESLTestConsole.csproj", "{11E3567E-794D-4450-BD85-D49D2214C05E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "console_send_to _serial", "console_send_to _serial\console_send_to _serial.csproj", "{3AFACAA6-3826-4F06-90D8-5C2F51F9B4D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{11E3567E-794D-4450-BD85-D49D2214C05E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11E3567E-794D-4450-BD85-D49D2214C05E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11E3567E-794D-4450-BD85-D49D2214C05E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AFACAA6-3826-4F06-90D8-5C2F51F9B4D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AFACAA6-3826-4F06-90D8-5C2F51F9B4D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AFACAA6-3826-4F06-90D8-5C2F51F9B4D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AFACAA6-3826-4F06-90D8-5C2F51F9B4D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
