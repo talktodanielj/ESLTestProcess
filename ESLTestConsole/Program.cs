@@ -55,6 +55,10 @@ namespace ESLTestConsole
                             CommunicationManager.Instance.SendCommand(Commands.REQUEST_DUMP_EPROM_TO_CONSOLE);
                         else if (input.Trim() == "t")
                             CommunicationManager.Instance.SendCommand(Commands.REQUEST_RTC_VALUE);
+                        else if (input.Trim() == "b")
+                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_GET_BGRSSI_VALUE);
+                        else if (input.Trim() == "c")
+                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_CAPTURE_HUB);
                         else if (input.Contains("n"))
                         {
                             byte[] commandBytes = Commands.REQUEST_SET_NODE_ID;
@@ -163,6 +167,8 @@ namespace ESLTestConsole
             Console.WriteLine("\td)  REQUEST_DUMP_EPROM_TO_CONSOLE");
             Console.WriteLine("\tt)  REQUEST_RTC_VALUE");
             Console.WriteLine("\ts)  REQUEST_SET_RTC_VALUE");
+            Console.WriteLine("\tb)  REQUEST_GET_BGRSSI_VALUE");
+            Console.WriteLine("\tc)  REQUEST_CAPTURE_HUB");
             Console.WriteLine("\t q exists the test console");
             Console.WriteLine("--------------------------------------------");
         }
@@ -175,6 +181,19 @@ namespace ESLTestConsole
 
             if (data != null)
             {
+                var responseData = ASCIIEncoding.ASCII.GetBytes(data.Trim());
+
+                if (responseData[0] == 0x02 && responseData[0] == 0x61)
+                {
+                    if (responseData.Length >= Responses.RESPONSE_UNIT_ID.Length)
+                    {
+
+                    }
+                }
+
+
+
+
                 if (data.Contains("Battery Level (10mv):"))
                 {
                     var rawValue = data.Split(':');
