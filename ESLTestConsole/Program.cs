@@ -9,6 +9,9 @@ namespace ESLTestConsole
 {
     class Program
     {
+
+        static ByteStreamHandler _byteSTreamHandler = new ByteStreamHandler();
+
         static void Main(string[] args)
         {
             if (CommunicationManager.Instance.OpenConnection())
@@ -22,6 +25,8 @@ namespace ESLTestConsole
 
                 StringBuilder sbuilder = new StringBuilder();
 
+                _byteSTreamHandler.ProcessResponseEventHandler += _byteSTreamHandler_ProcessResponseEventHandler;
+
                 while (true)
                 {
                     string input = Console.ReadLine();
@@ -30,38 +35,43 @@ namespace ESLTestConsole
                         if (input.Contains("q"))
                             break;
                         else if (input.Trim() == "1")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_BEGIN_TEST);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
                         else if (input.Trim() == "2")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_NODE_ID);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_NODE_ID);
                         else if (input.Trim() == "3")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_BATTERY_LEVEL);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BATTERY_LEVEL);
                         else if (input.Trim() == "4")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_TEMPERATURE_LEVEL);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_TEMPERATURE_LEVEL);
                         else if (input.Trim() == "5")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_START_FLASH_GREEN_LED);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_FLASH_GREEN_LED);
                         else if (input.Trim() == "6")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_START_FLASH_RED_LED);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_FLASH_RED_LED);
                         else if (input.Trim() == "7")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_START_BUTTON_TEST);
+                        {
+                            byte[] commandBytes = Parameters.REQUEST_START_BUTTON_TEST;
+                            //commandBytes[2] = 1; // Wait 1 second for a response
+                            //commandBytes[3] = 4; // Looking for KEY_5_0
+                            CommunicationManager.Instance.SendCommand(commandBytes);
+                        }
                         else if (input.Trim() == "a")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_START_ACCELEROMETER_TEST);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_ACCELEROMETER_TEST);
                         else if (input.Trim() == "p")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_START_PIEZO_TEST);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_PIEZO_TEST);
                         else if (input.Trim() == "h")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_HUB_ID);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_HUB_ID);
                         else if (input.Trim() == "r")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_REED_SWITCH_TEST);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_REED_SWITCH_TEST);
                         else if (input.Trim() == "d")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_DUMP_EPROM_TO_CONSOLE);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_DUMP_EPROM_TO_CONSOLE);
                         else if (input.Trim() == "t")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_RTC_VALUE);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_RTC_VALUE);
                         else if (input.Trim() == "b")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_GET_BGRSSI_VALUE);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_GET_BGRSSI_VALUE);
                         else if (input.Trim() == "c")
-                            CommunicationManager.Instance.SendCommand(Commands.REQUEST_CAPTURE_HUB);
+                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_CAPTURE_HUB);
                         else if (input.Contains("n"))
                         {
-                            byte[] commandBytes = Commands.REQUEST_SET_NODE_ID;
+                            byte[] commandBytes = Parameters.REQUEST_SET_NODE_ID;
                             input = input.Trim();
                             if (input.Length > 1 && input.Length < 5)
                             {
@@ -84,7 +94,7 @@ namespace ESLTestConsole
                         }
                         else if (input.Contains("i"))
                         {
-                            byte[] commandBytes = Commands.REQUEST_SET_HUB_ID;
+                            byte[] commandBytes = Parameters.REQUEST_SET_HUB_ID;
                             input = input.Trim();
                             if (input.Length > 1 && input.Length < 4)
                             {
@@ -107,7 +117,7 @@ namespace ESLTestConsole
                         }
                         else if (input.Contains("s"))
                         {
-                            byte[] commandBytes = Commands.REQUEST_SET_RTC_VALUE;
+                            byte[] commandBytes = Parameters.REQUEST_SET_RTC_VALUE;
 
                             commandBytes[2] = ToBcd(DateTime.Now.Year - 2000)[0];
                             commandBytes[3] = ToBcd(DateTime.Now.Month)[0];
@@ -119,18 +129,63 @@ namespace ESLTestConsole
                             CommunicationManager.Instance.SendCommand(commandBytes);
 
                         }
-
                         else
                             WriteTestOptions();
                     }
-
                 }
             }
-
             Console.ReadLine();
-
         }
 
+        static void _byteSTreamHandler_ProcessResponseEventHandler(object sender, ByteStreamHandler.ProcessResponseEventArgs e)
+        {
+            if (e.ResponseId == Parameters.PARSE_ERROR)
+            {
+                Console.WriteLine("Got a parse error");
+            }
+            else if (e.ResponseId == Parameters.TEST_ID_BEGIN_TEST)
+            {
+                Console.WriteLine("Got begin test command");
+
+            }
+            else if (e.ResponseId == Parameters.TEST_END)
+            {
+                Console.WriteLine("Got test end response");
+
+            }
+            else if (e.ResponseId == Parameters.TEST_ID_BUTTON_TEST)
+            {
+                switch (e.RawData[2])
+                {
+                    case 1:
+                        Console.WriteLine("Key 1/6");
+                        break;
+                    case 2:
+                        Console.WriteLine("Key ENT");
+                        break;
+                    case 4:
+                        Console.WriteLine("Key 5/0");
+                        break;
+                    case 8:
+                        Console.WriteLine("Key 4/9");
+                        break;
+                    case 16:
+                        Console.WriteLine("Key 3/8");
+                        break;
+                    case 32:
+                        Console.WriteLine("Key 2/7");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid key code");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Response id is {0}", (int)e.ResponseId);
+            }
+
+        }
 
         public static byte[] ToBcd(int value)
         {
@@ -178,22 +233,30 @@ namespace ESLTestConsole
         static void SerialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             string data = CommunicationManager.Instance.SerialPort.ReadExisting();
+            Console.Write(data);
+            return;
+            //if (data != null)
+            //{
+            //    var responseData = ASCIIEncoding.ASCII.GetBytes(data.Trim());
+            //    _byteSTreamHandler.AddToBytesQueue(responseData);
+            //}
+            //return;
 
             if (data != null)
             {
                 var responseData = ASCIIEncoding.ASCII.GetBytes(data.Trim());
 
-                if (responseData[0] == 0x02 && responseData[0] == 0x61)
-                {
-                    if (responseData.Length >= Responses.RESPONSE_UNIT_ID.Length)
-                    {
+                Console.WriteLine("Rx = {0}", data);
 
+                if (responseData.Length > 1)
+                {
+                    if (responseData[0] == 0x02 && responseData[1] == Parameters.REQUEST_CAPTURE_HUB[1])
+                    {
+                        Console.WriteLine("Hub Ack");
+                        Console.WriteLine(data);
                     }
                 }
-
-
-
-
+                
                 if (data.Contains("Battery Level (10mv):"))
                 {
                     var rawValue = data.Split(':');
@@ -229,7 +292,6 @@ namespace ESLTestConsole
                         data = data.Trim();
                         Console.Write(data.Replace("-0x", ""));
                         Console.WriteLine(" = {0:0.0}C", tempLvl);
-
                     }
                     else
                     {

@@ -79,7 +79,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands.cs" />
+    <Compile Include="ByteStreamHandler.cs" />
+    <Compile Include="Parameters.cs" />
     <Compile Include="configuration.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
@@ -90,7 +91,6 @@
     <Compile Include="response.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Responses.cs" />
     <Compile Include="run.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>

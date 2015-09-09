@@ -26,6 +26,6 @@ C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\bin\Debug\En
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\bin\Debug\EntityFramework.SqlServer.xml
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\bin\Debug\EntityFramework.SqlServerCompact.xml
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\bin\Debug\log4net.xml
-C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\obj\Debug\ESLTestProcess.Data.csprojResolveAssemblyReference.cache
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\obj\Debug\ESLTestProcess.Data.dll
 C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\obj\Debug\ESLTestProcess.Data.pdb
+C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\obj\Debug\ESLTestProcess.Data.csprojResolveAssemblyReference.cache

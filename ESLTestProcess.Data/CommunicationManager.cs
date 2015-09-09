@@ -87,27 +87,31 @@ namespace ESLTestProcess.Data
         // Format is 0x02-CmdID-0x03-CS
         public bool SendCommand(byte[] buffer)
         {
-            bool success = false;
-            try
+            lock (SyncRoot)
             {
-                //byte checkSum = CreateChecksum(buffer);
-
-                //List<byte> command = new List<byte>();
-                //command.AddRange(buffer);
-                //command.Add(checkSum); 
-                foreach (var dataByte in buffer)
+                bool success = false;
+                try
                 {
-                    // Need this sleep or else we can't send more than 1 byte at a time to the node
-                    System.Threading.Thread.Sleep(1);
-                    _serialPort.Write(new[] {dataByte}, 0, 1);
+                    //byte checkSum = CreateChecksum(buffer);
+
+                    //List<byte> command = new List<byte>();
+                    //command.AddRange(buffer);
+                    //command.Add(checkSum); 
+                    foreach (var dataByte in buffer)
+                    {
+                        // Need this sleep or else we can't send more than 1 byte at a time to the node
+                        System.Threading.Thread.Sleep(15);
+                        _serialPort.Write(new[] { dataByte }, 0, 1);
+                        _serialPort.BaseStream.Flush();
+                    }
+
                 }
-                
+                catch (Exception ex)
+                {
+                    _log.Error(ex);
+                }
+                return success;
             }
-            catch (Exception ex)
-            {
-                _log.Error(ex);
-            }
-            return success;
         }
 
         public SerialPort SerialPort

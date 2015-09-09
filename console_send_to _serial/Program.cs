@@ -37,7 +37,9 @@ namespace console_send_to__serial
             string data = CommunicationManager.Instance.SerialPort.ReadExisting();
 
             if (data != null)
+            {
                 Console.WriteLine(data);
+            }
         }
         
     }

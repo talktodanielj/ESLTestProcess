@@ -5,23 +5,48 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using log4net;
+using System.Threading;
 
 namespace ESLTestProcess
 {
     public partial class Main : Form
     {
+
+        private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public Main()
         {
             InitializeComponent();
             _timeOutTimer = new System.Threading.Timer(TimeOutCallback);
+            _flashColourTimer = new System.Threading.Timer(FlashColourCallback);
+            if (CommunicationManager.Instance.OpenConnection())
+            {
+                CommunicationManager.Instance.SerialPort.DataReceived += SerialPort_DataReceived;
+            }
+        }
+
+        void SerialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
+        {
+            string data = CommunicationManager.Instance.SerialPort.ReadExisting();
+
+            if (data != null)
+            {
+                var responseData = ASCIIEncoding.ASCII.GetBytes(data.Trim());
+                Console.WriteLine(BitConverter.ToString(responseData));
+                _byteStreamHandler.AddToBytesQueue(responseData);
+            }
         }
 
         private AddTechnician addTechnicianWindow = new AddTechnician();
         private System.Threading.Timer _timeOutTimer;
+        private System.Threading.Timer _flashColourTimer;
         private TableLayoutPanel _activeTblLayoutPanel;
+        private ByteStreamHandler _byteStreamHandler = new ByteStreamHandler();
 
         private void GenerateTable(Tuple<string, string>[] parameters)
         {
@@ -137,7 +162,7 @@ namespace ESLTestProcess
             if (testRun != null)
             {
                 // Only check the parameters currently under test
-                foreach(var parameter in _testParameters)
+                foreach (var parameter in _testParameters)
                 {
                     var testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == parameter.Item2);
 
@@ -159,7 +184,7 @@ namespace ESLTestProcess
 
             if (allPassed)
             {
-                this.BeginInvoke(new MethodInvoker( delegate
+                this.BeginInvoke(new MethodInvoker(delegate
                     {
                         stepWizardControl1.NextPage();
                     }));
@@ -220,35 +245,6 @@ namespace ESLTestProcess
 
         private List<Tuple<string, string>> _testParameters = new List<Tuple<string, string>>();
 
-        private void wizardPageResultsStatus_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
-        {
-            if (tbllnitialStatus.RowCount == 1)
-            {
-                _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("EPROM Id", TestParameters.EPROM_ID));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer ID", TestParameters.ACCELEROMETER_ID));
-                _testParameters.Add(new Tuple<string, string>("PIC24 Id", TestParameters.PIC24_ID));
-                _testParameters.Add(new Tuple<string, string>("Transceveier ID", TestParameters.TRANSCEVEIER_ID));
-                _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestParameters.BATTERY_VOLTAGE));
-                _testParameters.Add(new Tuple<string, string>("Temperature", TestParameters.TEMPERATURE_READING));
-
-                _activeTblLayoutPanel = tbllnitialStatus;
-                GenerateTable(_testParameters.ToArray());
-            }
-
-            _timeOutTimer.Change(10000, 0);
-            ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-
-            // Start the test process
-            _testExpired = false;
-            ProcessControl.Instance.TestGetIntialStatus();
-        }
-
-        private void wizardPageResultsStatus_Leave(object sender, EventArgs e)
-        {
-            ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
-        }
-
         private void wizardPageAccelerometerBase_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             if (tblAccelerometerBasline.RowCount == 1)
@@ -262,7 +258,7 @@ namespace ESLTestProcess
                 GenerateTable(_testParameters.ToArray());
             }
 
-            _timeOutTimer.Change(8000, 0);
+            _timeOutTimer.Change(8000, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
 
             // Start the test process
@@ -272,6 +268,7 @@ namespace ESLTestProcess
 
         private void wizardPageAccelerometerBase_Leave(object sender, EventArgs e)
         {
+            _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
         }
 
@@ -288,7 +285,7 @@ namespace ESLTestProcess
                 GenerateTable(_testParameters.ToArray());
             }
 
-            _timeOutTimer.Change(8000, 0);
+            _timeOutTimer.Change(8000, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
 
             // Start the test process
@@ -298,6 +295,7 @@ namespace ESLTestProcess
 
         private void wizardPageAccelTestXY_Leave(object sender, EventArgs e)
         {
+            _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
         }
 
@@ -314,7 +312,7 @@ namespace ESLTestProcess
                 GenerateTable(_testParameters.ToArray());
             }
 
-            _timeOutTimer.Change(8000, 0);
+            _timeOutTimer.Change(8000, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
 
             // Start the test process
@@ -324,6 +322,7 @@ namespace ESLTestProcess
 
         private void wizardPageAccelTestYZ_Leave(object sender, EventArgs e)
         {
+            _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
         }
 
@@ -348,13 +347,13 @@ namespace ESLTestProcess
                 _activeTblLayoutPanel = tblPCBUnitId;
 
                 _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("PCB Id", TestParameters.PCB_ID));
+                _testParameters.Add(new Tuple<string, string>("PCB Id", TestParameters.NODE_ID));
                 GenerateTable(_testParameters.ToArray());
             }
 
-            
+
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-            _timeOutTimer.Change(8000, 0);
+            _timeOutTimer.Change(8000, Timeout.Infinite);
             // Start the test process
             _testExpired = false;
             //ProcessControl.Instance.PrepareForTestRun();
@@ -363,6 +362,7 @@ namespace ESLTestProcess
 
         private void wizardPageProgramPCB_Leave(object sender, EventArgs e)
         {
+            _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
         }
 
@@ -376,7 +376,7 @@ namespace ESLTestProcess
 
         private void wizardPageProgramPCB_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
-            
+
         }
 
         private void wizardPageSignIn_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
@@ -384,6 +384,7 @@ namespace ESLTestProcess
             ProcessControl.Instance.StartTestSession(cbTechnician.Text);
         }
 
+        
 
 
     }

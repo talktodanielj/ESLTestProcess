@@ -45,18 +45,11 @@ namespace ESLTestProcess.Data
 
         public void BeginNewTestRun()
         {
-           _currentTestRun.responses.Add(new response
-            {
-                response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.PIC24_ID,
-                response_report_column = 0,
-                response_value = "Unknown"
-            });
 
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.EPROM_ID,
+                response_parameter = TestParameters.NODE_ID,
                 response_report_column = 1,
                 response_value = "Unknown"
             });
@@ -64,18 +57,11 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.TRANSCEVEIER_ID,
+                response_parameter = TestParameters.HUB_ID,
                 response_report_column = 2,
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
-            {
-                response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.ACCELEROMETER_ID,
-                response_report_column = 3,
-                response_value = "Unknown"
-            });
 
             _currentTestRun.responses.Add(new response
             {
@@ -217,18 +203,6 @@ namespace ESLTestProcess.Data
 
 
 
-                var responsePicID = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.PIC24_ID);
-
-                if (responsePicID != null)
-                {
-                    responsePicID.response_outcome = (Int16)TestStatus.Pass;
-                    responsePicID.response_raw = new byte[] { 0x54, 0x34 };
-                    responsePicID.response_value = BitConverter.ToString(responsePicID.response_raw);
-                    SignalResponse(responsePicID);
-                }
-
-                Thread.Sleep(2000);
-
                 var responseBattV = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.BATTERY_VOLTAGE);
 
                 if (responseBattV != null)
@@ -241,17 +215,7 @@ namespace ESLTestProcess.Data
 
                 Thread.Sleep(1000);
 
-                var responseEpromId = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.EPROM_ID);
 
-                if (responseEpromId != null)
-                {
-                    responseEpromId.response_outcome = (Int16)TestStatus.Pass;
-                    responseEpromId.response_raw = new byte[] { 0x22, 0x22 };
-                    responseEpromId.response_value = BitConverter.ToString(responseEpromId.response_raw);
-                    SignalResponse(responseEpromId);
-                }
-
-                Thread.Sleep(3000);
 
             });
 
@@ -433,7 +397,7 @@ namespace ESLTestProcess.Data
         {
             Task.Factory.StartNew(() =>
             {
-                CommunicationManager.Instance.SendCommand(Commands.REQUEST_BEGIN_TEST);
+                CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
 
                 byte[] buffer = new byte[100];
                 // Assume the idividual responses will be less than 100 bytes and that we get the complete response

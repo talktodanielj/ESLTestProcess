@@ -29,6 +29,17 @@
         private void InitializeComponent()
         {
             this.stepWizardControl1 = new AeroWizard.StepWizardControl();
+            this.wizardPageKeyPress = new AeroWizard.WizardPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btn5_0 = new System.Windows.Forms.Button();
+            this.btn4_9 = new System.Windows.Forms.Button();
+            this.btn3_8 = new System.Windows.Forms.Button();
+            this.btn2_7 = new System.Windows.Forms.Button();
+            this.btn1_6 = new System.Windows.Forms.Button();
+            this.btnEnt = new System.Windows.Forms.Button();
+            this.wizardPageResultsStatus = new AeroWizard.WizardPage();
+            this.themedLabel12 = new AeroWizard.ThemedLabel();
+            this.tbllnitialStatus = new System.Windows.Forms.TableLayoutPanel();
             this.wizardPageSignIn = new AeroWizard.WizardPage();
             this.themedLabel7 = new AeroWizard.ThemedLabel();
             this.btnAddTechnician = new System.Windows.Forms.Button();
@@ -48,9 +59,6 @@
             this.themedLabel10 = new AeroWizard.ThemedLabel();
             this.themedLabel9 = new AeroWizard.ThemedLabel();
             this.themedLabel8 = new AeroWizard.ThemedLabel();
-            this.wizardPageResultsStatus = new AeroWizard.WizardPage();
-            this.themedLabel12 = new AeroWizard.ThemedLabel();
-            this.tbllnitialStatus = new System.Windows.Forms.TableLayoutPanel();
             this.wizardPageAccelerometerBase = new AeroWizard.WizardPage();
             this.tblAccelerometerBasline = new System.Windows.Forms.TableLayoutPanel();
             this.themedLabel13 = new AeroWizard.ThemedLabel();
@@ -64,11 +72,13 @@
             this.themedLabel16 = new AeroWizard.ThemedLabel();
             this.tblTransceiverTest = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
+            this.wizardPageKeyPress.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.wizardPageResultsStatus.SuspendLayout();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
             this.wizardPageProgramPCB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.wizardPageResultsStatus.SuspendLayout();
             this.wizardPageAccelerometerBase.SuspendLayout();
             this.wizardPageAccelTestXY.SuspendLayout();
             this.wizardPageAccelTestYZ.SuspendLayout();
@@ -83,6 +93,7 @@
             this.stepWizardControl1.Pages.Add(this.wizardPageInsertPCB);
             this.stepWizardControl1.Pages.Add(this.wizardPageProgramPCB);
             this.stepWizardControl1.Pages.Add(this.wizardPageResultsStatus);
+            this.stepWizardControl1.Pages.Add(this.wizardPageKeyPress);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelerometerBase);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestXY);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestYZ);
@@ -92,6 +103,143 @@
             this.stepWizardControl1.StepListWidth = 250;
             this.stepWizardControl1.TabIndex = 0;
             this.stepWizardControl1.Title = "ESL test process for trap node PCB";
+            // 
+            // wizardPageKeyPress
+            // 
+            this.wizardPageKeyPress.Controls.Add(this.panel1);
+            this.wizardPageKeyPress.Name = "wizardPageKeyPress";
+            this.wizardPageKeyPress.NextPage = this.wizardPageResultsStatus;
+            this.wizardPageKeyPress.Size = new System.Drawing.Size(508, 414);
+            this.stepWizardControl1.SetStepText(this.wizardPageKeyPress, "Key press test");
+            this.wizardPageKeyPress.TabIndex = 10;
+            this.wizardPageKeyPress.Text = "Key press test";
+            this.wizardPageKeyPress.Enter += new System.EventHandler(this.wizardPageKeyPress_Enter);
+            this.wizardPageKeyPress.Leave += new System.EventHandler(this.wizardPageKeyPress_Leave);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.LimeGreen;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.btn5_0);
+            this.panel1.Controls.Add(this.btn4_9);
+            this.panel1.Controls.Add(this.btn3_8);
+            this.panel1.Controls.Add(this.btn2_7);
+            this.panel1.Controls.Add(this.btn1_6);
+            this.panel1.Controls.Add(this.btnEnt);
+            this.panel1.Location = new System.Drawing.Point(95, 84);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(307, 238);
+            this.panel1.TabIndex = 6;
+            // 
+            // btn5_0
+            // 
+            this.btn5_0.BackColor = System.Drawing.Color.ForestGreen;
+            this.btn5_0.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn5_0.ForeColor = System.Drawing.Color.White;
+            this.btn5_0.Location = new System.Drawing.Point(200, 127);
+            this.btn5_0.Name = "btn5_0";
+            this.btn5_0.Size = new System.Drawing.Size(75, 71);
+            this.btn5_0.TabIndex = 8;
+            this.btn5_0.Text = "5/0";
+            this.btn5_0.UseVisualStyleBackColor = false;
+            // 
+            // btn4_9
+            // 
+            this.btn4_9.BackColor = System.Drawing.Color.ForestGreen;
+            this.btn4_9.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn4_9.ForeColor = System.Drawing.Color.White;
+            this.btn4_9.Location = new System.Drawing.Point(118, 127);
+            this.btn4_9.Name = "btn4_9";
+            this.btn4_9.Size = new System.Drawing.Size(75, 71);
+            this.btn4_9.TabIndex = 7;
+            this.btn4_9.Text = "4/9";
+            this.btn4_9.UseVisualStyleBackColor = false;
+            // 
+            // btn3_8
+            // 
+            this.btn3_8.BackColor = System.Drawing.Color.ForestGreen;
+            this.btn3_8.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn3_8.ForeColor = System.Drawing.Color.White;
+            this.btn3_8.Location = new System.Drawing.Point(35, 127);
+            this.btn3_8.Name = "btn3_8";
+            this.btn3_8.Size = new System.Drawing.Size(75, 71);
+            this.btn3_8.TabIndex = 6;
+            this.btn3_8.Text = "3/8";
+            this.btn3_8.UseVisualStyleBackColor = false;
+            // 
+            // btn2_7
+            // 
+            this.btn2_7.BackColor = System.Drawing.Color.ForestGreen;
+            this.btn2_7.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn2_7.ForeColor = System.Drawing.Color.White;
+            this.btn2_7.Location = new System.Drawing.Point(200, 49);
+            this.btn2_7.Name = "btn2_7";
+            this.btn2_7.Size = new System.Drawing.Size(75, 71);
+            this.btn2_7.TabIndex = 5;
+            this.btn2_7.Text = "2/7";
+            this.btn2_7.UseVisualStyleBackColor = false;
+            // 
+            // btn1_6
+            // 
+            this.btn1_6.BackColor = System.Drawing.Color.ForestGreen;
+            this.btn1_6.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn1_6.ForeColor = System.Drawing.Color.White;
+            this.btn1_6.Location = new System.Drawing.Point(118, 49);
+            this.btn1_6.Name = "btn1_6";
+            this.btn1_6.Size = new System.Drawing.Size(75, 71);
+            this.btn1_6.TabIndex = 4;
+            this.btn1_6.Text = "1/6";
+            this.btn1_6.UseVisualStyleBackColor = false;
+            // 
+            // btnEnt
+            // 
+            this.btnEnt.BackColor = System.Drawing.Color.ForestGreen;
+            this.btnEnt.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEnt.ForeColor = System.Drawing.Color.White;
+            this.btnEnt.Location = new System.Drawing.Point(35, 49);
+            this.btnEnt.Name = "btnEnt";
+            this.btnEnt.Size = new System.Drawing.Size(75, 71);
+            this.btnEnt.TabIndex = 3;
+            this.btnEnt.Text = "ENT";
+            this.btnEnt.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnEnt.UseVisualStyleBackColor = false;
+            // 
+            // wizardPageResultsStatus
+            // 
+            this.wizardPageResultsStatus.Controls.Add(this.themedLabel12);
+            this.wizardPageResultsStatus.Controls.Add(this.tbllnitialStatus);
+            this.wizardPageResultsStatus.Name = "wizardPageResultsStatus";
+            this.wizardPageResultsStatus.NextPage = this.wizardPageKeyPress;
+            this.wizardPageResultsStatus.Size = new System.Drawing.Size(508, 414);
+            this.stepWizardControl1.SetStepText(this.wizardPageResultsStatus, "PCB initial status");
+            this.wizardPageResultsStatus.TabIndex = 5;
+            this.wizardPageResultsStatus.Text = "Initial Status";
+            this.wizardPageResultsStatus.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageResultsStatus_Initialize);
+            this.wizardPageResultsStatus.Enter += new System.EventHandler(this.wizardPageResultsStatus_Enter);
+            this.wizardPageResultsStatus.Leave += new System.EventHandler(this.wizardPageResultsStatus_Leave);
+            // 
+            // themedLabel12
+            // 
+            this.themedLabel12.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.themedLabel12.Location = new System.Drawing.Point(43, 41);
+            this.themedLabel12.Name = "themedLabel12";
+            this.themedLabel12.Size = new System.Drawing.Size(409, 30);
+            this.themedLabel12.TabIndex = 1;
+            this.themedLabel12.Text = "Detecting the status of the initial test parameters. ";
+            // 
+            // tbllnitialStatus
+            // 
+            this.tbllnitialStatus.ColumnCount = 3;
+            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.tbllnitialStatus.Location = new System.Drawing.Point(43, 99);
+            this.tbllnitialStatus.Name = "tbllnitialStatus";
+            this.tbllnitialStatus.RowCount = 1;
+            this.tbllnitialStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tbllnitialStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 125F));
+            this.tbllnitialStatus.Size = new System.Drawing.Size(443, 125);
+            this.tbllnitialStatus.TabIndex = 0;
             // 
             // wizardPageSignIn
             // 
@@ -222,6 +370,7 @@
             this.wizardPageProgramPCB.Controls.Add(this.themedLabel9);
             this.wizardPageProgramPCB.Controls.Add(this.themedLabel8);
             this.wizardPageProgramPCB.Name = "wizardPageProgramPCB";
+            this.wizardPageProgramPCB.NextPage = this.wizardPageResultsStatus;
             this.wizardPageProgramPCB.Size = new System.Drawing.Size(508, 414);
             this.stepWizardControl1.SetStepText(this.wizardPageProgramPCB, "Program the node PCB");
             this.wizardPageProgramPCB.TabIndex = 4;
@@ -285,41 +434,6 @@
             this.themedLabel8.Size = new System.Drawing.Size(259, 23);
             this.themedLabel8.TabIndex = 0;
             this.themedLabel8.Text = "Program the trap node PCB";
-            // 
-            // wizardPageResultsStatus
-            // 
-            this.wizardPageResultsStatus.Controls.Add(this.themedLabel12);
-            this.wizardPageResultsStatus.Controls.Add(this.tbllnitialStatus);
-            this.wizardPageResultsStatus.Name = "wizardPageResultsStatus";
-            this.wizardPageResultsStatus.Size = new System.Drawing.Size(508, 414);
-            this.stepWizardControl1.SetStepText(this.wizardPageResultsStatus, "PCB initial status");
-            this.wizardPageResultsStatus.TabIndex = 5;
-            this.wizardPageResultsStatus.Text = "Initial Status";
-            this.wizardPageResultsStatus.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageResultsStatus_Initialize);
-            this.wizardPageResultsStatus.Leave += new System.EventHandler(this.wizardPageResultsStatus_Leave);
-            // 
-            // themedLabel12
-            // 
-            this.themedLabel12.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.themedLabel12.Location = new System.Drawing.Point(43, 41);
-            this.themedLabel12.Name = "themedLabel12";
-            this.themedLabel12.Size = new System.Drawing.Size(409, 30);
-            this.themedLabel12.TabIndex = 1;
-            this.themedLabel12.Text = "Detecting the status of the initial test parameters. ";
-            // 
-            // tbllnitialStatus
-            // 
-            this.tbllnitialStatus.ColumnCount = 3;
-            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.tbllnitialStatus.Location = new System.Drawing.Point(43, 99);
-            this.tbllnitialStatus.Name = "tbllnitialStatus";
-            this.tbllnitialStatus.RowCount = 1;
-            this.tbllnitialStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tbllnitialStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 125F));
-            this.tbllnitialStatus.Size = new System.Drawing.Size(443, 125);
-            this.tbllnitialStatus.TabIndex = 0;
             // 
             // wizardPageAccelerometerBase
             // 
@@ -464,12 +578,14 @@
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).EndInit();
+            this.wizardPageKeyPress.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.wizardPageResultsStatus.ResumeLayout(false);
             this.wizardPageSignIn.ResumeLayout(false);
             this.wizardPageInsertPCB.ResumeLayout(false);
             this.wizardPageInsertPCB.PerformLayout();
             this.wizardPageProgramPCB.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.wizardPageResultsStatus.ResumeLayout(false);
             this.wizardPageAccelerometerBase.ResumeLayout(false);
             this.wizardPageAccelTestXY.ResumeLayout(false);
             this.wizardPageAccelTestYZ.ResumeLayout(false);
@@ -515,6 +631,14 @@
         private AeroWizard.ThemedLabel themedLabel16;
         private System.Windows.Forms.TableLayoutPanel tblTransceiverTest;
         private System.Windows.Forms.TableLayoutPanel tblPCBUnitId;
+        private AeroWizard.WizardPage wizardPageKeyPress;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btn5_0;
+        private System.Windows.Forms.Button btn4_9;
+        private System.Windows.Forms.Button btn3_8;
+        private System.Windows.Forms.Button btn2_7;
+        private System.Windows.Forms.Button btn1_6;
+        private System.Windows.Forms.Button btnEnt;
 
 
     }
