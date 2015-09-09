@@ -82,6 +82,54 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.LED_GREEN_FLASH,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.LED_RED_FLASH,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.PIEZO_TEST,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.REED_TEST,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.RTC_SET,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.RTC_GET,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestParameters.ACCELEROMETER_X_BASE,
                 response_report_column = 6,
                 response_value = "Unknown"
@@ -154,7 +202,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.TRANS_MSG_TX,
+                response_parameter = TestParameters.RF_BGR_RSSI,
                 response_report_column = 15,
                 response_value = "Unknown"
             });
@@ -162,7 +210,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.TRANS_MSG_RX,
+                response_parameter = TestParameters.RF_HUB_ACK,
                 response_report_column = 16,
                 response_value = "Unknown"
             });
@@ -170,7 +218,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.TRANS_RSSI,
+                response_parameter = TestParameters.RF_ACK_RSSI,
                 response_report_column = 17,
                 response_value = "Unknown"
             });

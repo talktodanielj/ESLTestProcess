@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ESLTestProcess
 {
-    public partial class Main : Form
+    public partial class Main 
     {
         int _activeKey = -1;
         bool _altColour = false;
-        bool _gotBeginTestResult = false;
 
         private void FlashColourCallback(object sender)
         {
@@ -55,8 +55,6 @@ namespace ESLTestProcess
                 btnRef.BackColor = activeColour;
         }
 
-        Task _commandTask;
-        bool _endTask = false;
 
         private void wizardPageKeyPress_Enter(object sender, EventArgs e)
         {
@@ -71,28 +69,7 @@ namespace ESLTestProcess
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageKeyPress_ProcessResponseEventHandler;
 
             _activeKey = KEY_ENT;
-            _gotBeginTestResult = false;
-             _endTask = false;
-
-             CommunicationManager.Instance.SendCommand(Parameters.REQUEST_NODE_ID);
-
-            //_commandTask = new Task(() =>
-            //{
-            //    while (true)
-            //    {
-            //        if (!_gotBeginTestResult)
-            //        {
-            //            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_NODE_ID);
-            //        }
-
-            //        if (_endTask)
-            //            break;
-
-            //        System.Threading.Thread.Sleep(2000);
-            //    }
-            //});
-
-            //_commandTask.Start();
+            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
         }
 
         private const int KEY_ENT = 2;
@@ -105,22 +82,13 @@ namespace ESLTestProcess
 
         void wizardPageKeyPress_ProcessResponseEventHandler(object sender, ByteStreamHandler.ProcessResponseEventArgs e)
         {
-            _gotBeginTestResult = true;
-
             if (e.ResponseId == Parameters.PARSE_ERROR)
             {
                 _log.Info("Got a parse error");
-                //_gotBeginTestResult = false;
 
                 CommunicationManager.Instance.SendCommand(Parameters.REQUEST_NODE_ID);
-
-                //byte[] commandBytes = Parameters.REQUEST_START_BUTTON_TEST;
-                //commandBytes[2] = 10; // Give 10 seconds to complete the test
-                //commandBytes[3] = (byte)KEY_5_0; // The final key in the sequence that indicates the test should stop
-                //CommunicationManager.Instance.SendCommand(commandBytes);
-
             }
-            else if (e.ResponseId == Parameters.TEST_ID_NODE_ID)
+            else if (e.ResponseId == Parameters.TEST_ID_BEGIN_TEST)
             {
                 _log.Info("Got begin test command");
                 Console.WriteLine("Sending keypress test command");
@@ -129,7 +97,6 @@ namespace ESLTestProcess
                 commandBytes[2] = 10; // Give 10 seconds to complete the test
                 commandBytes[3] = (byte)KEY_5_0; // The final key in the sequence that indicates the test should stop
                 CommunicationManager.Instance.SendCommand(commandBytes);
-
             }
             else if (e.ResponseId == Parameters.TEST_END)
             {
@@ -137,19 +104,11 @@ namespace ESLTestProcess
 
                 if (_activeKey == KEY_END_TEST)
                 {
-                    //_commandTask.Wait();
-                    //_endTask = true;
-                }
-                else
-                {
-                    // Try the test again
-                    _gotBeginTestResult = false;
+                    // TODO Goto the next page
                 }
             }
             else if (e.ResponseId == Parameters.TEST_ID_BUTTON_TEST)
             {
-                _gotBeginTestResult = true;
-
                 var currentKey = _activeKey;
 
                 switch (e.RawData[2])
@@ -182,7 +141,6 @@ namespace ESLTestProcess
                         _log.Info("Invalid key code");
                         break;
                 }
-
                 SetKeyColour(Color.YellowGreen, currentKey);
             }
             else
@@ -193,11 +151,7 @@ namespace ESLTestProcess
 
         private void wizardPageKeyPress_Leave(object sender, EventArgs e)
         {
-            _endTask = true;
-            //_commandTask.Wait();
-            //_commandTask.Dispose();
-            //_commandTask = null;
-
+            _flashColourTimer.Change(Timeout.Infinite, Timeout.Infinite);
             _byteStreamHandler.ProcessResponseEventHandler -= wizardPageKeyPress_ProcessResponseEventHandler;
         }
     }

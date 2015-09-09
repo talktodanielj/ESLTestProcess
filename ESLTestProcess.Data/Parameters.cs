@@ -79,8 +79,8 @@ namespace ESLTestProcess.Data
             new Response{ TestId = TEST_ID_DUMP_EPROM_TO_CONSOLE, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_RTC_VALUE, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_SET_RTC_VALUE, ExpectedLength = 3},
-            new Response{ TestId = TEST_ID_GET_BGRSSI_VALUE, ExpectedLength = 3},
-            new Response{ TestId = TEST_ID_CAPTURE_HUB, ExpectedLength = 3}
+            new Response{ TestId = TEST_ID_GET_BGRSSI_VALUE, ExpectedLength = 17},
+            new Response{ TestId = TEST_ID_CAPTURE_HUB, ExpectedLength = 27}
         };
     }
 }

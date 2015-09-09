@@ -24,6 +24,8 @@ namespace ESLTestProcess
             InitializeComponent();
             _timeOutTimer = new System.Threading.Timer(TimeOutCallback);
             _flashColourTimer = new System.Threading.Timer(FlashColourCallback);
+            _flashLedBtnTimer = new System.Threading.Timer(FlashLEDBtnCallback);
+
             if (CommunicationManager.Instance.OpenConnection())
             {
                 CommunicationManager.Instance.SerialPort.DataReceived += SerialPort_DataReceived;
@@ -45,6 +47,8 @@ namespace ESLTestProcess
         private AddTechnician addTechnicianWindow = new AddTechnician();
         private System.Threading.Timer _timeOutTimer;
         private System.Threading.Timer _flashColourTimer;
+        private System.Threading.Timer _flashLedBtnTimer;
+
         private TableLayoutPanel _activeTblLayoutPanel;
         private ByteStreamHandler _byteStreamHandler = new ByteStreamHandler();
 
@@ -325,21 +329,7 @@ namespace ESLTestProcess
             _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
         }
-
-        private void wizardPageTransceiver_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
-        {
-            if (tblTransceiverTest.RowCount == 1)
-            {
-                _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("Message Sent", TestParameters.TRANS_MSG_TX));
-                _testParameters.Add(new Tuple<string, string>("Receveied Response", TestParameters.TRANS_MSG_RX));
-                _testParameters.Add(new Tuple<string, string>("RSSI value", TestParameters.TRANS_RSSI));
-
-                _activeTblLayoutPanel = tblTransceiverTest;
-                GenerateTable(_testParameters.ToArray());
-            }
-        }
-
+        
         private void wizardPageProgramPCB_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             if (tblPCBUnitId.RowCount == 1)
@@ -384,8 +374,10 @@ namespace ESLTestProcess
             ProcessControl.Instance.StartTestSession(cbTechnician.Text);
         }
 
-        
+        private void wizardPageResultsStatus_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
 
+        }
 
     }
 }
