@@ -120,6 +120,19 @@ namespace ESLTestProcess
             {
                 var iconControl = (PictureBox)_activeTblLayoutPanel.Controls.Find(TestParameters.GetIconName(e.Parameter), true).FirstOrDefault();
 
+                if (iconControl == null)
+                {
+                    if (e.Parameter == TestParameters.LED_GREEN_FLASH)
+                    {
+                        iconControl = pictureBoxLED1;
+                    }
+
+                    if (e.Parameter == TestParameters.LED_RED_FLASH)
+                    {
+                        iconControl = pictureBoxLED2;
+                    }
+                }
+
                 if (iconControl != null)
                 {
                     switch (e.Status)
@@ -249,32 +262,7 @@ namespace ESLTestProcess
 
         private List<Tuple<string, string>> _testParameters = new List<Tuple<string, string>>();
 
-        private void wizardPageAccelerometerBase_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
-        {
-            if (tblAccelerometerBasline.RowCount == 1)
-            {
-                _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_BASE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_BASE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_BASE));
 
-                _activeTblLayoutPanel = tblAccelerometerBasline;
-                GenerateTable(_testParameters.ToArray());
-            }
-
-            _timeOutTimer.Change(8000, Timeout.Infinite);
-            ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-
-            // Start the test process
-            _testExpired = false;
-            ProcessControl.Instance.TestBaseAccelerometerValues();
-        }
-
-        private void wizardPageAccelerometerBase_Leave(object sender, EventArgs e)
-        {
-            _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
-        }
 
         private void wizardPageAccelTestXY_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
@@ -378,6 +366,12 @@ namespace ESLTestProcess
         {
 
         }
+
+        private void wizardPageProgramPCB_Enter(object sender, EventArgs e)
+        {
+            ProcessControl.Instance.BeginNewTestRun();
+        }
+
 
     }
 }

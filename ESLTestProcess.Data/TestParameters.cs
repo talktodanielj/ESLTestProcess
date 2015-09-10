@@ -37,6 +37,13 @@ namespace ESLTestProcess.Data
         public static string RTC_SET = "rtc_set";
         public static string RTC_GET = "rtc_get";
 
+        public static string KEY_ENT = "key_ent";
+        public static string KEY_1_6 = "key_1_6";
+        public static string KEY_2_7 = "key_2_7";
+        public static string KEY_3_8 = "key_3_8";
+        public static string KEY_4_9 = "key_4_9";
+        public static string KEY_5_0 = "key_5_0";
+        
         public static string GetStatusName(string parameter)
         {
             return parameter + "_status";

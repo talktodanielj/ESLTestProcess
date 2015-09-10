@@ -99,7 +99,7 @@ namespace ESLTestProcess.Data
                     //command.Add(checkSum); 
                     foreach (var dataByte in buffer)
                     {
-                        // Need this sleep or else we can't send more than 1 byte at a time to the node
+                        // Need this sleep or else the node code doest keep up...
                         System.Threading.Thread.Sleep(15);
                         _serialPort.Write(new[] { dataByte }, 0, 1);
                         _serialPort.BaseStream.Flush();

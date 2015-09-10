@@ -45,11 +45,11 @@ namespace ESLTestProcess.Data
                                                                                                              // Test duration, Expected Key   
         public static readonly byte[] REQUEST_START_BUTTON_TEST = { 0x02, TEST_ID_BUTTON_TEST, 0x02, 0x00, 0x03 };
 
-        public static readonly byte[] REQUEST_START_ACCELEROMETER_TEST = { 0x02, TEST_ID_START_ACCELEROMETER_TEST, 0x03 };
-        public static readonly byte[] REQUEST_START_PIEZO_TEST = { 0x02, TEST_ID_START_PIEZO_TEST, 0x03 };
+        public static readonly byte[] REQUEST_START_ACCELEROMETER_TEST = { 0x02, TEST_ID_START_ACCELEROMETER_TEST, 0x05, 0x03 }; // Test duration default 5 seconds
+        public static readonly byte[] REQUEST_START_PIEZO_TEST = { 0x02, TEST_ID_START_PIEZO_TEST, 0x05, 0x03 }; //Test duration default 5 seconds
         public static readonly byte[] REQUEST_HUB_ID = { 0x02, TEST_ID_HUB_ID, 0x03 };
         public static readonly byte[] REQUEST_SET_NODE_ID = { 0x02, TEST_ID_SET_NODE_ID, 0x00, 0x00, 0x00, 0x03 };
-        public static readonly byte[] REQUEST_REED_SWITCH_TEST = { 0x02, TEST_ID_REED_SWITCH_TEST, 0x03 };
+        public static readonly byte[] REQUEST_REED_SWITCH_TEST = { 0x02, TEST_ID_REED_SWITCH_TEST, 0x05, 0x03 }; //Test duration default 5 seconds
         public static readonly byte[] REQUEST_SET_HUB_ID = { 0x02, TEST_ID_SET_HUB_ID, 0x00, 0x00, 0x03 };
         public static readonly byte[] REQUEST_DUMP_EPROM_TO_CONSOLE = { 0x02, TEST_ID_DUMP_EPROM_TO_CONSOLE, 0x03 };
         public static readonly byte[] REQUEST_RTC_VALUE = { 0x02, TEST_ID_RTC_VALUE, 0x03 };
@@ -70,14 +70,14 @@ namespace ESLTestProcess.Data
             new Response{ TestId = TEST_ID_START_FLASH_GREEN_LED, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_START_FLASH_RED_LED, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_BUTTON_TEST, ExpectedLength = 4},
-            new Response{ TestId = TEST_ID_START_ACCELEROMETER_TEST, ExpectedLength = 3},
+            new Response{ TestId = TEST_ID_START_ACCELEROMETER_TEST, ExpectedLength = 27},
             new Response{ TestId = TEST_ID_START_PIEZO_TEST, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_HUB_ID, ExpectedLength = 7},
             new Response{ TestId = TEST_ID_SET_NODE_ID, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_REED_SWITCH_TEST, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_SET_HUB_ID, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_DUMP_EPROM_TO_CONSOLE, ExpectedLength = 3},
-            new Response{ TestId = TEST_ID_RTC_VALUE, ExpectedLength = 3},
+            new Response{ TestId = TEST_ID_RTC_VALUE, ExpectedLength = 20},
             new Response{ TestId = TEST_ID_SET_RTC_VALUE, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_GET_BGRSSI_VALUE, ExpectedLength = 17},
             new Response{ TestId = TEST_ID_CAPTURE_HUB, ExpectedLength = 27}

@@ -119,12 +119,12 @@ namespace ESLTestConsole
                         {
                             byte[] commandBytes = Parameters.REQUEST_SET_RTC_VALUE;
 
-                            commandBytes[2] = ToBcd(DateTime.Now.Year - 2000)[0];
-                            commandBytes[3] = ToBcd(DateTime.Now.Month)[0];
-                            commandBytes[4] = ToBcd(DateTime.Now.Day)[0];
-                            commandBytes[5] = ToBcd(DateTime.Now.Hour)[0];
-                            commandBytes[6] = ToBcd(DateTime.Now.Minute)[0];
-                            commandBytes[7] = ToBcd(DateTime.Now.Second)[0];
+                            commandBytes[2] = TestHelper.ToBcd(DateTime.Now.Year - 2000)[0];
+                            commandBytes[3] = TestHelper.ToBcd(DateTime.Now.Month)[0];
+                            commandBytes[4] = TestHelper.ToBcd(DateTime.Now.Day)[0];
+                            commandBytes[5] = TestHelper.ToBcd(DateTime.Now.Hour)[0];
+                            commandBytes[6] = TestHelper.ToBcd(DateTime.Now.Minute)[0];
+                            commandBytes[7] = TestHelper.ToBcd(DateTime.Now.Second)[0];
 
                             CommunicationManager.Instance.SendCommand(commandBytes);
 
@@ -187,21 +187,6 @@ namespace ESLTestConsole
 
         }
 
-        public static byte[] ToBcd(int value)
-        {
-            if (value < 0 || value > 99999999)
-                throw new ArgumentOutOfRangeException("value");
-            byte[] ret = new byte[4];
-            for (int i = 0; i < 4; i++)
-            {
-                ret[i] = (byte)(value % 10);
-                value /= 10;
-                ret[i] |= (byte)((value % 10) << 4);
-                value /= 10;
-            }
-            return ret;
-        }
-
 
         static void WriteTestOptions()
         {
@@ -233,8 +218,8 @@ namespace ESLTestConsole
         static void SerialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             string data = CommunicationManager.Instance.SerialPort.ReadExisting();
-            Console.Write(data);
-            return;
+            //Console.Write(data);
+            //return;
             //if (data != null)
             //{
             //    var responseData = ASCIIEncoding.ASCII.GetBytes(data.Trim());
@@ -246,7 +231,7 @@ namespace ESLTestConsole
             {
                 var responseData = ASCIIEncoding.ASCII.GetBytes(data.Trim());
 
-                Console.WriteLine("Rx = {0}", data);
+                Console.WriteLine("Rx = {0}", BitConverter.ToString(responseData));
 
                 if (responseData.Length > 1)
                 {

@@ -56,6 +56,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.themedLabel12 = new AeroWizard.ThemedLabel();
             this.tbllnitialStatus = new System.Windows.Forms.TableLayoutPanel();
+            this.wizardPagePiezo = new AeroWizard.WizardPage();
+            this.lblPezoAndReed = new System.Windows.Forms.Label();
+            this.tblPiezoPanel = new System.Windows.Forms.TableLayoutPanel();
             this.wizardPageKeyPress = new AeroWizard.WizardPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btn5_0 = new System.Windows.Forms.Button();
@@ -76,9 +79,6 @@
             this.wizardPageAccelTestYZ = new AeroWizard.WizardPage();
             this.tblAccelerometerYZ = new System.Windows.Forms.TableLayoutPanel();
             this.themedLabel15 = new AeroWizard.ThemedLabel();
-            this.wizardPagePiezo = new AeroWizard.WizardPage();
-            this.lblPezoAndReed = new System.Windows.Forms.Label();
-            this.tblPiezoPanel = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
@@ -87,13 +87,13 @@
             this.wizardPageResultsStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED1)).BeginInit();
+            this.wizardPagePiezo.SuspendLayout();
             this.wizardPageKeyPress.SuspendLayout();
             this.panel1.SuspendLayout();
             this.wizardPageTransceiver.SuspendLayout();
             this.wizardPageAccelerometerBase.SuspendLayout();
             this.wizardPageAccelTestXY.SuspendLayout();
             this.wizardPageAccelTestYZ.SuspendLayout();
-            this.wizardPagePiezo.SuspendLayout();
             this.SuspendLayout();
             // 
             // stepWizardControl1
@@ -104,12 +104,12 @@
             this.stepWizardControl1.Pages.Add(this.wizardPageInsertPCB);
             this.stepWizardControl1.Pages.Add(this.wizardPageProgramPCB);
             this.stepWizardControl1.Pages.Add(this.wizardPageResultsStatus);
+            this.stepWizardControl1.Pages.Add(this.wizardPagePiezo);
             this.stepWizardControl1.Pages.Add(this.wizardPageKeyPress);
+            this.stepWizardControl1.Pages.Add(this.wizardPageTransceiver);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelerometerBase);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestXY);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestYZ);
-            this.stepWizardControl1.Pages.Add(this.wizardPageTransceiver);
-            this.stepWizardControl1.Pages.Add(this.wizardPagePiezo);
             this.stepWizardControl1.Size = new System.Drawing.Size(806, 568);
             this.stepWizardControl1.StepListFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.stepWizardControl1.StepListWidth = 250;
@@ -252,6 +252,7 @@
             this.wizardPageProgramPCB.Text = "Program PCB";
             this.wizardPageProgramPCB.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageProgramPCB_Commit);
             this.wizardPageProgramPCB.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageProgramPCB_Initialize);
+            this.wizardPageProgramPCB.Enter += new System.EventHandler(this.wizardPageProgramPCB_Enter);
             this.wizardPageProgramPCB.Leave += new System.EventHandler(this.wizardPageProgramPCB_Leave);
             // 
             // tblPCBUnitId
@@ -320,7 +321,7 @@
             this.wizardPageResultsStatus.Controls.Add(this.themedLabel12);
             this.wizardPageResultsStatus.Controls.Add(this.tbllnitialStatus);
             this.wizardPageResultsStatus.Name = "wizardPageResultsStatus";
-            this.wizardPageResultsStatus.NextPage = this.wizardPagePiezo;
+            this.wizardPageResultsStatus.NextPage = this.wizardPageAccelerometerBase;
             this.wizardPageResultsStatus.Size = new System.Drawing.Size(508, 414);
             this.stepWizardControl1.SetStepText(this.wizardPageResultsStatus, "PCB initial status");
             this.wizardPageResultsStatus.TabIndex = 5;
@@ -332,7 +333,7 @@
             // 
             // pictureBoxLED2
             // 
-            this.pictureBoxLED2.Location = new System.Drawing.Point(147, 360);
+            this.pictureBoxLED2.Location = new System.Drawing.Point(272, 360);
             this.pictureBoxLED2.Name = "pictureBoxLED2";
             this.pictureBoxLED2.Size = new System.Drawing.Size(42, 38);
             this.pictureBoxLED2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -341,7 +342,7 @@
             // 
             // pictureBoxLED1
             // 
-            this.pictureBoxLED1.Location = new System.Drawing.Point(68, 360);
+            this.pictureBoxLED1.Location = new System.Drawing.Point(193, 360);
             this.pictureBoxLED1.Name = "pictureBoxLED1";
             this.pictureBoxLED1.Size = new System.Drawing.Size(42, 38);
             this.pictureBoxLED1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -351,7 +352,7 @@
             // btnLED2
             // 
             this.btnLED2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLED2.Location = new System.Drawing.Point(131, 300);
+            this.btnLED2.Location = new System.Drawing.Point(256, 300);
             this.btnLED2.Name = "btnLED2";
             this.btnLED2.Size = new System.Drawing.Size(75, 54);
             this.btnLED2.TabIndex = 4;
@@ -361,7 +362,7 @@
             // btnLED1
             // 
             this.btnLED1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLED1.Location = new System.Drawing.Point(52, 300);
+            this.btnLED1.Location = new System.Drawing.Point(177, 300);
             this.btnLED1.Name = "btnLED1";
             this.btnLED1.Size = new System.Drawing.Size(75, 54);
             this.btnLED1.TabIndex = 3;
@@ -372,7 +373,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(45, 264);
+            this.label1.Location = new System.Drawing.Point(206, 264);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 21);
             this.label1.TabIndex = 2;
@@ -400,6 +401,41 @@
             this.tbllnitialStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 125F));
             this.tbllnitialStatus.Size = new System.Drawing.Size(443, 125);
             this.tbllnitialStatus.TabIndex = 0;
+            // 
+            // wizardPagePiezo
+            // 
+            this.wizardPagePiezo.Controls.Add(this.lblPezoAndReed);
+            this.wizardPagePiezo.Controls.Add(this.tblPiezoPanel);
+            this.wizardPagePiezo.Name = "wizardPagePiezo";
+            this.wizardPagePiezo.NextPage = this.wizardPageKeyPress;
+            this.wizardPagePiezo.Size = new System.Drawing.Size(508, 414);
+            this.stepWizardControl1.SetStepText(this.wizardPagePiezo, "Piezo and Reed Test");
+            this.wizardPagePiezo.TabIndex = 11;
+            this.wizardPagePiezo.Text = "Piezo and Reed Test";
+            this.wizardPagePiezo.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPagePiezo_Initialize);
+            this.wizardPagePiezo.Enter += new System.EventHandler(this.wizardPagePiezo_Enter);
+            this.wizardPagePiezo.Leave += new System.EventHandler(this.wizardPagePiezo_Leave);
+            // 
+            // lblPezoAndReed
+            // 
+            this.lblPezoAndReed.AutoSize = true;
+            this.lblPezoAndReed.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPezoAndReed.Location = new System.Drawing.Point(38, 31);
+            this.lblPezoAndReed.Name = "lblPezoAndReed";
+            this.lblPezoAndReed.Size = new System.Drawing.Size(283, 25);
+            this.lblPezoAndReed.TabIndex = 1;
+            this.lblPezoAndReed.Text = "Test Piezo, Reed Switch and RTC";
+            // 
+            // tblPiezoPanel
+            // 
+            this.tblPiezoPanel.ColumnCount = 1;
+            this.tblPiezoPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblPiezoPanel.Location = new System.Drawing.Point(19, 80);
+            this.tblPiezoPanel.Name = "tblPiezoPanel";
+            this.tblPiezoPanel.RowCount = 1;
+            this.tblPiezoPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblPiezoPanel.Size = new System.Drawing.Size(471, 183);
+            this.tblPiezoPanel.TabIndex = 0;
             // 
             // wizardPageKeyPress
             // 
@@ -506,7 +542,7 @@
             this.wizardPageTransceiver.Controls.Add(this.themedLabel16);
             this.wizardPageTransceiver.Controls.Add(this.tblTransceiverTest);
             this.wizardPageTransceiver.Name = "wizardPageTransceiver";
-            this.wizardPageTransceiver.NextPage = this.wizardPagePiezo;
+            this.wizardPageTransceiver.NextPage = this.wizardPageTransceiver;
             this.wizardPageTransceiver.Size = new System.Drawing.Size(508, 414);
             this.stepWizardControl1.SetStepText(this.wizardPageTransceiver, "Tranceiver test");
             this.wizardPageTransceiver.TabIndex = 9;
@@ -545,6 +581,7 @@
             this.wizardPageAccelerometerBase.TabIndex = 6;
             this.wizardPageAccelerometerBase.Text = "Accelerometer Baseline Measurements";
             this.wizardPageAccelerometerBase.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageAccelerometerBase_Initialize);
+            this.wizardPageAccelerometerBase.Enter += new System.EventHandler(this.wizardPageAccelerometerBase_Enter);
             this.wizardPageAccelerometerBase.Leave += new System.EventHandler(this.wizardPageAccelerometerBase_Leave);
             // 
             // tblAccelerometerBasline
@@ -637,40 +674,6 @@
             this.themedLabel15.TabIndex = 0;
             this.themedLabel15.Text = "Hold the PCB under test vertically on its shortest edge";
             // 
-            // wizardPagePiezo
-            // 
-            this.wizardPagePiezo.Controls.Add(this.lblPezoAndReed);
-            this.wizardPagePiezo.Controls.Add(this.tblPiezoPanel);
-            this.wizardPagePiezo.Name = "wizardPagePiezo";
-            this.wizardPagePiezo.Size = new System.Drawing.Size(508, 414);
-            this.stepWizardControl1.SetStepText(this.wizardPagePiezo, "Piezo and Reed Test");
-            this.wizardPagePiezo.TabIndex = 11;
-            this.wizardPagePiezo.Text = "Piezo and Reed Test";
-            this.wizardPagePiezo.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPagePiezo_Initialize);
-            this.wizardPagePiezo.Enter += new System.EventHandler(this.wizardPagePiezo_Enter);
-            this.wizardPagePiezo.Leave += new System.EventHandler(this.wizardPagePiezo_Leave);
-            // 
-            // lblPezoAndReed
-            // 
-            this.lblPezoAndReed.AutoSize = true;
-            this.lblPezoAndReed.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPezoAndReed.Location = new System.Drawing.Point(38, 31);
-            this.lblPezoAndReed.Name = "lblPezoAndReed";
-            this.lblPezoAndReed.Size = new System.Drawing.Size(283, 25);
-            this.lblPezoAndReed.TabIndex = 1;
-            this.lblPezoAndReed.Text = "Test Piezo, Reed Switch and RTC";
-            // 
-            // tblPiezoPanel
-            // 
-            this.tblPiezoPanel.ColumnCount = 1;
-            this.tblPiezoPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblPiezoPanel.Location = new System.Drawing.Point(19, 80);
-            this.tblPiezoPanel.Name = "tblPiezoPanel";
-            this.tblPiezoPanel.RowCount = 1;
-            this.tblPiezoPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblPiezoPanel.Size = new System.Drawing.Size(471, 183);
-            this.tblPiezoPanel.TabIndex = 0;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -690,14 +693,14 @@
             this.wizardPageResultsStatus.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED1)).EndInit();
+            this.wizardPagePiezo.ResumeLayout(false);
+            this.wizardPagePiezo.PerformLayout();
             this.wizardPageKeyPress.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.wizardPageTransceiver.ResumeLayout(false);
             this.wizardPageAccelerometerBase.ResumeLayout(false);
             this.wizardPageAccelTestXY.ResumeLayout(false);
             this.wizardPageAccelTestYZ.ResumeLayout(false);
-            this.wizardPagePiezo.ResumeLayout(false);
-            this.wizardPagePiezo.PerformLayout();
             this.ResumeLayout(false);
 
         }

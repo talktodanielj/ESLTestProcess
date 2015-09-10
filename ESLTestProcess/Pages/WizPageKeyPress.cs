@@ -58,6 +58,10 @@ namespace ESLTestProcess
 
         private void wizardPageKeyPress_Enter(object sender, EventArgs e)
         {
+            _testExpired = false;
+            _testParameters.Clear();
+            _activeTblLayoutPanel = null;
+
             SetKeyColour(Color.ForestGreen, KEY_ENT);
             SetKeyColour(Color.ForestGreen, KEY_1_6);
             SetKeyColour(Color.ForestGreen, KEY_2_7);
@@ -70,6 +74,7 @@ namespace ESLTestProcess
 
             _activeKey = KEY_ENT;
             CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+            _timeOutTimer.Change(15000, Timeout.Infinite);
         }
 
         private const int KEY_ENT = 2;
@@ -104,7 +109,8 @@ namespace ESLTestProcess
 
                 if (_activeKey == KEY_END_TEST)
                 {
-                    // TODO Goto the next page
+                    _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    TimeOutCallback(null);
                 }
             }
             else if (e.ResponseId == Parameters.TEST_ID_BUTTON_TEST)
@@ -115,26 +121,32 @@ namespace ESLTestProcess
                 {
                     case KEY_1_6:
                         _log.Info("Key 1/6");
+                        RecordKeyResponse(TestParameters.KEY_1_6, e.RawData);
                         _activeKey = KEY_2_7;
                         break;
                     case KEY_ENT:
                         _log.Info("Key ENT");
+                        RecordKeyResponse(TestParameters.KEY_ENT, e.RawData);
                         _activeKey = KEY_1_6;
                         break;
                     case KEY_5_0:
                         _log.Info("Key 5/0");
+                        RecordKeyResponse(TestParameters.KEY_5_0, e.RawData);
                         _activeKey = KEY_END_TEST;
                         break;
                     case KEY_4_9:
                         _log.Info("Key 4/9");
+                        RecordKeyResponse(TestParameters.KEY_4_9, e.RawData);
                         _activeKey = KEY_5_0;
                         break;
                     case KEY_3_8:
                         _log.Info("Key 3/8");
+                        RecordKeyResponse(TestParameters.KEY_3_8, e.RawData);
                         _activeKey = KEY_4_9;
                         break;
                     case KEY_2_7:
                         _log.Info("Key 2/7");
+                        RecordKeyResponse(TestParameters.KEY_2_7, e.RawData);
                         _activeKey = KEY_3_8;
                         break;
                     default:
@@ -142,11 +154,22 @@ namespace ESLTestProcess
                         break;
                 }
                 SetKeyColour(Color.YellowGreen, currentKey);
+                                
             }
             else
             {
                 _log.InfoFormat("Response id is {0}", (int)e.ResponseId);
             }
+        }
+
+        private void RecordKeyResponse(string keyId, byte[] rawData)
+        {
+            var testRun = ProcessControl.Instance.GetCurrentTestRun();
+            var testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == keyId);
+            testResponse.response_raw = rawData;
+            testResponse.response_value = "PASS";
+            testResponse.response_outcome = (Int16)TestStatus.Pass;
+
         }
 
         private void wizardPageKeyPress_Leave(object sender, EventArgs e)

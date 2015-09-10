@@ -101,6 +101,7 @@
     <Compile Include="technician.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TestHelper.cs" />
     <Compile Include="TestParameters.cs" />
     <Compile Include="TestResponseEventArgs.cs" />
     <Compile Include="DataModel.Context.cs">

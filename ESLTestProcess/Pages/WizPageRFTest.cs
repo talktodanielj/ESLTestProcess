@@ -29,6 +29,12 @@ namespace ESLTestProcess
         private void wizardPageTransceiver_Enter(object sender, EventArgs e)
         {
             _testExpired = false;
+
+            _testParameters.Clear();
+            _testParameters.Add(new Tuple<string, string>("Background RSSI", TestParameters.RF_BGR_RSSI));
+            _testParameters.Add(new Tuple<string, string>("HUB Acknowledgment", TestParameters.RF_HUB_ACK));
+            _testParameters.Add(new Tuple<string, string>("Ack RSSI value", TestParameters.RF_ACK_RSSI));
+
             _activeTblLayoutPanel = tblTransceiverTest;
             _rssiStage = 0;
 
@@ -39,6 +45,7 @@ namespace ESLTestProcess
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageTransceiver_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
             CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+            _timeOutTimer.Change(10000, Timeout.Infinite);
         }
 
         int _rssiStage = 0;

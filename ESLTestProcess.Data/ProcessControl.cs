@@ -127,6 +127,55 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.KEY_ENT,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.KEY_1_6,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.KEY_2_7,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.KEY_3_8,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.KEY_4_9,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
+            _currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestParameters.KEY_5_0,
+                response_report_column = 5,
+                response_value = "Unknown"
+            });
+
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,

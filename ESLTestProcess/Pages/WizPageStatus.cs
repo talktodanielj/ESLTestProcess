@@ -73,9 +73,32 @@ namespace ESLTestProcess
         Color _originalBtnColour = Color.White;
         int _activeLEDBtn = 0;
 
+        private void wizardPageResultsStatus_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
+        {
+            if (tbllnitialStatus.RowCount == 1)
+            {
+                _testParameters.Clear();
+                _testParameters.Add(new Tuple<string, string>("Node Id", TestParameters.NODE_ID));
+                _testParameters.Add(new Tuple<string, string>("Hub Id", TestParameters.HUB_ID));
+                _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestParameters.BATTERY_VOLTAGE));
+                _testParameters.Add(new Tuple<string, string>("Temperature", TestParameters.TEMPERATURE_READING));
+
+                _activeTblLayoutPanel = tbllnitialStatus;
+                GenerateTable(_testParameters.ToArray());
+            }
+        }
+
         private void wizardPageResultsStatus_Enter(object sender, EventArgs e)
         {
             _testExpired = false;
+            wizardPageResultsStatus.AllowNext = false;
+
+            _testParameters.Clear();
+            _testParameters.Add(new Tuple<string, string>("Node Id", TestParameters.NODE_ID));
+            _testParameters.Add(new Tuple<string, string>("Hub Id", TestParameters.HUB_ID));
+            _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestParameters.BATTERY_VOLTAGE));
+            _testParameters.Add(new Tuple<string, string>("Temperature", TestParameters.TEMPERATURE_READING));
+
             _activeTblLayoutPanel = tbllnitialStatus;
 
             if (_originalBtnColour == Color.White)
@@ -99,6 +122,9 @@ namespace ESLTestProcess
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageResultsStatus_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
             CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+
+            _timeOutTimer.Change(10000, Timeout.Infinite);
+
         }
 
         void wizardPageResultsStatus_ProcessResponseEventHandler(object sender, ByteStreamHandler.ProcessResponseEventArgs e)
@@ -178,7 +204,7 @@ namespace ESLTestProcess
                 case Parameters.TEST_ID_TEMPERATURE_LEVEL:
                     rawData = e.RawData.Skip(2).Take(4).ToArray();
                     string temperatureData = new string(new[] { (char)rawData[2], (char)rawData[3] });
-                    int temperature = int.Parse(temperatureData);
+                    int temperature = Convert.ToInt32(temperatureData, 16);
                     testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.TEMPERATURE_READING);
                     testResponse.response_raw = e.RawData;
                     testResponse.response_value = string.Format("{0:0.0}C", temperature);
@@ -247,6 +273,10 @@ namespace ESLTestProcess
                         RawValue = testResponse.response_raw
                     });
                     _log.Info("Got green RED flash");
+
+                    AllowResultsPageToMoveNext();
+                    _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    TimeOutCallback(null);
                     break;
 
 
@@ -256,20 +286,15 @@ namespace ESLTestProcess
             }
         }
 
-        private void wizardPageResultsStatus_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
+        private void AllowResultsPageToMoveNext()
         {
-            if (tbllnitialStatus.RowCount == 1)
+            if (InvokeRequired)
             {
-                ProcessControl.Instance.BeginNewTestRun();
-                _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("Node Id", TestParameters.NODE_ID));
-                _testParameters.Add(new Tuple<string, string>("Hub Id", TestParameters.HUB_ID));
-                _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestParameters.BATTERY_VOLTAGE));
-                _testParameters.Add(new Tuple<string, string>("Temperature", TestParameters.TEMPERATURE_READING));
-
-                _activeTblLayoutPanel = tbllnitialStatus;
-                GenerateTable(_testParameters.ToArray());
+                this.Invoke(new Action(AllowResultsPageToMoveNext));
+                return;
             }
+            
+            wizardPageResultsStatus.AllowNext = true;
         }
 
         private void wizardPageResultsStatus_Leave(object sender, EventArgs e)
