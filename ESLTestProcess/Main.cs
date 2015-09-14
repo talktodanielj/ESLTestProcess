@@ -30,6 +30,8 @@ namespace ESLTestProcess
             {
                 CommunicationManager.Instance.SerialPort.DataReceived += SerialPort_DataReceived;
             }
+
+            this.KeyPreview = true;
         }
 
         void SerialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
@@ -88,6 +90,9 @@ namespace ESLTestProcess
             _activeTblLayoutPanel.ResumeLayout();
             _activeTblLayoutPanel.PerformLayout();
 
+
+            int postion = (this.stepWizardControl1.SelectedPage.Width - _activeTblLayoutPanel.Width) / 2;
+            _activeTblLayoutPanel.Location = new Point(postion, _activeTblLayoutPanel.Location.Y);
         }
 
         private void AddRow(Control label, Control value, Control status)
@@ -139,21 +144,34 @@ namespace ESLTestProcess
                     {
                         case TestStatus.Unknown:
                             if (_testExpired)
+                            {
                                 iconControl.Image = ESLTestProcess.Properties.Resources.question;
+                                iconControl.Image.Tag = "question";
+                            }
                             else
-                                iconControl.Image = ESLTestProcess.Properties.Resources.test_spinner;
+                            {
+                                // If the spinner is currently active don't change the image
+                                // or else the animation gets reset
+                                if (iconControl.Image.Tag != "test_spinner")
+                                    iconControl.Image = ESLTestProcess.Properties.Resources.test_spinner;
+                                iconControl.Image.Tag = "test_spinner";
+                            }
                             break;
                         case TestStatus.Fail:
                             iconControl.Image = ESLTestProcess.Properties.Resources.cross;
+                            iconControl.Image.Tag = "cross";
                             break;
                         case TestStatus.Warning:
                             iconControl.Image = ESLTestProcess.Properties.Resources.alert;
+                            iconControl.Image.Tag = "alert";
                             break;
                         case TestStatus.Pass:
                             iconControl.Image = ESLTestProcess.Properties.Resources.tick;
+                            iconControl.Image.Tag = "tick";
                             break;
                         default:
                             iconControl.Image = ESLTestProcess.Properties.Resources.question;
+                            iconControl.Image.Tag = "question";
                             break;
                     }
                 }
@@ -199,6 +217,11 @@ namespace ESLTestProcess
                 }
             }
 
+            this.BeginInvoke(new MethodInvoker(delegate
+            {
+                stepWizardControl1.SelectedPage.AllowNext = true;
+            }));
+
             if (allPassed)
             {
                 this.BeginInvoke(new MethodInvoker(delegate
@@ -206,11 +229,6 @@ namespace ESLTestProcess
                         stepWizardControl1.NextPage();
                     }));
             }
-        }
-
-        private void stepWizardControl1_SelectedPageChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void btnAddTechnician_Click(object sender, EventArgs e)
@@ -262,62 +280,6 @@ namespace ESLTestProcess
 
         private List<Tuple<string, string>> _testParameters = new List<Tuple<string, string>>();
 
-
-
-        private void wizardPageAccelTestXY_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
-        {
-            if (tblAccelerometerXY.RowCount == 1)
-            {
-                _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_LONG_EDGE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_LONG_EDGE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_LONG_EDGE));
-
-                _activeTblLayoutPanel = tblAccelerometerXY;
-                GenerateTable(_testParameters.ToArray());
-            }
-
-            _timeOutTimer.Change(8000, Timeout.Infinite);
-            ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-
-            // Start the test process
-            _testExpired = false;
-            ProcessControl.Instance.TestXYAccelerometerValues();
-        }
-
-        private void wizardPageAccelTestXY_Leave(object sender, EventArgs e)
-        {
-            _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
-        }
-
-        private void wizardPageAccelTestYZ_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
-        {
-            if (tblAccelerometerYZ.RowCount == 1)
-            {
-                _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_SHORT_EDGE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_SHORT_EDGE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Z", TestParameters.ACCELEROMETER_Z_SHORT_EDGE));
-
-                _activeTblLayoutPanel = tblAccelerometerYZ;
-                GenerateTable(_testParameters.ToArray());
-            }
-
-            _timeOutTimer.Change(8000, Timeout.Infinite);
-            ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-
-            // Start the test process
-            _testExpired = false;
-            ProcessControl.Instance.TestYZAccelerometerValues();
-        }
-
-        private void wizardPageAccelTestYZ_Leave(object sender, EventArgs e)
-        {
-            _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
-        }
-        
         private void wizardPageProgramPCB_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
             if (tblPCBUnitId.RowCount == 1)
@@ -329,13 +291,11 @@ namespace ESLTestProcess
                 GenerateTable(_testParameters.ToArray());
             }
 
-
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
             _timeOutTimer.Change(8000, Timeout.Infinite);
             // Start the test process
             _testExpired = false;
             //ProcessControl.Instance.PrepareForTestRun();
-
         }
 
         private void wizardPageProgramPCB_Leave(object sender, EventArgs e)
@@ -372,6 +332,77 @@ namespace ESLTestProcess
             ProcessControl.Instance.BeginNewTestRun();
         }
 
+        private void Main_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (_activeTblLayoutPanel == tblAccelerometerBaseline)
+            {
+                if (e.KeyChar == Convert.ToChar(Keys.Space) && !_accelerometerBaseTestRunning)
+                {
+                    _accelerometerBaseTestRunning = true;
+                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                }
+            }
+
+            if (_activeTblLayoutPanel == tblAccelerometerStep1)
+            {
+                if (e.KeyChar == Convert.ToChar(Keys.Space) && !_accelerometerTestStep1Running)
+                {
+                    _accelerometerTestStep1Running = true;
+                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                }
+            }
+
+            if (_activeTblLayoutPanel == tblAccelerometerStep2)
+            {
+                if (e.KeyChar == Convert.ToChar(Keys.Space) && !_accelerometerTestStep2Running)
+                {
+                    _accelerometerTestStep2Running = true;
+                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                }
+            }
+        }
+
+        private void ResetTestParameter(string testParameter)
+        {
+            var testRun = ProcessControl.Instance.GetCurrentTestRun();
+            if (testRun != null)
+            {
+                var testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == testParameter);
+                if (testResponse != null)
+                {
+                    testResponse.response_outcome = (Int16)TestStatus.Unknown;
+                    testResponse.response_raw = new byte[0];
+                    testResponse.response_value = "Unknown";
+
+                    TestResponseHandler(null, new TestResponseEventArgs
+                    {
+                        Parameter = testResponse.response_parameter,
+                        Status = (TestStatus)testResponse.response_outcome,
+                        Value = testResponse.response_value,
+                        RawValue = testResponse.response_raw
+                    });
+                }
+            }
+        }
+
+        private void SetTestResponse(string dataString, string responseKey, byte[] rawData, TestStatus testStatus)
+        {
+            var testRun = ProcessControl.Instance.GetCurrentTestRun();
+            response testResponse = null;
+
+            testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == responseKey);
+            testResponse.response_raw = rawData;
+            testResponse.response_value = dataString;
+            testResponse.response_outcome = (Int16)testStatus;
+
+            TestResponseHandler(null, new TestResponseEventArgs
+            {
+                Parameter = testResponse.response_parameter,
+                Status = (TestStatus)testResponse.response_outcome,
+                Value = testResponse.response_value,
+                RawValue = testResponse.response_raw
+            });
+        }
 
     }
 }

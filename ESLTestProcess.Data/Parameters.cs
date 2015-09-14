@@ -70,7 +70,7 @@ namespace ESLTestProcess.Data
             new Response{ TestId = TEST_ID_START_FLASH_GREEN_LED, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_START_FLASH_RED_LED, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_BUTTON_TEST, ExpectedLength = 4},
-            new Response{ TestId = TEST_ID_START_ACCELEROMETER_TEST, ExpectedLength = 27},
+            new Response{ TestId = TEST_ID_START_ACCELEROMETER_TEST, ExpectedLength = 29},
             new Response{ TestId = TEST_ID_START_PIEZO_TEST, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_HUB_ID, ExpectedLength = 7},
             new Response{ TestId = TEST_ID_SET_NODE_ID, ExpectedLength = 3},

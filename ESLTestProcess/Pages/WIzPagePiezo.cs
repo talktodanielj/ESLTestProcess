@@ -30,6 +30,7 @@ namespace ESLTestProcess
         private void wizardPagePiezo_Enter(object sender, EventArgs e)
         {
             _testExpired = false;
+            stepWizardControl1.SelectedPage.AllowNext = false;
 
             _testParameters.Clear();
             _testParameters.Add(new Tuple<string, string>("Piezo test", TestParameters.PIEZO_TEST));
@@ -105,62 +106,25 @@ namespace ESLTestProcess
                 case Parameters.TEST_ID_START_PIEZO_TEST:
 
                     _gotPiezoTestResult = true;
-
-                    testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.PIEZO_TEST);
-                    testResponse.response_raw = e.RawData;
-                    testResponse.response_value = "PASS";
-                    testResponse.response_outcome = (Int16)TestStatus.Pass;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
+                    SetTestResponse("PASS", TestParameters.PIEZO_TEST, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(Parameters.REQUEST_REED_SWITCH_TEST);
                     break;
 
                 case Parameters.TEST_ID_REED_SWITCH_TEST:
 
-                    testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.REED_TEST);
-                    testResponse.response_raw = e.RawData;
-                    testResponse.response_value = "PASS";
-                    testResponse.response_outcome = (Int16)TestStatus.Pass;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
-
                     // Next test...
+                    SetTestResponse("PASS", TestParameters.REED_TEST, e.RawData, TestStatus.Pass);
                     RequestSetRTC();
-
                     break;
 
                 case Parameters.TEST_ID_SET_RTC_VALUE:
 
-                    testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.RTC_SET);
-                    testResponse.response_raw = e.RawData;
                     _rtcDateTimeString =_rtcDateTime.ToString("dd/MM/yy HH:mm:ss");
-                    testResponse.response_value = _rtcDateTimeString;
-                    testResponse.response_outcome = (Int16)TestStatus.Pass;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
+                    SetTestResponse(_rtcDateTimeString, TestParameters.RTC_SET, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(Parameters.REQUEST_RTC_VALUE);
                     break;
 
                 case Parameters.TEST_ID_RTC_VALUE:
-
                     var temperatureResponseValue = new string(new []{(char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], 
                                                              (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7], 
                                                              (char)e.RawData[8], (char)e.RawData[9], (char)e.RawData[10], 
@@ -168,29 +132,17 @@ namespace ESLTestProcess
                                                              (char)e.RawData[14], (char)e.RawData[15], (char)e.RawData[16], 
                                                              (char)e.RawData[17], (char)e.RawData[18]});
 
-                    var temperatureResponse = (Int16)TestStatus.Unknown;
+                    var temperatureResponse = TestStatus.Unknown;
 
                     if(_rtcDateTimeString.CompareTo(temperatureResponseValue) == 0)
-                        temperatureResponse = (Int16)TestStatus.Pass;
+                        temperatureResponse = TestStatus.Pass;
                     else
-                        temperatureResponse = (Int16)TestStatus.Fail;
+                        temperatureResponse = TestStatus.Fail;
 
-                    testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.RTC_GET);
-                    testResponse.response_raw = e.RawData;
-                    testResponse.response_value = temperatureResponseValue;
-                    testResponse.response_outcome = temperatureResponse;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
-                    
+                    SetTestResponse(temperatureResponseValue, TestParameters.RTC_GET, e.RawData, temperatureResponse);
                     _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    Thread.Sleep(2000);
                     TimeOutCallback(null);
-
                     break;
                 default:
                     _log.Info("Unexpected test response");

@@ -29,6 +29,7 @@ namespace ESLTestProcess
         private void wizardPageTransceiver_Enter(object sender, EventArgs e)
         {
             _testExpired = false;
+            stepWizardControl1.SelectedPage.AllowNext = false;
 
             _testParameters.Clear();
             _testParameters.Add(new Tuple<string, string>("Background RSSI", TestParameters.RF_BGR_RSSI));
@@ -74,19 +75,7 @@ namespace ESLTestProcess
                     if (_rssiStage == 0)
                     {
                         string initialRssi = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7], (char)e.RawData[8] }).Trim();
-
-                        testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.RF_BGR_RSSI);
-                        testResponse.response_raw = e.RawData;
-                        testResponse.response_value = initialRssi;
-                        testResponse.response_outcome = (Int16)TestStatus.Pass;
-
-                        TestResponseHandler(null, new TestResponseEventArgs
-                        {
-                            Parameter = testResponse.response_parameter,
-                            Status = (TestStatus)testResponse.response_outcome,
-                            Value = testResponse.response_value,
-                            RawValue = testResponse.response_raw
-                        });
+                        SetTestResponse(initialRssi, TestParameters.RF_BGR_RSSI, e.RawData, TestStatus.Pass);
                         CommunicationManager.Instance.SendCommand(Parameters.REQUEST_CAPTURE_HUB);
                     }
                     else
@@ -96,29 +85,17 @@ namespace ESLTestProcess
                         var rssi = int.Parse(_initialRssi);
                         var ackRssi = int.Parse(ackRssiData);
 
-                        var responseOutcome = (Int16)TestStatus.Unknown;
+                        var responseOutcome = TestStatus.Unknown;
 
                         if ((rssi - ackRssi) > -70)
                         {
-                            responseOutcome = (Int16)TestStatus.Pass;
+                            responseOutcome = TestStatus.Pass;
                         }
                         else
                         {
-                            responseOutcome = (Int16)TestStatus.Fail;
+                            responseOutcome = TestStatus.Fail;
                         }
-
-                        testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.RF_ACK_RSSI);
-                        testResponse.response_raw = e.RawData;
-                        testResponse.response_value = ackRssiData;
-                        testResponse.response_outcome = responseOutcome;
-
-                        TestResponseHandler(null, new TestResponseEventArgs
-                        {
-                            Parameter = testResponse.response_parameter,
-                            Status = (TestStatus)testResponse.response_outcome,
-                            Value = testResponse.response_value,
-                            RawValue = testResponse.response_raw
-                        });
+                        SetTestResponse(ackRssiData, TestParameters.RF_ACK_RSSI, e.RawData, responseOutcome);
                     }
                     break;
 
@@ -135,18 +112,7 @@ namespace ESLTestProcess
                         (char)e.RawData[22],(char)e.RawData[23]
                     }).Trim();
 
-                    testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.RF_HUB_ACK);
-                    testResponse.response_raw = e.RawData;
-                    testResponse.response_value = hubAck;
-                    testResponse.response_outcome = (Int16)TestStatus.Pass;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
+                    SetTestResponse(hubAck, TestParameters.RF_HUB_ACK, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(Parameters.REQUEST_GET_BGRSSI_VALUE);
                     break;
 

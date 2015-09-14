@@ -47,29 +47,6 @@ namespace ESLTestProcess
             _altColour = !_altColour;
         }
 
-        private void ResetTestParameter(string testParameter)
-        {
-            var testRun = ProcessControl.Instance.GetCurrentTestRun();
-            if (testRun != null)
-            {
-                var testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == testParameter);
-                if (testResponse != null)
-                {
-                    testResponse.response_outcome = (Int16)TestStatus.Unknown;
-                    testResponse.response_raw = new byte[0];
-                    testResponse.response_value = "Unknown";
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
-                }
-            }
-        }
-
         Color _originalBtnColour = Color.White;
         int _activeLEDBtn = 0;
 
@@ -147,35 +124,13 @@ namespace ESLTestProcess
 
                 case Parameters.TEST_ID_NODE_ID:
                     string nodeId = new string(new[] { (char)e.RawData[3], (char)e.RawData[2], (char)e.RawData[5], (char)e.RawData[4], (char)e.RawData[7], (char)e.RawData[6] });
-                    testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.NODE_ID);
-                    testResponse.response_raw = e.RawData;
-                    testResponse.response_value = nodeId;
-                    testResponse.response_outcome = (Int16)TestStatus.Pass;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
+                    SetTestResponse(nodeId, TestParameters.NODE_ID, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(Parameters.REQUEST_HUB_ID);
                     break;
 
                 case Parameters.TEST_ID_HUB_ID:
                     string hubId = new string(new[] { (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[2], (char)e.RawData[3] });
-                    testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.HUB_ID);
-                    testResponse.response_raw = e.RawData;
-                    testResponse.response_value = hubId;
-                    testResponse.response_outcome = (Int16)TestStatus.Pass;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
+                    SetTestResponse(hubId, TestParameters.HUB_ID, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BATTERY_LEVEL);
                     break;
 
@@ -184,19 +139,7 @@ namespace ESLTestProcess
                     string batteryData = new string(new[] { (char)rawData[0], (char)rawData[1], (char)rawData[2] });
                     int batLevel10mV = int.Parse(batteryData);
                     double batteryLevel = batLevel10mV / 100.0;
-                    testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.BATTERY_VOLTAGE);
-                    testResponse.response_raw = e.RawData;
-                    testResponse.response_value = string.Format("{0:0.00}V", batteryLevel);
-                    testResponse.response_outcome = (Int16)TestStatus.Pass;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
-
+                    SetTestResponse(string.Format("{0:0.00}V", batteryLevel), TestParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Pass);
                     _log.Info("Got battery level result");
                     CommunicationManager.Instance.SendCommand(Parameters.REQUEST_TEMPERATURE_LEVEL);
                     break;
@@ -205,20 +148,10 @@ namespace ESLTestProcess
                     rawData = e.RawData.Skip(2).Take(4).ToArray();
                     string temperatureData = new string(new[] { (char)rawData[2], (char)rawData[3] });
                     int temperature = Convert.ToInt32(temperatureData, 16);
-                    testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.TEMPERATURE_READING);
-                    testResponse.response_raw = e.RawData;
-                    testResponse.response_value = string.Format("{0:0.0}C", temperature);
-                    testResponse.response_outcome = (Int16)TestStatus.Pass;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
+                    
                     _log.Info("Got temperature level");
 
+                    SetTestResponse(string.Format("{0:0.0}C", temperature), TestParameters.TEMPERATURE_READING, e.RawData, TestStatus.Pass);
                     _altColour = false;
                     _activeLEDBtn = 0;
                     _flashLedBtnTimer.Change(0, 500);
@@ -231,21 +164,7 @@ namespace ESLTestProcess
                     FlashLEDBtnCallback(null);
                     pictureBoxLED1.Image = ESLTestProcess.Properties.Resources.tick;
 
-                    testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.LED_GREEN_FLASH);
-                    testResponse.response_raw = e.RawData;
-                    testResponse.response_value = "pass";
-                    testResponse.response_outcome = (Int16)TestStatus.Pass;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
-                    _log.Info("Got green LED flash");
-
-
+                    SetTestResponse("PASS", TestParameters.LED_GREEN_FLASH, e.RawData, TestStatus.Pass);
                     _altColour = false;
                     _activeLEDBtn = 1;
                     _flashLedBtnTimer.Change(0, 500);
@@ -260,18 +179,7 @@ namespace ESLTestProcess
 
                     _flashLedBtnTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
-                    testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.LED_RED_FLASH);
-                    testResponse.response_raw = e.RawData;
-                    testResponse.response_value = "pass";
-                    testResponse.response_outcome = (Int16)TestStatus.Pass;
-
-                    TestResponseHandler(null, new TestResponseEventArgs
-                    {
-                        Parameter = testResponse.response_parameter,
-                        Status = (TestStatus)testResponse.response_outcome,
-                        Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
-                    });
+                    SetTestResponse("PASS", TestParameters.LED_RED_FLASH, e.RawData, TestStatus.Pass);
                     _log.Info("Got green RED flash");
 
                     AllowResultsPageToMoveNext();

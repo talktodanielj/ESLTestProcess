@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.stepWizardControl1 = new AeroWizard.StepWizardControl();
             this.wizardPageSignIn = new AeroWizard.WizardPage();
             this.themedLabel7 = new AeroWizard.ThemedLabel();
@@ -71,14 +72,34 @@
             this.themedLabel16 = new AeroWizard.ThemedLabel();
             this.tblTransceiverTest = new System.Windows.Forms.TableLayoutPanel();
             this.wizardPageAccelerometerBase = new AeroWizard.WizardPage();
-            this.tblAccelerometerBasline = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.tblAccelerometerBaseline = new System.Windows.Forms.TableLayoutPanel();
             this.themedLabel13 = new AeroWizard.ThemedLabel();
-            this.wizardPageAccelTestXY = new AeroWizard.WizardPage();
+            this.wizardPageAccelTestStep1 = new AeroWizard.WizardPage();
+            this.pbYZStep2 = new System.Windows.Forms.PictureBox();
+            this.pbYZStep1 = new System.Windows.Forms.PictureBox();
+            this.lblPcYZStep2 = new System.Windows.Forms.Label();
+            this.lblPbYZStep1 = new System.Windows.Forms.Label();
             this.themedLabel14 = new AeroWizard.ThemedLabel();
-            this.tblAccelerometerXY = new System.Windows.Forms.TableLayoutPanel();
-            this.wizardPageAccelTestYZ = new AeroWizard.WizardPage();
-            this.tblAccelerometerYZ = new System.Windows.Forms.TableLayoutPanel();
+            this.tblAccelerometerStep1 = new System.Windows.Forms.TableLayoutPanel();
+            this.wizardPageAccelTestStep2 = new AeroWizard.WizardPage();
+            this.lblXStep2 = new System.Windows.Forms.Label();
+            this.lblXStep1 = new System.Windows.Forms.Label();
+            this.pbXStep3 = new System.Windows.Forms.PictureBox();
+            this.pbXStep1 = new System.Windows.Forms.PictureBox();
+            this.tblAccelerometerStep2 = new System.Windows.Forms.TableLayoutPanel();
             this.themedLabel15 = new AeroWizard.ThemedLabel();
+            this.wizardPageSummaryPart1 = new AeroWizard.WizardPage();
+            this.lblTestSummaryPart1 = new System.Windows.Forms.Label();
+            this.tblSummaryPart1 = new System.Windows.Forms.TableLayoutPanel();
+            this.wizardPageSummaryPart2 = new AeroWizard.WizardPage();
+            this.lblTestSummaryPart2 = new System.Windows.Forms.Label();
+            this.tblSummaryPart2 = new System.Windows.Forms.TableLayoutPanel();
+            this.wizardPageProgramForRelease = new AeroWizard.WizardPage();
+            this.lblProgramForRelease = new System.Windows.Forms.Label();
+            this.lblProgramNodeId = new System.Windows.Forms.Label();
+            this.lblProgramHubId = new System.Windows.Forms.Label();
+            this.btnProgramNode = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
@@ -92,8 +113,16 @@
             this.panel1.SuspendLayout();
             this.wizardPageTransceiver.SuspendLayout();
             this.wizardPageAccelerometerBase.SuspendLayout();
-            this.wizardPageAccelTestXY.SuspendLayout();
-            this.wizardPageAccelTestYZ.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.wizardPageAccelTestStep1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbYZStep2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbYZStep1)).BeginInit();
+            this.wizardPageAccelTestStep2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbXStep3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbXStep1)).BeginInit();
+            this.wizardPageSummaryPart1.SuspendLayout();
+            this.wizardPageSummaryPart2.SuspendLayout();
+            this.wizardPageProgramForRelease.SuspendLayout();
             this.SuspendLayout();
             // 
             // stepWizardControl1
@@ -108,9 +137,12 @@
             this.stepWizardControl1.Pages.Add(this.wizardPageKeyPress);
             this.stepWizardControl1.Pages.Add(this.wizardPageTransceiver);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelerometerBase);
-            this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestXY);
-            this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestYZ);
-            this.stepWizardControl1.Size = new System.Drawing.Size(806, 568);
+            this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestStep1);
+            this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestStep2);
+            this.stepWizardControl1.Pages.Add(this.wizardPageSummaryPart1);
+            this.stepWizardControl1.Pages.Add(this.wizardPageSummaryPart2);
+            this.stepWizardControl1.Pages.Add(this.wizardPageProgramForRelease);
+            this.stepWizardControl1.Size = new System.Drawing.Size(866, 690);
             this.stepWizardControl1.StepListFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.stepWizardControl1.StepListWidth = 250;
             this.stepWizardControl1.TabIndex = 0;
@@ -126,7 +158,7 @@
             this.wizardPageSignIn.Controls.Add(this.cbTechnician);
             this.wizardPageSignIn.Controls.Add(this.themedLabel1);
             this.wizardPageSignIn.Name = "wizardPageSignIn";
-            this.wizardPageSignIn.Size = new System.Drawing.Size(508, 414);
+            this.wizardPageSignIn.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageSignIn, "Technician Sign In");
             this.wizardPageSignIn.TabIndex = 2;
             this.wizardPageSignIn.Text = "Begin testing...";
@@ -186,7 +218,7 @@
             this.wizardPageInsertPCB.Controls.Add(this.themedLabel4);
             this.wizardPageInsertPCB.Controls.Add(this.themedLabel3);
             this.wizardPageInsertPCB.Name = "wizardPageInsertPCB";
-            this.wizardPageInsertPCB.Size = new System.Drawing.Size(508, 414);
+            this.wizardPageInsertPCB.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageInsertPCB, "Insert PCB for testing.");
             this.wizardPageInsertPCB.TabIndex = 3;
             this.wizardPageInsertPCB.Text = "Insert PCB";
@@ -246,7 +278,7 @@
             this.wizardPageProgramPCB.Controls.Add(this.themedLabel8);
             this.wizardPageProgramPCB.Name = "wizardPageProgramPCB";
             this.wizardPageProgramPCB.NextPage = this.wizardPageResultsStatus;
-            this.wizardPageProgramPCB.Size = new System.Drawing.Size(508, 414);
+            this.wizardPageProgramPCB.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageProgramPCB, "Program the node PCB");
             this.wizardPageProgramPCB.TabIndex = 4;
             this.wizardPageProgramPCB.Text = "Program PCB";
@@ -321,8 +353,8 @@
             this.wizardPageResultsStatus.Controls.Add(this.themedLabel12);
             this.wizardPageResultsStatus.Controls.Add(this.tbllnitialStatus);
             this.wizardPageResultsStatus.Name = "wizardPageResultsStatus";
-            this.wizardPageResultsStatus.NextPage = this.wizardPageAccelerometerBase;
-            this.wizardPageResultsStatus.Size = new System.Drawing.Size(508, 414);
+            this.wizardPageResultsStatus.NextPage = this.wizardPagePiezo;
+            this.wizardPageResultsStatus.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageResultsStatus, "PCB initial status");
             this.wizardPageResultsStatus.TabIndex = 5;
             this.wizardPageResultsStatus.Text = "Initial Status";
@@ -408,7 +440,7 @@
             this.wizardPagePiezo.Controls.Add(this.tblPiezoPanel);
             this.wizardPagePiezo.Name = "wizardPagePiezo";
             this.wizardPagePiezo.NextPage = this.wizardPageKeyPress;
-            this.wizardPagePiezo.Size = new System.Drawing.Size(508, 414);
+            this.wizardPagePiezo.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPagePiezo, "Piezo and Reed Test");
             this.wizardPagePiezo.TabIndex = 11;
             this.wizardPagePiezo.Text = "Piezo and Reed Test";
@@ -442,7 +474,7 @@
             this.wizardPageKeyPress.Controls.Add(this.panel1);
             this.wizardPageKeyPress.Name = "wizardPageKeyPress";
             this.wizardPageKeyPress.NextPage = this.wizardPageTransceiver;
-            this.wizardPageKeyPress.Size = new System.Drawing.Size(508, 414);
+            this.wizardPageKeyPress.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageKeyPress, "Key press test");
             this.wizardPageKeyPress.TabIndex = 10;
             this.wizardPageKeyPress.Text = "Key press test";
@@ -542,8 +574,8 @@
             this.wizardPageTransceiver.Controls.Add(this.themedLabel16);
             this.wizardPageTransceiver.Controls.Add(this.tblTransceiverTest);
             this.wizardPageTransceiver.Name = "wizardPageTransceiver";
-            this.wizardPageTransceiver.NextPage = this.wizardPageTransceiver;
-            this.wizardPageTransceiver.Size = new System.Drawing.Size(508, 414);
+            this.wizardPageTransceiver.NextPage = this.wizardPageAccelerometerBase;
+            this.wizardPageTransceiver.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageTransceiver, "Tranceiver test");
             this.wizardPageTransceiver.TabIndex = 9;
             this.wizardPageTransceiver.Text = "Tranceiver Test";
@@ -573,10 +605,11 @@
             // 
             // wizardPageAccelerometerBase
             // 
-            this.wizardPageAccelerometerBase.Controls.Add(this.tblAccelerometerBasline);
+            this.wizardPageAccelerometerBase.Controls.Add(this.pictureBox3);
+            this.wizardPageAccelerometerBase.Controls.Add(this.tblAccelerometerBaseline);
             this.wizardPageAccelerometerBase.Controls.Add(this.themedLabel13);
             this.wizardPageAccelerometerBase.Name = "wizardPageAccelerometerBase";
-            this.wizardPageAccelerometerBase.Size = new System.Drawing.Size(508, 414);
+            this.wizardPageAccelerometerBase.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageAccelerometerBase, "Accelerometer baseline");
             this.wizardPageAccelerometerBase.TabIndex = 6;
             this.wizardPageAccelerometerBase.Text = "Accelerometer Baseline Measurements";
@@ -584,105 +617,322 @@
             this.wizardPageAccelerometerBase.Enter += new System.EventHandler(this.wizardPageAccelerometerBase_Enter);
             this.wizardPageAccelerometerBase.Leave += new System.EventHandler(this.wizardPageAccelerometerBase_Leave);
             // 
-            // tblAccelerometerBasline
+            // pictureBox3
             // 
-            this.tblAccelerometerBasline.ColumnCount = 1;
-            this.tblAccelerometerBasline.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblAccelerometerBasline.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tblAccelerometerBasline.Location = new System.Drawing.Point(37, 74);
-            this.tblAccelerometerBasline.Name = "tblAccelerometerBasline";
-            this.tblAccelerometerBasline.RowCount = 1;
-            this.tblAccelerometerBasline.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblAccelerometerBasline.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 117F));
-            this.tblAccelerometerBasline.Size = new System.Drawing.Size(446, 117);
-            this.tblAccelerometerBasline.TabIndex = 1;
+            this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox3.Image = global::ESLTestProcess.Properties.Resources.pbFlat;
+            this.pictureBox3.Location = new System.Drawing.Point(159, 100);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(160, 121);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 2;
+            this.pictureBox3.TabStop = false;
+            // 
+            // tblAccelerometerBaseline
+            // 
+            this.tblAccelerometerBaseline.ColumnCount = 1;
+            this.tblAccelerometerBaseline.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerBaseline.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tblAccelerometerBaseline.Location = new System.Drawing.Point(35, 251);
+            this.tblAccelerometerBaseline.Name = "tblAccelerometerBaseline";
+            this.tblAccelerometerBaseline.RowCount = 1;
+            this.tblAccelerometerBaseline.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerBaseline.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 117F));
+            this.tblAccelerometerBaseline.Size = new System.Drawing.Size(446, 117);
+            this.tblAccelerometerBaseline.TabIndex = 1;
             // 
             // themedLabel13
             // 
             this.themedLabel13.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.themedLabel13.Location = new System.Drawing.Point(33, 25);
+            this.themedLabel13.Location = new System.Drawing.Point(28, 25);
             this.themedLabel13.Name = "themedLabel13";
-            this.themedLabel13.Size = new System.Drawing.Size(326, 27);
+            this.themedLabel13.Size = new System.Drawing.Size(466, 72);
             this.themedLabel13.TabIndex = 0;
-            this.themedLabel13.Text = "Requesting basline accelerometer values";
+            this.themedLabel13.Text = "Keep the test jig on a flat surface.  Requesting baseline accelerometer values. ";
             // 
-            // wizardPageAccelTestXY
+            // wizardPageAccelTestStep1
             // 
-            this.wizardPageAccelTestXY.Controls.Add(this.themedLabel14);
-            this.wizardPageAccelTestXY.Controls.Add(this.tblAccelerometerXY);
-            this.wizardPageAccelTestXY.Name = "wizardPageAccelTestXY";
-            this.wizardPageAccelTestXY.Size = new System.Drawing.Size(508, 414);
-            this.stepWizardControl1.SetStepText(this.wizardPageAccelTestXY, "Accelerometer XY axis");
-            this.wizardPageAccelTestXY.TabIndex = 7;
-            this.wizardPageAccelTestXY.Text = "Accelerometer XY axis";
-            this.wizardPageAccelTestXY.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageAccelTestXY_Initialize);
-            this.wizardPageAccelTestXY.Leave += new System.EventHandler(this.wizardPageAccelTestXY_Leave);
+            this.wizardPageAccelTestStep1.Controls.Add(this.pbYZStep2);
+            this.wizardPageAccelTestStep1.Controls.Add(this.pbYZStep1);
+            this.wizardPageAccelTestStep1.Controls.Add(this.lblPcYZStep2);
+            this.wizardPageAccelTestStep1.Controls.Add(this.lblPbYZStep1);
+            this.wizardPageAccelTestStep1.Controls.Add(this.themedLabel14);
+            this.wizardPageAccelTestStep1.Controls.Add(this.tblAccelerometerStep1);
+            this.wizardPageAccelTestStep1.Name = "wizardPageAccelTestStep1";
+            this.wizardPageAccelTestStep1.Size = new System.Drawing.Size(568, 536);
+            this.stepWizardControl1.SetStepText(this.wizardPageAccelTestStep1, "Accelerometer test: Step 1");
+            this.wizardPageAccelTestStep1.TabIndex = 7;
+            this.wizardPageAccelTestStep1.Text = "Accelerometer test: Step 1";
+            this.wizardPageAccelTestStep1.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageAccelTestStep1_Initialize);
+            this.wizardPageAccelTestStep1.Enter += new System.EventHandler(this.wizardPageAccelTestStep1_Enter);
+            this.wizardPageAccelTestStep1.Leave += new System.EventHandler(this.wizardPageAccelTestStep1_Leave);
+            // 
+            // pbYZStep2
+            // 
+            this.pbYZStep2.Image = ((System.Drawing.Image)(resources.GetObject("pbYZStep2.Image")));
+            this.pbYZStep2.Location = new System.Drawing.Point(257, 63);
+            this.pbYZStep2.Name = "pbYZStep2";
+            this.pbYZStep2.Size = new System.Drawing.Size(160, 121);
+            this.pbYZStep2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbYZStep2.TabIndex = 3;
+            this.pbYZStep2.TabStop = false;
+            // 
+            // pbYZStep1
+            // 
+            this.pbYZStep1.Image = global::ESLTestProcess.Properties.Resources.pbFlat;
+            this.pbYZStep1.Location = new System.Drawing.Point(62, 62);
+            this.pbYZStep1.Name = "pbYZStep1";
+            this.pbYZStep1.Size = new System.Drawing.Size(160, 121);
+            this.pbYZStep1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbYZStep1.TabIndex = 2;
+            this.pbYZStep1.TabStop = false;
+            // 
+            // lblPcYZStep2
+            // 
+            this.lblPcYZStep2.AutoSize = true;
+            this.lblPcYZStep2.Location = new System.Drawing.Point(318, 202);
+            this.lblPcYZStep2.Name = "lblPcYZStep2";
+            this.lblPcYZStep2.Size = new System.Drawing.Size(39, 15);
+            this.lblPcYZStep2.TabIndex = 5;
+            this.lblPcYZStep2.Text = "Step 2";
+            // 
+            // lblPbYZStep1
+            // 
+            this.lblPbYZStep1.AutoSize = true;
+            this.lblPbYZStep1.Location = new System.Drawing.Point(123, 202);
+            this.lblPbYZStep1.Name = "lblPbYZStep1";
+            this.lblPbYZStep1.Size = new System.Drawing.Size(39, 15);
+            this.lblPbYZStep1.TabIndex = 1;
+            this.lblPbYZStep1.Text = "Step 1";
             // 
             // themedLabel14
             // 
             this.themedLabel14.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.themedLabel14.Location = new System.Drawing.Point(26, 23);
+            this.themedLabel14.Location = new System.Drawing.Point(6, 3);
             this.themedLabel14.Name = "themedLabel14";
-            this.themedLabel14.Size = new System.Drawing.Size(410, 23);
+            this.themedLabel14.Size = new System.Drawing.Size(499, 47);
             this.themedLabel14.TabIndex = 1;
-            this.themedLabel14.Text = "Hold the PCB under test vertically on the longest edge ";
+            this.themedLabel14.Text = "Rotate the test jig to the left to match the photos then hit the spacebar to begi" +
+    "n the test.";
             // 
-            // tblAccelerometerXY
+            // tblAccelerometerStep1
             // 
-            this.tblAccelerometerXY.ColumnCount = 1;
-            this.tblAccelerometerXY.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblAccelerometerXY.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tblAccelerometerXY.Location = new System.Drawing.Point(26, 66);
-            this.tblAccelerometerXY.Name = "tblAccelerometerXY";
-            this.tblAccelerometerXY.RowCount = 1;
-            this.tblAccelerometerXY.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblAccelerometerXY.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 123F));
-            this.tblAccelerometerXY.Size = new System.Drawing.Size(458, 123);
-            this.tblAccelerometerXY.TabIndex = 0;
+            this.tblAccelerometerStep1.ColumnCount = 1;
+            this.tblAccelerometerStep1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerStep1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tblAccelerometerStep1.Location = new System.Drawing.Point(25, 234);
+            this.tblAccelerometerStep1.Name = "tblAccelerometerStep1";
+            this.tblAccelerometerStep1.RowCount = 1;
+            this.tblAccelerometerStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 132F));
+            this.tblAccelerometerStep1.Size = new System.Drawing.Size(458, 132);
+            this.tblAccelerometerStep1.TabIndex = 0;
             // 
-            // wizardPageAccelTestYZ
+            // wizardPageAccelTestStep2
             // 
-            this.wizardPageAccelTestYZ.Controls.Add(this.tblAccelerometerYZ);
-            this.wizardPageAccelTestYZ.Controls.Add(this.themedLabel15);
-            this.wizardPageAccelTestYZ.Name = "wizardPageAccelTestYZ";
-            this.wizardPageAccelTestYZ.Size = new System.Drawing.Size(508, 414);
-            this.stepWizardControl1.SetStepText(this.wizardPageAccelTestYZ, "Acceleromter YZ axis");
-            this.wizardPageAccelTestYZ.TabIndex = 8;
-            this.wizardPageAccelTestYZ.Text = "Acceleromter YZ axis";
-            this.wizardPageAccelTestYZ.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageAccelTestYZ_Initialize);
-            this.wizardPageAccelTestYZ.Leave += new System.EventHandler(this.wizardPageAccelTestYZ_Leave);
+            this.wizardPageAccelTestStep2.Controls.Add(this.lblXStep2);
+            this.wizardPageAccelTestStep2.Controls.Add(this.lblXStep1);
+            this.wizardPageAccelTestStep2.Controls.Add(this.pbXStep3);
+            this.wizardPageAccelTestStep2.Controls.Add(this.pbXStep1);
+            this.wizardPageAccelTestStep2.Controls.Add(this.tblAccelerometerStep2);
+            this.wizardPageAccelTestStep2.Controls.Add(this.themedLabel15);
+            this.wizardPageAccelTestStep2.Name = "wizardPageAccelTestStep2";
+            this.wizardPageAccelTestStep2.Size = new System.Drawing.Size(568, 536);
+            this.stepWizardControl1.SetStepText(this.wizardPageAccelTestStep2, "Accelerometer test: Step 2");
+            this.wizardPageAccelTestStep2.TabIndex = 8;
+            this.wizardPageAccelTestStep2.Text = "Accelerometer test: Step 2";
+            this.wizardPageAccelTestStep2.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageAccelTestStep2_Initialize);
+            this.wizardPageAccelTestStep2.Enter += new System.EventHandler(this.wizardPageAccelTestStep2_Enter);
+            this.wizardPageAccelTestStep2.Leave += new System.EventHandler(this.wizardPageAccelTestStep2_Leave);
             // 
-            // tblAccelerometerYZ
+            // lblXStep2
             // 
-            this.tblAccelerometerYZ.ColumnCount = 1;
-            this.tblAccelerometerYZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblAccelerometerYZ.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tblAccelerometerYZ.Location = new System.Drawing.Point(26, 55);
-            this.tblAccelerometerYZ.Name = "tblAccelerometerYZ";
-            this.tblAccelerometerYZ.RowCount = 1;
-            this.tblAccelerometerYZ.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblAccelerometerYZ.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 146F));
-            this.tblAccelerometerYZ.Size = new System.Drawing.Size(465, 146);
-            this.tblAccelerometerYZ.TabIndex = 1;
+            this.lblXStep2.AutoSize = true;
+            this.lblXStep2.Location = new System.Drawing.Point(338, 227);
+            this.lblXStep2.Name = "lblXStep2";
+            this.lblXStep2.Size = new System.Drawing.Size(39, 15);
+            this.lblXStep2.TabIndex = 5;
+            this.lblXStep2.Text = "Step 2";
+            // 
+            // lblXStep1
+            // 
+            this.lblXStep1.AutoSize = true;
+            this.lblXStep1.Location = new System.Drawing.Point(139, 227);
+            this.lblXStep1.Name = "lblXStep1";
+            this.lblXStep1.Size = new System.Drawing.Size(39, 15);
+            this.lblXStep1.TabIndex = 1;
+            this.lblXStep1.Text = "Step 1";
+            // 
+            // pbXStep3
+            // 
+            this.pbXStep3.Image = global::ESLTestProcess.Properties.Resources.pbXStep2;
+            this.pbXStep3.Location = new System.Drawing.Point(277, 95);
+            this.pbXStep3.Name = "pbXStep3";
+            this.pbXStep3.Size = new System.Drawing.Size(160, 121);
+            this.pbXStep3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbXStep3.TabIndex = 4;
+            this.pbXStep3.TabStop = false;
+            // 
+            // pbXStep1
+            // 
+            this.pbXStep1.Image = global::ESLTestProcess.Properties.Resources.pbFlat;
+            this.pbXStep1.Location = new System.Drawing.Point(78, 95);
+            this.pbXStep1.Name = "pbXStep1";
+            this.pbXStep1.Size = new System.Drawing.Size(160, 121);
+            this.pbXStep1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbXStep1.TabIndex = 2;
+            this.pbXStep1.TabStop = false;
+            // 
+            // tblAccelerometerStep2
+            // 
+            this.tblAccelerometerStep2.ColumnCount = 1;
+            this.tblAccelerometerStep2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerStep2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tblAccelerometerStep2.Location = new System.Drawing.Point(19, 250);
+            this.tblAccelerometerStep2.Name = "tblAccelerometerStep2";
+            this.tblAccelerometerStep2.RowCount = 1;
+            this.tblAccelerometerStep2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tblAccelerometerStep2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 146F));
+            this.tblAccelerometerStep2.Size = new System.Drawing.Size(472, 146);
+            this.tblAccelerometerStep2.TabIndex = 1;
             // 
             // themedLabel15
             // 
             this.themedLabel15.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.themedLabel15.Location = new System.Drawing.Point(22, 19);
+            this.themedLabel15.Location = new System.Drawing.Point(27, 25);
             this.themedLabel15.Name = "themedLabel15";
-            this.themedLabel15.Size = new System.Drawing.Size(417, 23);
+            this.themedLabel15.Size = new System.Drawing.Size(464, 54);
             this.themedLabel15.TabIndex = 0;
-            this.themedLabel15.Text = "Hold the PCB under test vertically on its shortest edge";
+            this.themedLabel15.Text = "Rotate the test jig to stand on the short edge as in the photo then hit the space" +
+    "bar to begin the test.";
+            // 
+            // wizardPageSummaryPart1
+            // 
+            this.wizardPageSummaryPart1.Controls.Add(this.lblTestSummaryPart1);
+            this.wizardPageSummaryPart1.Controls.Add(this.tblSummaryPart1);
+            this.wizardPageSummaryPart1.Name = "wizardPageSummaryPart1";
+            this.wizardPageSummaryPart1.Size = new System.Drawing.Size(568, 536);
+            this.stepWizardControl1.SetStepText(this.wizardPageSummaryPart1, "Test Summary Part 1");
+            this.wizardPageSummaryPart1.TabIndex = 12;
+            this.wizardPageSummaryPart1.Text = "Test Summary Part 1";
+            this.wizardPageSummaryPart1.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageSummaryPart1_Initialize);
+            this.wizardPageSummaryPart1.Enter += new System.EventHandler(this.wizardPageSummaryPart1_Enter);
+            // 
+            // lblTestSummaryPart1
+            // 
+            this.lblTestSummaryPart1.AutoSize = true;
+            this.lblTestSummaryPart1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTestSummaryPart1.Location = new System.Drawing.Point(3, 5);
+            this.lblTestSummaryPart1.Name = "lblTestSummaryPart1";
+            this.lblTestSummaryPart1.Size = new System.Drawing.Size(184, 25);
+            this.lblTestSummaryPart1.TabIndex = 1;
+            this.lblTestSummaryPart1.Text = "Test Summary Part 1";
+            // 
+            // tblSummaryPart1
+            // 
+            this.tblSummaryPart1.ColumnCount = 1;
+            this.tblSummaryPart1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblSummaryPart1.Location = new System.Drawing.Point(3, 36);
+            this.tblSummaryPart1.Name = "tblSummaryPart1";
+            this.tblSummaryPart1.RowCount = 1;
+            this.tblSummaryPart1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblSummaryPart1.Size = new System.Drawing.Size(562, 455);
+            this.tblSummaryPart1.TabIndex = 0;
+            // 
+            // wizardPageSummaryPart2
+            // 
+            this.wizardPageSummaryPart2.Controls.Add(this.lblTestSummaryPart2);
+            this.wizardPageSummaryPart2.Controls.Add(this.tblSummaryPart2);
+            this.wizardPageSummaryPart2.Name = "wizardPageSummaryPart2";
+            this.wizardPageSummaryPart2.Size = new System.Drawing.Size(568, 536);
+            this.stepWizardControl1.SetStepText(this.wizardPageSummaryPart2, "Test Summary Part 2");
+            this.wizardPageSummaryPart2.TabIndex = 13;
+            this.wizardPageSummaryPart2.Text = "Test Summary Part 2";
+            this.wizardPageSummaryPart2.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageSummaryPart2_Initialize);
+            this.wizardPageSummaryPart2.Enter += new System.EventHandler(this.wizardPageSummaryPart2_Enter);
+            // 
+            // lblTestSummaryPart2
+            // 
+            this.lblTestSummaryPart2.AutoSize = true;
+            this.lblTestSummaryPart2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTestSummaryPart2.Location = new System.Drawing.Point(17, 11);
+            this.lblTestSummaryPart2.Name = "lblTestSummaryPart2";
+            this.lblTestSummaryPart2.Size = new System.Drawing.Size(184, 25);
+            this.lblTestSummaryPart2.TabIndex = 1;
+            this.lblTestSummaryPart2.Text = "Test Summary Part 2";
+            // 
+            // tblSummaryPart2
+            // 
+            this.tblSummaryPart2.ColumnCount = 1;
+            this.tblSummaryPart2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblSummaryPart2.Location = new System.Drawing.Point(3, 43);
+            this.tblSummaryPart2.Name = "tblSummaryPart2";
+            this.tblSummaryPart2.RowCount = 1;
+            this.tblSummaryPart2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblSummaryPart2.Size = new System.Drawing.Size(562, 464);
+            this.tblSummaryPart2.TabIndex = 0;
+            // 
+            // wizardPageProgramForRelease
+            // 
+            this.wizardPageProgramForRelease.Controls.Add(this.btnProgramNode);
+            this.wizardPageProgramForRelease.Controls.Add(this.lblProgramHubId);
+            this.wizardPageProgramForRelease.Controls.Add(this.lblProgramNodeId);
+            this.wizardPageProgramForRelease.Controls.Add(this.lblProgramForRelease);
+            this.wizardPageProgramForRelease.Name = "wizardPageProgramForRelease";
+            this.wizardPageProgramForRelease.Size = new System.Drawing.Size(568, 536);
+            this.stepWizardControl1.SetStepText(this.wizardPageProgramForRelease, "Program for release");
+            this.wizardPageProgramForRelease.TabIndex = 14;
+            this.wizardPageProgramForRelease.Text = "Program for release";
+            this.wizardPageProgramForRelease.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageProgramForRelease_Initialize);
+            this.wizardPageProgramForRelease.Enter += new System.EventHandler(this.wizardPageProgramForRelease_Enter);
+            // 
+            // lblProgramForRelease
+            // 
+            this.lblProgramForRelease.AutoSize = true;
+            this.lblProgramForRelease.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgramForRelease.Location = new System.Drawing.Point(56, 30);
+            this.lblProgramForRelease.Name = "lblProgramForRelease";
+            this.lblProgramForRelease.Size = new System.Drawing.Size(305, 25);
+            this.lblProgramForRelease.TabIndex = 0;
+            this.lblProgramForRelease.Text = "Program the Trap Node for release";
+            // 
+            // lblProgramNodeId
+            // 
+            this.lblProgramNodeId.AutoSize = true;
+            this.lblProgramNodeId.Location = new System.Drawing.Point(56, 80);
+            this.lblProgramNodeId.Name = "lblProgramNodeId";
+            this.lblProgramNodeId.Size = new System.Drawing.Size(53, 15);
+            this.lblProgramNodeId.TabIndex = 1;
+            this.lblProgramNodeId.Text = "Node ID:";
+            // 
+            // lblProgramHubId
+            // 
+            this.lblProgramHubId.AutoSize = true;
+            this.lblProgramHubId.Location = new System.Drawing.Point(56, 110);
+            this.lblProgramHubId.Name = "lblProgramHubId";
+            this.lblProgramHubId.Size = new System.Drawing.Size(47, 15);
+            this.lblProgramHubId.TabIndex = 2;
+            this.lblProgramHubId.Text = "Hub ID:";
+            // 
+            // btnProgramNode
+            // 
+            this.btnProgramNode.Location = new System.Drawing.Point(56, 145);
+            this.btnProgramNode.Name = "btnProgramNode";
+            this.btnProgramNode.Size = new System.Drawing.Size(75, 23);
+            this.btnProgramNode.TabIndex = 3;
+            this.btnProgramNode.Text = "Program";
+            this.btnProgramNode.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(806, 568);
+            this.ClientSize = new System.Drawing.Size(866, 690);
             this.Controls.Add(this.stepWizardControl1);
             this.MinimizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Main_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).EndInit();
             this.wizardPageSignIn.ResumeLayout(false);
             this.wizardPageInsertPCB.ResumeLayout(false);
@@ -699,8 +949,21 @@
             this.panel1.ResumeLayout(false);
             this.wizardPageTransceiver.ResumeLayout(false);
             this.wizardPageAccelerometerBase.ResumeLayout(false);
-            this.wizardPageAccelTestXY.ResumeLayout(false);
-            this.wizardPageAccelTestYZ.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.wizardPageAccelTestStep1.ResumeLayout(false);
+            this.wizardPageAccelTestStep1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbYZStep2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbYZStep1)).EndInit();
+            this.wizardPageAccelTestStep2.ResumeLayout(false);
+            this.wizardPageAccelTestStep2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbXStep3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbXStep1)).EndInit();
+            this.wizardPageSummaryPart1.ResumeLayout(false);
+            this.wizardPageSummaryPart1.PerformLayout();
+            this.wizardPageSummaryPart2.ResumeLayout(false);
+            this.wizardPageSummaryPart2.PerformLayout();
+            this.wizardPageProgramForRelease.ResumeLayout(false);
+            this.wizardPageProgramForRelease.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -731,12 +994,11 @@
         private AeroWizard.ThemedLabel themedLabel12;
         private AeroWizard.WizardPage wizardPageAccelerometerBase;
         private AeroWizard.ThemedLabel themedLabel13;
-        private AeroWizard.WizardPage wizardPageAccelTestXY;
-        private AeroWizard.WizardPage wizardPageAccelTestYZ;
-        private System.Windows.Forms.TableLayoutPanel tblAccelerometerBasline;
-        private AeroWizard.ThemedLabel themedLabel14;
-        private System.Windows.Forms.TableLayoutPanel tblAccelerometerXY;
-        private System.Windows.Forms.TableLayoutPanel tblAccelerometerYZ;
+        private AeroWizard.WizardPage wizardPageAccelTestStep1;
+        private AeroWizard.WizardPage wizardPageAccelTestStep2;
+        private System.Windows.Forms.TableLayoutPanel tblAccelerometerBaseline;
+        private System.Windows.Forms.TableLayoutPanel tblAccelerometerStep1;
+        private System.Windows.Forms.TableLayoutPanel tblAccelerometerStep2;
         private AeroWizard.ThemedLabel themedLabel15;
         private AeroWizard.WizardPage wizardPageTransceiver;
         private AeroWizard.ThemedLabel themedLabel16;
@@ -758,6 +1020,27 @@
         private AeroWizard.WizardPage wizardPagePiezo;
         private System.Windows.Forms.Label lblPezoAndReed;
         private System.Windows.Forms.TableLayoutPanel tblPiezoPanel;
+        private System.Windows.Forms.Label lblPcYZStep2;
+        private System.Windows.Forms.Label lblPbYZStep1;
+        private System.Windows.Forms.PictureBox pbYZStep2;
+        private System.Windows.Forms.PictureBox pbYZStep1;
+        private AeroWizard.ThemedLabel themedLabel14;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.Label lblXStep2;
+        private System.Windows.Forms.Label lblXStep1;
+        private System.Windows.Forms.PictureBox pbXStep3;
+        private System.Windows.Forms.PictureBox pbXStep1;
+        private AeroWizard.WizardPage wizardPageSummaryPart1;
+        private System.Windows.Forms.Label lblTestSummaryPart1;
+        private System.Windows.Forms.TableLayoutPanel tblSummaryPart1;
+        private AeroWizard.WizardPage wizardPageSummaryPart2;
+        private System.Windows.Forms.Label lblTestSummaryPart2;
+        private System.Windows.Forms.TableLayoutPanel tblSummaryPart2;
+        private AeroWizard.WizardPage wizardPageProgramForRelease;
+        private System.Windows.Forms.Button btnProgramNode;
+        private System.Windows.Forms.Label lblProgramHubId;
+        private System.Windows.Forms.Label lblProgramNodeId;
+        private System.Windows.Forms.Label lblProgramForRelease;
 
 
     }

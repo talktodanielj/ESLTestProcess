@@ -69,6 +69,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
@@ -99,16 +100,31 @@
     <Compile Include="Pages\WizPageAccelBase.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Pages\WizPageAccelStep1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\WizPageAccelStep2.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Pages\WizPageKeyPress.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pages\WIzPagePiezo.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Pages\WizPageProgramForRelease.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Pages\WizPageRFTest.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pages\WizPageStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\WizPageSummaryPart1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pages\WizPageSummaryPart2.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program.cs" />
@@ -147,6 +163,12 @@
     <None Include="cross.png" />
     <None Include="exclamation.png" />
     <None Include="alert.png" />
+    <None Include="Images\pbFlat.jpg" />
+    <None Include="Images\pbXStep1.jpg" />
+    <None Include="Images\pbXStep2.jpg" />
+    <None Include="Images\pbYZStep2.jpg" />
+    <None Include="Images\pbYZStep3.jpg" />
+    <None Include="Images\pbYZStep4.jpg" />
     <Content Include="question.png" />
     <Content Include="test_spinner.gif" />
     <Content Include="tick.gif" />

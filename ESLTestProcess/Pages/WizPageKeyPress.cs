@@ -60,6 +60,7 @@ namespace ESLTestProcess
         {
             _testExpired = false;
             _testParameters.Clear();
+            stepWizardControl1.SelectedPage.AllowNext = false;
             _activeTblLayoutPanel = null;
 
             SetKeyColour(Color.ForestGreen, KEY_ENT);
@@ -110,6 +111,7 @@ namespace ESLTestProcess
                 if (_activeKey == KEY_END_TEST)
                 {
                     _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    Thread.Sleep(2000);
                     TimeOutCallback(null);
                 }
             }
