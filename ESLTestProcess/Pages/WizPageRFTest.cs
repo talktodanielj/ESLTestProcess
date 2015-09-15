@@ -31,6 +31,8 @@ namespace ESLTestProcess
             _testExpired = false;
             stepWizardControl1.SelectedPage.AllowNext = false;
 
+            AddRetestLabelToWizard(wizardPageTransceiver);
+
             _testParameters.Clear();
             _testParameters.Add(new Tuple<string, string>("Background RSSI", TestParameters.RF_BGR_RSSI));
             _testParameters.Add(new Tuple<string, string>("HUB Acknowledgment", TestParameters.RF_HUB_ACK));
@@ -127,6 +129,8 @@ namespace ESLTestProcess
             _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
             _byteStreamHandler.ProcessResponseEventHandler -= wizardPageTransceiver_ProcessResponseEventHandler;
+            ProcessControl.Instance.SaveTestSession();
+            RemoveRetestLabelFromWizard(wizardPageTransceiver);
         }
     }
 }

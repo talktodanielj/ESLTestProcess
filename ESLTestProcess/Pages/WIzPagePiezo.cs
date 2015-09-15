@@ -32,6 +32,9 @@ namespace ESLTestProcess
             _testExpired = false;
             stepWizardControl1.SelectedPage.AllowNext = false;
 
+            AddRetestLabelToWizard(wizardPagePiezo);
+
+
             _testParameters.Clear();
             _testParameters.Add(new Tuple<string, string>("Piezo test", TestParameters.PIEZO_TEST));
             _testParameters.Add(new Tuple<string, string>("Reed test", TestParameters.REED_TEST));
@@ -83,6 +86,8 @@ namespace ESLTestProcess
                     _log.Info("Got begin test command");
                     Thread.Sleep(100);
                     CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_PIEZO_TEST);
+                    // Send the command to the test jig to activate the piezo...
+                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_SET_PIEZO);
                     break;
                 case Parameters.TEST_END:
                     _log.Info("Got test end");
@@ -91,6 +96,8 @@ namespace ESLTestProcess
                     {
                         _piezoTestRetries++;
                         CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_PIEZO_TEST);
+                        // Send the command to the test jig to activate the piezo...
+                        CommunicationManager.Instance.SendCommand(Parameters.REQUEST_SET_PIEZO);
                     }
                     else if (!_gotReedTestResult && _reedTestRetries < 3)
                     {
@@ -108,6 +115,8 @@ namespace ESLTestProcess
                     _gotPiezoTestResult = true;
                     SetTestResponse("PASS", TestParameters.PIEZO_TEST, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(Parameters.REQUEST_REED_SWITCH_TEST);
+                    // Send the command to the test jig to pull the reed switch low
+                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_SET_REED);
                     break;
 
                 case Parameters.TEST_ID_REED_SWITCH_TEST:
@@ -174,6 +183,8 @@ namespace ESLTestProcess
             _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
             _byteStreamHandler.ProcessResponseEventHandler -= wizardPagePiezo_ProcessResponseEventHandler;
+            ProcessControl.Instance.SaveTestSession();
+            RemoveRetestLabelFromWizard(wizardPagePiezo);
         }
     }
 }

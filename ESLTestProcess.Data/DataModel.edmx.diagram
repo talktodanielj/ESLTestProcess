@@ -13,8 +13,8 @@
         <EntityTypeShape EntityType="Model.pcb_unit" Width="3" PointX="6.75" PointY="4" />
         <AssociationConnector Association="Model.sessionrun" />
         <AssociationConnector Association="Model.runresult" />
-        <AssociationConnector Association="Model.pcb_unitrun" />
         <AssociationConnector Association="Model.techniciansession" />
+        <AssociationConnector Association="Model.pcb_unitrun" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

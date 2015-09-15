@@ -43,7 +43,6 @@ namespace ESLTestProcess
                 }
             }
 
-
             _altColour = !_altColour;
         }
 
@@ -69,6 +68,8 @@ namespace ESLTestProcess
         {
             _testExpired = false;
             wizardPageResultsStatus.AllowNext = false;
+
+            AddRetestLabelToWizard(wizardPageResultsStatus);
 
             _testParameters.Clear();
             _testParameters.Add(new Tuple<string, string>("Node Id", TestParameters.NODE_ID));
@@ -148,7 +149,7 @@ namespace ESLTestProcess
                     rawData = e.RawData.Skip(2).Take(4).ToArray();
                     string temperatureData = new string(new[] { (char)rawData[2], (char)rawData[3] });
                     int temperature = Convert.ToInt32(temperatureData, 16);
-                    
+
                     _log.Info("Got temperature level");
 
                     SetTestResponse(string.Format("{0:0.0}C", temperature), TestParameters.TEMPERATURE_READING, e.RawData, TestStatus.Pass);
@@ -201,7 +202,7 @@ namespace ESLTestProcess
                 this.Invoke(new Action(AllowResultsPageToMoveNext));
                 return;
             }
-            
+
             wizardPageResultsStatus.AllowNext = true;
         }
 
@@ -212,6 +213,8 @@ namespace ESLTestProcess
             _flashLedBtnTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
             _byteStreamHandler.ProcessResponseEventHandler -= wizardPageResultsStatus_ProcessResponseEventHandler;
+            ProcessControl.Instance.SaveTestSession();
+            RemoveRetestLabelFromWizard(wizardPageResultsStatus);
         }
 
     }

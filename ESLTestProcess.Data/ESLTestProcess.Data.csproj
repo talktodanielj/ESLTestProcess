@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteStreamHandler.cs" />
+    <Compile Include="EntitiesExtension.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="configuration.cs">
       <DependentUpon>DataModel.tt</DependentUpon>

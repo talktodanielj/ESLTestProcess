@@ -44,6 +44,8 @@ namespace ESLTestProcess
         private void wizardPageSummaryPart1_Enter(object sender, EventArgs e)
         {
             _activeTblLayoutPanel = tblSummaryPart1;
+            AddRetestLabelToWizard(wizardPageSummaryPart1);
+            Thread.Sleep(2000);
             TimeOutCallback(null);
         }
     }

@@ -63,6 +63,8 @@ namespace ESLTestProcess
             stepWizardControl1.SelectedPage.AllowNext = false;
             _activeTblLayoutPanel = null;
 
+            AddRetestLabelToWizard(wizardPageKeyPress);
+
             SetKeyColour(Color.ForestGreen, KEY_ENT);
             SetKeyColour(Color.ForestGreen, KEY_1_6);
             SetKeyColour(Color.ForestGreen, KEY_2_7);
@@ -75,7 +77,7 @@ namespace ESLTestProcess
 
             _activeKey = KEY_ENT;
             CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
-            _timeOutTimer.Change(15000, Timeout.Infinite);
+            _timeOutTimer.Change(40000, Timeout.Infinite);
         }
 
         private const int KEY_ENT = 2;
@@ -100,7 +102,7 @@ namespace ESLTestProcess
                 Console.WriteLine("Sending keypress test command");
 
                 byte[] commandBytes = Parameters.REQUEST_START_BUTTON_TEST;
-                commandBytes[2] = 10; // Give 10 seconds to complete the test
+                commandBytes[2] = 30; // Give 10 seconds to complete the test
                 commandBytes[3] = (byte)KEY_5_0; // The final key in the sequence that indicates the test should stop
                 CommunicationManager.Instance.SendCommand(commandBytes);
             }
@@ -168,7 +170,7 @@ namespace ESLTestProcess
         {
             var testRun = ProcessControl.Instance.GetCurrentTestRun();
             var testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == keyId);
-            testResponse.response_raw = rawData;
+            testResponse.response_raw = BitConverter.ToString(rawData);
             testResponse.response_value = "PASS";
             testResponse.response_outcome = (Int16)TestStatus.Pass;
 
@@ -178,6 +180,8 @@ namespace ESLTestProcess
         {
             _flashColourTimer.Change(Timeout.Infinite, Timeout.Infinite);
             _byteStreamHandler.ProcessResponseEventHandler -= wizardPageKeyPress_ProcessResponseEventHandler;
+            ProcessControl.Instance.SaveTestSession();
+            RemoveRetestLabelFromWizard(wizardPageKeyPress);
         }
     }
 }

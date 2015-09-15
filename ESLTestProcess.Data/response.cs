@@ -22,9 +22,8 @@ namespace ESLTestProcess.Data
     
         public int response_id { get; internal set; }
         public string response_parameter { get; set; }
-        public byte[] response_raw { get; set; }
+        public string response_raw { get; set; }
         public string response_value { get; set; }
-        public int response_run_id { get; set; }
         public short response_outcome { get; set; }
         public short response_report_column { get; set; }
     

@@ -15,13 +15,13 @@
       <End Role="run" EntitySet="runs" />
       <End Role="result" EntitySet="responses" />
     </AssociationSet>
-    <AssociationSet Name="pcb_unitrun" Association="Model.pcb_unitrun">
-      <End Role="pcb_unit" EntitySet="pcb_unit" />
-      <End Role="run" EntitySet="runs" />
-    </AssociationSet>
     <AssociationSet Name="techniciansession" Association="Model.techniciansession">
       <End Role="technician" EntitySet="technicians" />
       <End Role="session" EntitySet="sessions" />
+    </AssociationSet>
+    <AssociationSet Name="pcb_unitrun" Association="Model.pcb_unitrun">
+      <End Role="pcb_unit" EntitySet="pcb_unit" />
+      <End Role="run" EntitySet="runs" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="run">
@@ -29,10 +29,8 @@
       <PropertyRef Name="run_id" />
     </Key>
     <Property Type="Int32" Name="run_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-    <Property Type="String" Name="run_pcb_unit_id" Nullable="false" />
     <Property Type="DateTime" Name="run_start_timestamp" Nullable="false" />
     <Property Type="DateTime" Name="run_complete_timestamp" Nullable="false" />
-    <Property Type="Int32" Name="run_session_id" Nullable="false" />
     <NavigationProperty Name="session" Relationship="Model.sessionrun" FromRole="run" ToRole="session" />
     <NavigationProperty Name="responses" Relationship="Model.runresult" FromRole="run" ToRole="result" />
     <NavigationProperty Name="pcb_unit" Relationship="Model.pcb_unitrun" FromRole="run" ToRole="pcb_unit" />
@@ -43,9 +41,8 @@
     </Key>
     <Property Type="Int32" Name="response_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
     <Property Type="String" Name="response_parameter" Nullable="false" />
-    <Property Type="Binary" Name="response_raw" Nullable="true" />
+    <Property Type="String" Name="response_raw" Nullable="true" />
     <Property Type="String" Name="response_value" Nullable="false" DefaultValue="" />
-    <Property Type="Int32" Name="response_run_id" Nullable="false" />
     <NavigationProperty Name="run" Relationship="Model.runresult" FromRole="result" ToRole="run" />
     <Property Type="Int16" Name="response_outcome" Nullable="false" DefaultValue="0" />
     <Property Type="Int16" Name="response_report_column" Nullable="false" />
@@ -81,10 +78,10 @@
     <Key>
       <PropertyRef Name="pcb_unit_id" />
     </Key>
-    <Property Type="Int32" Name="pcb_unit_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+    <Property Type="Int32" Name="pcb_unit_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" DefaultValue="400" />
     <Property Type="String" Name="pcb_unit_serial_number" Nullable="false" />
     <Property Type="String" Name="pcb_unit_serial_sticker_manufacture" Nullable="false" />
-    <Property Type="String" Name="pcb_unit_serial_sticker_test" Nullable="false" />
+    <Property Type="String" Name="pcb_unit_serial_sticker_test" Nullable="true" />
     <NavigationProperty Name="runs" Relationship="Model.pcb_unitrun" FromRole="pcb_unit" ToRole="run" />
   </EntityType>
   <Association Name="sessionrun">
@@ -95,12 +92,12 @@
     <End Type="Model.run" Role="run" Multiplicity="1" />
     <End Type="Model.response" Role="result" Multiplicity="*" />
   </Association>
-  <Association Name="pcb_unitrun">
-    <End Type="Model.pcb_unit" Role="pcb_unit" Multiplicity="1" />
-    <End Type="Model.run" Role="run" Multiplicity="*" />
-  </Association>
   <Association Name="techniciansession">
     <End Type="Model.technician" Role="technician" Multiplicity="1" />
     <End Type="Model.session" Role="session" Multiplicity="*" />
+  </Association>
+  <Association Name="pcb_unitrun">
+    <End Type="Model.pcb_unit" Role="pcb_unit" Multiplicity="1" />
+    <End Type="Model.run" Role="run" Multiplicity="*" />
   </Association>
 </Schema>

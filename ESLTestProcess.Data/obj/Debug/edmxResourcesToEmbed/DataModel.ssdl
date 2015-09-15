@@ -15,13 +15,13 @@
       <End Role="run" EntitySet="runs" />
       <End Role="result" EntitySet="responses" />
     </AssociationSet>
-    <AssociationSet Name="pcb_unitrun" Association="Model.Store.pcb_unitrun">
-      <End Role="pcb_unit" EntitySet="pcb_unit" />
-      <End Role="run" EntitySet="runs" />
-    </AssociationSet>
     <AssociationSet Name="techniciansession" Association="Model.Store.techniciansession">
       <End Role="technician" EntitySet="technicians" />
       <End Role="session" EntitySet="sessions" />
+    </AssociationSet>
+    <AssociationSet Name="pcb_unitrun" Association="Model.Store.pcb_unitrun">
+      <End Role="pcb_unit" EntitySet="pcb_unit" />
+      <End Role="run" EntitySet="runs" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="runs">
@@ -29,12 +29,10 @@
       <PropertyRef Name="run_id" />
     </Key>
     <Property Name="run_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="run_pcb_unit_id" Type="nvarchar" Nullable="false" />
     <Property Name="run_start_timestamp" Type="datetime" Nullable="false" />
     <Property Name="run_complete_timestamp" Type="datetime" Nullable="false" />
-    <Property Name="run_session_id" Type="int" Nullable="false" />
     <Property Name="session_session_id" Type="int" Nullable="false" />
-    <Property Name="pcb_unit_pcb_unit_id" Type="int" Nullable="false" />
+    <Property Name="pcb_unit_pcb_unit_id" Type="int" DefaultValue="400" Nullable="false" />
   </EntityType>
   <EntityType Name="responses">
     <Key>
@@ -42,9 +40,8 @@
     </Key>
     <Property Name="response_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="response_parameter" Type="nvarchar" Nullable="false" />
-    <Property Name="response_raw" Type="varbinary" Nullable="true" />
+    <Property Name="response_raw" Type="nvarchar" Nullable="true" />
     <Property Name="response_value" Type="nvarchar" Nullable="false" DefaultValue="" />
-    <Property Name="response_run_id" Type="int" Nullable="false" />
     <Property Name="response_outcome" Type="smallint" Nullable="false" DefaultValue="0" />
     <Property Name="response_report_column" Type="smallint" Nullable="false" />
     <Property Name="run_run_id" Type="int" Nullable="false" />
@@ -78,10 +75,10 @@
     <Key>
       <PropertyRef Name="pcb_unit_id" />
     </Key>
-    <Property Name="pcb_unit_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="pcb_unit_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" DefaultValue="400" />
     <Property Name="pcb_unit_serial_number" Type="nvarchar" Nullable="false" />
     <Property Name="pcb_unit_serial_sticker_manufacture" Type="nvarchar" Nullable="false" />
-    <Property Name="pcb_unit_serial_sticker_test" Type="nvarchar" Nullable="false" />
+    <Property Name="pcb_unit_serial_sticker_test" Type="nvarchar" Nullable="true" />
   </EntityType>
   <Association Name="sessionrun">
     <End Role="session" Type="Model.Store.sessions" Multiplicity="1" />
@@ -107,18 +104,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="pcb_unitrun">
-    <End Role="pcb_unit" Type="Model.Store.pcb_unit" Multiplicity="1" />
-    <End Role="run" Type="Model.Store.runs" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="pcb_unit">
-        <PropertyRef Name="pcb_unit_id" />
-      </Principal>
-      <Dependent Role="run">
-        <PropertyRef Name="pcb_unit_pcb_unit_id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="techniciansession">
     <End Role="technician" Type="Model.Store.technicians" Multiplicity="1" />
     <End Role="session" Type="Model.Store.sessions" Multiplicity="*" />
@@ -128,6 +113,18 @@
       </Principal>
       <Dependent Role="session">
         <PropertyRef Name="technician_technicain_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="pcb_unitrun">
+    <End Role="pcb_unit" Type="Model.Store.pcb_unit" Multiplicity="1" />
+    <End Role="run" Type="Model.Store.runs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pcb_unit">
+        <PropertyRef Name="pcb_unit_id" />
+      </Principal>
+      <Dependent Role="run">
+        <PropertyRef Name="pcb_unit_pcb_unit_id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

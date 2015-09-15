@@ -96,10 +96,11 @@
             this.lblTestSummaryPart2 = new System.Windows.Forms.Label();
             this.tblSummaryPart2 = new System.Windows.Forms.TableLayoutPanel();
             this.wizardPageProgramForRelease = new AeroWizard.WizardPage();
-            this.lblProgramForRelease = new System.Windows.Forms.Label();
-            this.lblProgramNodeId = new System.Windows.Forms.Label();
-            this.lblProgramHubId = new System.Windows.Forms.Label();
+            this.lblSerial = new System.Windows.Forms.Label();
             this.btnProgramNode = new System.Windows.Forms.Button();
+            this.lblProgramHubId = new System.Windows.Forms.Label();
+            this.lblProgramNodeId = new System.Windows.Forms.Label();
+            this.lblProgramForRelease = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
@@ -127,8 +128,11 @@
             // 
             // stepWizardControl1
             // 
+            this.stepWizardControl1.CancelButtonText = "Cancel";
+            this.stepWizardControl1.FinishButtonText = "Finish";
             this.stepWizardControl1.Location = new System.Drawing.Point(0, 0);
             this.stepWizardControl1.Name = "stepWizardControl1";
+            this.stepWizardControl1.NextButtonText = "Next";
             this.stepWizardControl1.Pages.Add(this.wizardPageSignIn);
             this.stepWizardControl1.Pages.Add(this.wizardPageInsertPCB);
             this.stepWizardControl1.Pages.Add(this.wizardPageProgramPCB);
@@ -147,6 +151,8 @@
             this.stepWizardControl1.StepListWidth = 250;
             this.stepWizardControl1.TabIndex = 0;
             this.stepWizardControl1.Title = "ESL test process for trap node PCB";
+            this.stepWizardControl1.Cancelling += new System.ComponentModel.CancelEventHandler(this.stepWizardControl1_Cancelling);
+            this.stepWizardControl1.Finished += new System.EventHandler(this.stepWizardControl1_Finished);
             // 
             // wizardPageSignIn
             // 
@@ -158,6 +164,7 @@
             this.wizardPageSignIn.Controls.Add(this.cbTechnician);
             this.wizardPageSignIn.Controls.Add(this.themedLabel1);
             this.wizardPageSignIn.Name = "wizardPageSignIn";
+            this.wizardPageSignIn.NextPage = this.wizardPageInsertPCB;
             this.wizardPageSignIn.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageSignIn, "Technician Sign In");
             this.wizardPageSignIn.TabIndex = 2;
@@ -212,18 +219,21 @@
             // 
             // wizardPageInsertPCB
             // 
+            this.wizardPageInsertPCB.AllowBack = false;
             this.wizardPageInsertPCB.Controls.Add(this.themedLabel6);
             this.wizardPageInsertPCB.Controls.Add(this.themedLabel5);
             this.wizardPageInsertPCB.Controls.Add(this.txtManufactureSerial);
             this.wizardPageInsertPCB.Controls.Add(this.themedLabel4);
             this.wizardPageInsertPCB.Controls.Add(this.themedLabel3);
             this.wizardPageInsertPCB.Name = "wizardPageInsertPCB";
+            this.wizardPageInsertPCB.NextPage = this.wizardPageProgramPCB;
             this.wizardPageInsertPCB.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageInsertPCB, "Insert PCB for testing.");
             this.wizardPageInsertPCB.TabIndex = 3;
             this.wizardPageInsertPCB.Text = "Insert PCB";
             this.wizardPageInsertPCB.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageInsertPCB_Commit);
             this.wizardPageInsertPCB.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageInsertPCB_Initialize);
+            this.wizardPageInsertPCB.Enter += new System.EventHandler(this.wizardPageInsertPCB_Enter);
             // 
             // themedLabel6
             // 
@@ -648,7 +658,8 @@
             this.themedLabel13.Name = "themedLabel13";
             this.themedLabel13.Size = new System.Drawing.Size(466, 72);
             this.themedLabel13.TabIndex = 0;
-            this.themedLabel13.Text = "Keep the test jig on a flat surface.  Requesting baseline accelerometer values. ";
+            this.themedLabel13.Text = "Keep the test jig on a flat surface and hit the spacebar to request baseline acce" +
+    "lerometer values. ";
             // 
             // wizardPageAccelTestStep1
             // 
@@ -669,8 +680,9 @@
             // 
             // pbYZStep2
             // 
+            this.pbYZStep2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbYZStep2.Image = ((System.Drawing.Image)(resources.GetObject("pbYZStep2.Image")));
-            this.pbYZStep2.Location = new System.Drawing.Point(257, 63);
+            this.pbYZStep2.Location = new System.Drawing.Point(257, 97);
             this.pbYZStep2.Name = "pbYZStep2";
             this.pbYZStep2.Size = new System.Drawing.Size(160, 121);
             this.pbYZStep2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -679,8 +691,9 @@
             // 
             // pbYZStep1
             // 
+            this.pbYZStep1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbYZStep1.Image = global::ESLTestProcess.Properties.Resources.pbFlat;
-            this.pbYZStep1.Location = new System.Drawing.Point(62, 62);
+            this.pbYZStep1.Location = new System.Drawing.Point(62, 96);
             this.pbYZStep1.Name = "pbYZStep1";
             this.pbYZStep1.Size = new System.Drawing.Size(160, 121);
             this.pbYZStep1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -690,7 +703,7 @@
             // lblPcYZStep2
             // 
             this.lblPcYZStep2.AutoSize = true;
-            this.lblPcYZStep2.Location = new System.Drawing.Point(318, 202);
+            this.lblPcYZStep2.Location = new System.Drawing.Point(318, 230);
             this.lblPcYZStep2.Name = "lblPcYZStep2";
             this.lblPcYZStep2.Size = new System.Drawing.Size(39, 15);
             this.lblPcYZStep2.TabIndex = 5;
@@ -699,7 +712,7 @@
             // lblPbYZStep1
             // 
             this.lblPbYZStep1.AutoSize = true;
-            this.lblPbYZStep1.Location = new System.Drawing.Point(123, 202);
+            this.lblPbYZStep1.Location = new System.Drawing.Point(123, 230);
             this.lblPbYZStep1.Name = "lblPbYZStep1";
             this.lblPbYZStep1.Size = new System.Drawing.Size(39, 15);
             this.lblPbYZStep1.TabIndex = 1;
@@ -708,7 +721,7 @@
             // themedLabel14
             // 
             this.themedLabel14.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.themedLabel14.Location = new System.Drawing.Point(6, 3);
+            this.themedLabel14.Location = new System.Drawing.Point(6, 37);
             this.themedLabel14.Name = "themedLabel14";
             this.themedLabel14.Size = new System.Drawing.Size(499, 47);
             this.themedLabel14.TabIndex = 1;
@@ -720,7 +733,7 @@
             this.tblAccelerometerStep1.ColumnCount = 1;
             this.tblAccelerometerStep1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tblAccelerometerStep1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tblAccelerometerStep1.Location = new System.Drawing.Point(25, 234);
+            this.tblAccelerometerStep1.Location = new System.Drawing.Point(25, 268);
             this.tblAccelerometerStep1.Name = "tblAccelerometerStep1";
             this.tblAccelerometerStep1.RowCount = 1;
             this.tblAccelerometerStep1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -737,6 +750,7 @@
             this.wizardPageAccelTestStep2.Controls.Add(this.tblAccelerometerStep2);
             this.wizardPageAccelTestStep2.Controls.Add(this.themedLabel15);
             this.wizardPageAccelTestStep2.Name = "wizardPageAccelTestStep2";
+            this.wizardPageAccelTestStep2.NextPage = this.wizardPageSummaryPart1;
             this.wizardPageAccelTestStep2.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageAccelTestStep2, "Accelerometer test: Step 2");
             this.wizardPageAccelTestStep2.TabIndex = 8;
@@ -765,6 +779,7 @@
             // 
             // pbXStep3
             // 
+            this.pbXStep3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbXStep3.Image = global::ESLTestProcess.Properties.Resources.pbXStep2;
             this.pbXStep3.Location = new System.Drawing.Point(277, 95);
             this.pbXStep3.Name = "pbXStep3";
@@ -775,6 +790,7 @@
             // 
             // pbXStep1
             // 
+            this.pbXStep1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbXStep1.Image = global::ESLTestProcess.Properties.Resources.pbFlat;
             this.pbXStep1.Location = new System.Drawing.Point(78, 95);
             this.pbXStep1.Name = "pbXStep1";
@@ -811,6 +827,7 @@
             this.wizardPageSummaryPart1.Controls.Add(this.lblTestSummaryPart1);
             this.wizardPageSummaryPart1.Controls.Add(this.tblSummaryPart1);
             this.wizardPageSummaryPart1.Name = "wizardPageSummaryPart1";
+            this.wizardPageSummaryPart1.NextPage = this.wizardPageSummaryPart2;
             this.wizardPageSummaryPart1.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageSummaryPart1, "Test Summary Part 1");
             this.wizardPageSummaryPart1.TabIndex = 12;
@@ -844,6 +861,7 @@
             this.wizardPageSummaryPart2.Controls.Add(this.lblTestSummaryPart2);
             this.wizardPageSummaryPart2.Controls.Add(this.tblSummaryPart2);
             this.wizardPageSummaryPart2.Name = "wizardPageSummaryPart2";
+            this.wizardPageSummaryPart2.NextPage = this.wizardPageProgramForRelease;
             this.wizardPageSummaryPart2.Size = new System.Drawing.Size(568, 536);
             this.stepWizardControl1.SetStepText(this.wizardPageSummaryPart2, "Test Summary Part 2");
             this.wizardPageSummaryPart2.TabIndex = 13;
@@ -874,6 +892,7 @@
             // 
             // wizardPageProgramForRelease
             // 
+            this.wizardPageProgramForRelease.Controls.Add(this.lblSerial);
             this.wizardPageProgramForRelease.Controls.Add(this.btnProgramNode);
             this.wizardPageProgramForRelease.Controls.Add(this.lblProgramHubId);
             this.wizardPageProgramForRelease.Controls.Add(this.lblProgramNodeId);
@@ -885,6 +904,47 @@
             this.wizardPageProgramForRelease.Text = "Program for release";
             this.wizardPageProgramForRelease.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageProgramForRelease_Initialize);
             this.wizardPageProgramForRelease.Enter += new System.EventHandler(this.wizardPageProgramForRelease_Enter);
+            this.wizardPageProgramForRelease.Leave += new System.EventHandler(this.wizardPageProgramForRelease_Leave);
+            // 
+            // lblSerial
+            // 
+            this.lblSerial.AutoSize = true;
+            this.lblSerial.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSerial.Location = new System.Drawing.Point(59, 142);
+            this.lblSerial.Name = "lblSerial";
+            this.lblSerial.Size = new System.Drawing.Size(79, 25);
+            this.lblSerial.TabIndex = 4;
+            this.lblSerial.Text = "Serial #:";
+            // 
+            // btnProgramNode
+            // 
+            this.btnProgramNode.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProgramNode.Location = new System.Drawing.Point(64, 190);
+            this.btnProgramNode.Name = "btnProgramNode";
+            this.btnProgramNode.Size = new System.Drawing.Size(140, 45);
+            this.btnProgramNode.TabIndex = 3;
+            this.btnProgramNode.Text = "Program";
+            this.btnProgramNode.UseVisualStyleBackColor = true;
+            // 
+            // lblProgramHubId
+            // 
+            this.lblProgramHubId.AutoSize = true;
+            this.lblProgramHubId.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgramHubId.Location = new System.Drawing.Point(59, 110);
+            this.lblProgramHubId.Name = "lblProgramHubId";
+            this.lblProgramHubId.Size = new System.Drawing.Size(74, 25);
+            this.lblProgramHubId.TabIndex = 2;
+            this.lblProgramHubId.Text = "Hub ID:";
+            // 
+            // lblProgramNodeId
+            // 
+            this.lblProgramNodeId.AutoSize = true;
+            this.lblProgramNodeId.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgramNodeId.Location = new System.Drawing.Point(59, 80);
+            this.lblProgramNodeId.Name = "lblProgramNodeId";
+            this.lblProgramNodeId.Size = new System.Drawing.Size(85, 25);
+            this.lblProgramNodeId.TabIndex = 1;
+            this.lblProgramNodeId.Text = "Node ID:";
             // 
             // lblProgramForRelease
             // 
@@ -895,33 +955,6 @@
             this.lblProgramForRelease.Size = new System.Drawing.Size(305, 25);
             this.lblProgramForRelease.TabIndex = 0;
             this.lblProgramForRelease.Text = "Program the Trap Node for release";
-            // 
-            // lblProgramNodeId
-            // 
-            this.lblProgramNodeId.AutoSize = true;
-            this.lblProgramNodeId.Location = new System.Drawing.Point(56, 80);
-            this.lblProgramNodeId.Name = "lblProgramNodeId";
-            this.lblProgramNodeId.Size = new System.Drawing.Size(53, 15);
-            this.lblProgramNodeId.TabIndex = 1;
-            this.lblProgramNodeId.Text = "Node ID:";
-            // 
-            // lblProgramHubId
-            // 
-            this.lblProgramHubId.AutoSize = true;
-            this.lblProgramHubId.Location = new System.Drawing.Point(56, 110);
-            this.lblProgramHubId.Name = "lblProgramHubId";
-            this.lblProgramHubId.Size = new System.Drawing.Size(47, 15);
-            this.lblProgramHubId.TabIndex = 2;
-            this.lblProgramHubId.Text = "Hub ID:";
-            // 
-            // btnProgramNode
-            // 
-            this.btnProgramNode.Location = new System.Drawing.Point(56, 145);
-            this.btnProgramNode.Name = "btnProgramNode";
-            this.btnProgramNode.Size = new System.Drawing.Size(75, 23);
-            this.btnProgramNode.TabIndex = 3;
-            this.btnProgramNode.Text = "Program";
-            this.btnProgramNode.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -1041,6 +1074,7 @@
         private System.Windows.Forms.Label lblProgramHubId;
         private System.Windows.Forms.Label lblProgramNodeId;
         private System.Windows.Forms.Label lblProgramForRelease;
+        private System.Windows.Forms.Label lblSerial;
 
 
     }

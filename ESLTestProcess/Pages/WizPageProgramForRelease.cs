@@ -15,13 +15,24 @@ namespace ESLTestProcess
     {
         private void wizardPageProgramForRelease_Enter(object sender, EventArgs e)
         {
-            lblProgramNodeId.Text = string.Format("Node ID: {0}", ConfigurationManager.AppSettings["test_node_id"]);
-            lblProgramNodeId.Text = string.Format("Hub ID: {0}", ConfigurationManager.AppSettings["test_hub_id"]);
+            AddRetestLabelToWizard(wizardPageProgramForRelease);
+
+            var testRun = ProcessControl.Instance.GetCurrentTestRun();
+
+            lblProgramNodeId.Text = testRun.pcb_unit.pcb_unit_id.ToString();
+            lblSerial.Text = testRun.pcb_unit.pcb_unit_serial_number;
+            lblProgramHubId.Text = string.Format("Hub ID: {0}", ConfigurationManager.AppSettings["release_hub_id"]);
+
+            cameFromFinishCommand = true;
         }
 
         private void wizardPageProgramForRelease_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
         {
+        }
 
+        private void wizardPageProgramForRelease_Leave(object sender, EventArgs e)
+        {
+            RemoveRetestLabelFromWizard(wizardPageProgramForRelease);
         }
 
     }

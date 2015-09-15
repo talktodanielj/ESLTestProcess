@@ -14,6 +14,19 @@ namespace ESLTestProcess.Data
 
     public static class Parameters
     {
+        // Test Jig Commands
+        public const byte TESTJIG_LED_STATUS = 0x90;
+        public const byte TESTJIG_BUTTON_PRESS_SEQ = 0x91;
+        public const byte TESTJIG_SET_REED = 0x92;
+        public const byte TESTJIG_RUN_CUR = 0x93;
+        public const byte TESTJIG_SLEEP_CUR = 0x94;
+        public const byte TESTJIG_VSUPPLY_DUT = 0x95;
+        public const byte TESTJIG_VDD_DUT = 0x96;
+        public const byte TESTJIG_DAC1 = 0x97;
+        public const byte TESTJIG_DAC2 = 0x98;
+        public const byte TESTJIG_SET_PIEZO = 0x99;
+
+        // Node test commands
         public const byte TEST_ID_BEGIN_TEST = 0x60;
         public const byte TEST_ID_NODE_ID = 0x61;
         public const byte TEST_ID_BATTERY_LEVEL = 0x63;
@@ -42,7 +55,7 @@ namespace ESLTestProcess.Data
         public static readonly byte[] REQUEST_TEMPERATURE_LEVEL = { 0x02, TEST_ID_TEMPERATURE_LEVEL, 0x03 };
         public static readonly byte[] REQUEST_START_FLASH_GREEN_LED = { 0x02, TEST_ID_START_FLASH_GREEN_LED, 0x03 };
         public static readonly byte[] REQUEST_START_FLASH_RED_LED = { 0x02, TEST_ID_START_FLASH_RED_LED, 0x03 };
-                                                                                                             // Test duration, Expected Key   
+        // Test duration, Expected Key   
         public static readonly byte[] REQUEST_START_BUTTON_TEST = { 0x02, TEST_ID_BUTTON_TEST, 0x02, 0x00, 0x03 };
 
         public static readonly byte[] REQUEST_START_ACCELEROMETER_TEST = { 0x02, TEST_ID_START_ACCELEROMETER_TEST, 0x05, 0x03 }; // Test duration default 5 seconds
@@ -58,6 +71,19 @@ namespace ESLTestProcess.Data
         public static readonly byte[] REQUEST_SET_RTC_VALUE = { 0x02, TEST_ID_SET_RTC_VALUE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03 };
         public static readonly byte[] REQUEST_GET_BGRSSI_VALUE = { 0x02, TEST_ID_GET_BGRSSI_VALUE, 0x03 };
         public static readonly byte[] REQUEST_CAPTURE_HUB = { 0x02, TEST_ID_CAPTURE_HUB, 0x03 };
+
+        
+        // Test Jig commands
+        public static readonly byte[] REQUEST_LED_STATUS = { 0x02, TESTJIG_LED_STATUS, 0x03 };
+        public static readonly byte[] REQUEST_BUTTON_PRESS_SEQ = { 0x02, TESTJIG_BUTTON_PRESS_SEQ, 0x03 };
+        public static readonly byte[] REQUEST_SET_REED = { 0x02, TESTJIG_SET_REED, 0x03 };
+        public static readonly byte[] REQUEST_RUN_CUR = { 0x02, TESTJIG_RUN_CUR, 0x03 };
+        public static readonly byte[] REQUEST_SLEEP_CUR = { 0x02, TESTJIG_SLEEP_CUR, 0x03 };
+        public static readonly byte[] REQUEST_VSUPPLY_DUT = { 0x02, TESTJIG_VSUPPLY_DUT, 0x03 };
+        public static readonly byte[] REQUEST_VDD_DUT = { 0x02, TESTJIG_VDD_DUT, 0x03 };
+        public static readonly byte[] REQUEST_DAC1 = { 0x02, TESTJIG_DAC1, 0x03 };
+        public static readonly byte[] REQUEST_DAC2 = { 0x02, TESTJIG_DAC2, 0x03 };
+        public static readonly byte[] REQUEST_SET_PIEZO = { 0x02, TESTJIG_SET_PIEZO, 0x03 };
 
         public static Response[] ResponseValues = 
         {
@@ -80,7 +106,17 @@ namespace ESLTestProcess.Data
             new Response{ TestId = TEST_ID_RTC_VALUE, ExpectedLength = 20},
             new Response{ TestId = TEST_ID_SET_RTC_VALUE, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_GET_BGRSSI_VALUE, ExpectedLength = 17},
-            new Response{ TestId = TEST_ID_CAPTURE_HUB, ExpectedLength = 27}
+            new Response{ TestId = TEST_ID_CAPTURE_HUB, ExpectedLength = 27},
+
+            new Response{ TestId = TESTJIG_LED_STATUS, ExpectedLength = 3},
+            new Response{ TestId = TESTJIG_BUTTON_PRESS_SEQ, ExpectedLength = 3},
+            new Response{ TestId = TESTJIG_SET_REED, ExpectedLength = 3},
+            new Response{ TestId = TESTJIG_RUN_CUR, ExpectedLength = 3},
+            new Response{ TestId = TESTJIG_SLEEP_CUR, ExpectedLength = 3},
+            new Response{ TestId = TESTJIG_VSUPPLY_DUT, ExpectedLength = 3},
+            new Response{ TestId = TESTJIG_DAC1, ExpectedLength = 3},
+            new Response{ TestId = TESTJIG_DAC2, ExpectedLength = 3},
+            new Response{ TestId = TESTJIG_SET_PIEZO, ExpectedLength = 3},
         };
     }
 }

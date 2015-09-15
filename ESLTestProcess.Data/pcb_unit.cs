@@ -16,6 +16,7 @@ namespace ESLTestProcess.Data
     {
         public pcb_unit()
         {
+            this.pcb_unit_id = 400;
             this.runs = new HashSet<run>();
         }
     

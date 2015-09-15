@@ -5,10 +5,8 @@
       <EntityTypeMapping TypeName="IsTypeOf(Model.run)">
         <MappingFragment StoreEntitySet="runs">
           <ScalarProperty Name="run_id" ColumnName="run_id" />
-          <ScalarProperty Name="run_pcb_unit_id" ColumnName="run_pcb_unit_id" />
           <ScalarProperty Name="run_start_timestamp" ColumnName="run_start_timestamp" />
           <ScalarProperty Name="run_complete_timestamp" ColumnName="run_complete_timestamp" />
-          <ScalarProperty Name="run_session_id" ColumnName="run_session_id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -19,7 +17,6 @@
           <ScalarProperty Name="response_parameter" ColumnName="response_parameter" />
           <ScalarProperty Name="response_raw" ColumnName="response_raw" />
           <ScalarProperty Name="response_value" ColumnName="response_value" />
-          <ScalarProperty Name="response_run_id" ColumnName="response_run_id" />
           <ScalarProperty Name="response_outcome" ColumnName="response_outcome" />
           <ScalarProperty Name="response_report_column" ColumnName="response_report_column" />
         </MappingFragment>
@@ -78,20 +75,20 @@
         <ScalarProperty Name="response_id" ColumnName="response_id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="pcb_unitrun" TypeName="Model.pcb_unitrun" StoreEntitySet="runs">
-      <EndProperty Name="pcb_unit">
-        <ScalarProperty Name="pcb_unit_id" ColumnName="pcb_unit_pcb_unit_id" />
-      </EndProperty>
-      <EndProperty Name="run">
-        <ScalarProperty Name="run_id" ColumnName="run_id" />
-      </EndProperty>
-    </AssociationSetMapping>
     <AssociationSetMapping Name="techniciansession" TypeName="Model.techniciansession" StoreEntitySet="sessions">
       <EndProperty Name="technician">
         <ScalarProperty Name="technicain_id" ColumnName="technician_technicain_id" />
       </EndProperty>
       <EndProperty Name="session">
         <ScalarProperty Name="session_id" ColumnName="session_id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="pcb_unitrun" TypeName="Model.pcb_unitrun" StoreEntitySet="runs">
+      <EndProperty Name="pcb_unit">
+        <ScalarProperty Name="pcb_unit_id" ColumnName="pcb_unit_pcb_unit_id" />
+      </EndProperty>
+      <EndProperty Name="run">
+        <ScalarProperty Name="run_id" ColumnName="run_id" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>

@@ -211,7 +211,7 @@ namespace ESLTestProcess
                             Parameter = testResponse.response_parameter,
                             Status = (TestStatus)testResponse.response_outcome,
                             Value = testResponse.response_value,
-                            RawValue = testResponse.response_raw
+                            //RawValue = testResponse.response_raw
                         });
                     }
                 }
@@ -329,7 +329,7 @@ namespace ESLTestProcess
 
         private void wizardPageProgramPCB_Enter(object sender, EventArgs e)
         {
-            ProcessControl.Instance.BeginNewTestRun();
+            //ProcessControl.Instance.BeginNewTestRun();
         }
 
         private void Main_KeyPress(object sender, KeyPressEventArgs e)
@@ -371,7 +371,7 @@ namespace ESLTestProcess
                 if (testResponse != null)
                 {
                     testResponse.response_outcome = (Int16)TestStatus.Unknown;
-                    testResponse.response_raw = new byte[0];
+                    testResponse.response_raw = "";
                     testResponse.response_value = "Unknown";
 
                     TestResponseHandler(null, new TestResponseEventArgs
@@ -379,7 +379,7 @@ namespace ESLTestProcess
                         Parameter = testResponse.response_parameter,
                         Status = (TestStatus)testResponse.response_outcome,
                         Value = testResponse.response_value,
-                        RawValue = testResponse.response_raw
+                        //RawValue = testResponse.response_raw
                     });
                 }
             }
@@ -391,7 +391,7 @@ namespace ESLTestProcess
             response testResponse = null;
 
             testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == responseKey);
-            testResponse.response_raw = rawData;
+            testResponse.response_raw = BitConverter.ToString(rawData);
             testResponse.response_value = dataString;
             testResponse.response_outcome = (Int16)testStatus;
 
@@ -400,9 +400,71 @@ namespace ESLTestProcess
                 Parameter = testResponse.response_parameter,
                 Status = (TestStatus)testResponse.response_outcome,
                 Value = testResponse.response_value,
-                RawValue = testResponse.response_raw
+                //RawValue = testResponse.response_raw
             });
         }
+
+        private void btnSaveTest_Click(object sender, EventArgs e)
+        {
+            ProcessControl.Instance.SaveTestSession();
+        }
+
+
+        Label _retestLabel = null;
+
+        private void AddRetestLabelToWizard(AeroWizard.WizardPage wizardPage)
+        {
+            if (_retestLabel == null)
+            {
+                _retestLabel = new Label();
+                _retestLabel.Name = "lblRetest";
+                _retestLabel.BackColor = Color.LightGoldenrodYellow;
+                _retestLabel.ForeColor = Color.Red;
+                _retestLabel.Text = "RETEST";
+                _retestLabel.Font = new Font(_retestLabel.Font, FontStyle.Bold);
+                _retestLabel.TextAlign = ContentAlignment.MiddleCenter;
+                _retestLabel.Location = new Point(wizardPage.Width - 100, _retestLabel.Location.Y);
+            }
+
+            if (ProcessControl.Instance.IsRetest)
+            {
+                if (!wizardPage.Contains(_retestLabel))
+                    wizardPage.Controls.Add(_retestLabel);
+                _retestLabel.Visible = true;
+            }
+            else
+            {
+                _retestLabel.Visible = false;
+            }
+        }
+
+        private void RemoveRetestLabelFromWizard(AeroWizard.WizardPage wizardPage)
+        {
+            if (!wizardPage.Contains(_retestLabel))
+                wizardPage.Controls.Remove(_retestLabel);
+        }
+
+        private void stepWizardControl1_Cancelling(object sender, CancelEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void stepWizardControl1_Finished(object sender, EventArgs e)
+        {
+            stepWizardControl1.NextPage(wizardPageInsertPCB);
+        }
+
+        bool cameFromFinishCommand = false;
+
+        private void wizardPageInsertPCB_Enter(object sender, EventArgs e)
+        {
+            if (cameFromFinishCommand)
+            {
+                cameFromFinishCommand = false;
+                txtManufactureSerial.Text = "";
+            }
+        }
+
 
     }
 }

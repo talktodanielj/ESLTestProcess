@@ -9,7 +9,7 @@ namespace ESLTestProcess.Data
     public class TestResponseEventArgs : EventArgs
     {
         public string Parameter;
-        public byte[] RawValue;
+        //public byte[] RawValue;
         public string Value;
         public TestStatus Status;
     }

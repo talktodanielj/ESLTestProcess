@@ -43,7 +43,7 @@ namespace ESLTestProcess.Data
             return _currentTestRun;
         }
 
-        public void BeginNewTestRun()
+        private void CreateNewTestRunResponses()
         {
 
             _currentTestRun.responses.Add(new response
@@ -279,253 +279,35 @@ namespace ESLTestProcess.Data
             return false;
         }
 
-        public void TestGetIntialStatus()
+        public bool IsRetest
         {
-
-            BeginNewTestRun();
-            Task.Factory.StartNew(() =>
-            {
-                /*CommunicationManager.Instance.SendCommand(Commands.REQUEST_BEGIN_TEST);
-
-                byte[] buffer = new byte[100];
-                // Assum the idividual responses will be less than 100 bytes and that we get the complete resonse
-                var rxCount = CommunicationManager.Instance.SerialPort.Read(buffer, 0, buffer.Length);
-
-                if (rxCount > 0)
-                {
-
-
-                }
-                */
-
-
-
-                var responseBattV = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.BATTERY_VOLTAGE);
-
-                if (responseBattV != null)
-                {
-                    responseBattV.response_outcome = (Int16)TestStatus.Warning;
-                    responseBattV.response_raw = new byte[] { 0x00, 0x12 };
-                    responseBattV.response_value = BitConverter.ToString(responseBattV.response_raw);
-                    SignalResponse(responseBattV);
-                }
-
-                Thread.Sleep(1000);
-
-
-
-            });
-
-
-
-
-
-            // Simulation
-            /*
-            Task.Factory.StartNew(() =>
-            {
-                var responsePicID = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.PIC24_ID);
-
-                if (responsePicID != null)
-                {
-                    responsePicID.response_outcome = (Int16)TestStatus.Pass;
-                    responsePicID.response_raw = new byte[] { 0x54, 0x34 };
-                    responsePicID.response_value = BitConverter.ToString(responsePicID.response_raw);
-                    SignalResponse(responsePicID);
-                }
-
-                Thread.Sleep(2000);
-
-                var responseBattV = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.BATTERY_VOLTAGE);
-
-                if (responseBattV != null)
-                {
-                    responseBattV.response_outcome = (Int16)TestStatus.Warning;
-                    responseBattV.response_raw = new byte[] { 0x00, 0x12 };
-                    responseBattV.response_value = BitConverter.ToString(responseBattV.response_raw);
-                    SignalResponse(responseBattV);
-                }
-
-                Thread.Sleep(1000);
-
-                var responseEpromId = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.EPROM_ID);
-
-                if (responseEpromId != null)
-                {
-                    responseEpromId.response_outcome = (Int16)TestStatus.Pass;
-                    responseEpromId.response_raw = new byte[] { 0x22, 0x22 };
-                    responseEpromId.response_value = BitConverter.ToString(responseEpromId.response_raw);
-                    SignalResponse(responseEpromId);
-                }
-
-                Thread.Sleep(3000);
-
-            });
-             * */
-
+            get;
+            set;
         }
 
-        public void TestBaseAccelerometerValues()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                Thread.Sleep(1000);
-                var responseAccelX = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_X_BASE);
-                if (responseAccelX != null)
-                {
-                    responseAccelX.response_outcome = (Int16)TestStatus.Pass;
-                    responseAccelX.response_raw = new byte[] { 0x00, 0x00 };
-                    responseAccelX.response_value = BitConverter.ToString(responseAccelX.response_raw);
-                    SignalResponse(responseAccelX);
-                }
-
-                Thread.Sleep(2000);
-                var responseAccelY = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Y_BASE);
-                if (responseAccelY != null)
-                {
-                    responseAccelY.response_outcome = (Int16)TestStatus.Pass;
-                    responseAccelY.response_raw = new byte[] { 0x00, 0xFF };
-                    responseAccelY.response_value = BitConverter.ToString(responseAccelY.response_raw);
-                    SignalResponse(responseAccelY);
-                }
-
-                Thread.Sleep(2000);
-                var responseAccelZ = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Z_BASE);
-                if (responseAccelZ != null)
-                {
-                    responseAccelZ.response_outcome = (Int16)TestStatus.Pass;
-                    responseAccelZ.response_raw = new byte[] { 0xFF, 0xFF };
-                    responseAccelZ.response_value = BitConverter.ToString(responseAccelZ.response_raw);
-                    SignalResponse(responseAccelZ);
-                }
-            });
-        }
-
-        public void TestXYAccelerometerValues()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                Thread.Sleep(1000);
-                var responseAccelX = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_X_LONG_EDGE);
-                if (responseAccelX != null)
-                {
-                    responseAccelX.response_outcome = (Int16)TestStatus.Pass;
-                    responseAccelX.response_raw = new byte[] { 0x00, 0x00 };
-                    responseAccelX.response_value = BitConverter.ToString(responseAccelX.response_raw);
-                    SignalResponse(responseAccelX);
-                }
-
-                Thread.Sleep(2000);
-                var responseAccelY = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Y_LONG_EDGE);
-                if (responseAccelY != null)
-                {
-                    responseAccelY.response_outcome = (Int16)TestStatus.Pass;
-                    responseAccelY.response_raw = new byte[] { 0x00, 0xFF };
-                    responseAccelY.response_value = BitConverter.ToString(responseAccelY.response_raw);
-                    SignalResponse(responseAccelY);
-                }
-
-                Thread.Sleep(2000);
-                var responseAccelZ = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Z_LONG_EDGE);
-                if (responseAccelZ != null)
-                {
-                    responseAccelZ.response_outcome = (Int16)TestStatus.Pass;
-                    responseAccelZ.response_raw = new byte[] { 0xFF, 0xFF };
-                    responseAccelZ.response_value = BitConverter.ToString(responseAccelZ.response_raw);
-                    SignalResponse(responseAccelZ);
-                }
-            });
-        }
-
-        public void TestYZAccelerometerValues()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                Thread.Sleep(1000);
-                var responseAccelX = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_X_SHORT_EDGE);
-                if (responseAccelX != null)
-                {
-                    responseAccelX.response_outcome = (Int16)TestStatus.Pass;
-                    responseAccelX.response_raw = new byte[] { 0x00, 0x00 };
-                    responseAccelX.response_value = BitConverter.ToString(responseAccelX.response_raw);
-                    SignalResponse(responseAccelX);
-                }
-
-                Thread.Sleep(2000);
-                var responseAccelY = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Y_SHORT_EDGE);
-                if (responseAccelY != null)
-                {
-                    responseAccelY.response_outcome = (Int16)TestStatus.Pass;
-                    responseAccelY.response_raw = new byte[] { 0x00, 0xFF };
-                    responseAccelY.response_value = BitConverter.ToString(responseAccelY.response_raw);
-                    SignalResponse(responseAccelY);
-                }
-
-                Thread.Sleep(2000);
-                var responseAccelZ = _currentTestRun.responses.FirstOrDefault(r => r.response_parameter == TestParameters.ACCELEROMETER_Z_SHORT_EDGE);
-                if (responseAccelZ != null)
-                {
-                    responseAccelZ.response_outcome = (Int16)TestStatus.Pass;
-                    responseAccelZ.response_raw = new byte[] { 0xFF, 0xFF };
-                    responseAccelZ.response_value = BitConverter.ToString(responseAccelZ.response_raw);
-                    SignalResponse(responseAccelZ);
-                }
-
-            });
-        }
-
-        private void SignalResponse(response response)
-        {
-            if (TestResponseHandler != null)
-            {
-                TestResponseHandler(null, new TestResponseEventArgs
-                {
-                    Parameter = response.response_parameter,
-                    RawValue = response.response_raw,
-                    Status = (TestStatus)response.response_outcome,
-                    Value = response.response_value
-                });
-            }
-        }
-
-
-
-        public void PrepareForTestRun()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
-
-                byte[] buffer = new byte[100];
-                // Assume the idividual responses will be less than 100 bytes and that we get the complete response
-                var rxCount = CommunicationManager.Instance.SerialPort.Read(buffer, 0, buffer.Length);
-
-                int expectedLength = 5;
-
-                if (CommunicationManager.IsValidPacket(buffer, rxCount, expectedLength))
-                {
-                    byte[] payload = CommunicationManager.ExtractPayload(buffer, expectedLength);
-
-                    _currentTestRun.pcb_unit = new pcb_unit();
-                    //_currentTestRun.pcb_unit.
-
-                   //  short.Parse(BitConverter.ToString(payload)); 
-
-                }
-                else
-                {
-                }
-            });
-        }
 
         public void InitialiaseTestRun(string manufactureSerial)
         {
             _currentTestRun = new run();
-            _currentTestRun.pcb_unit = new pcb_unit();
-            _currentTestRun.pcb_unit.pcb_unit_serial_sticker_manufacture = manufactureSerial;
-            // Add the new run to the current session
-            _currentSession.runs.Add(_currentTestRun);
-            DataManager.Instance.SaveSession(_currentSession);
+
+            var testUnit = DataManager.Instance.GetTestUnit(manufactureSerial);
+            if (testUnit != null)
+            {
+                IsRetest = true;
+                _currentTestRun.pcb_unit = testUnit;
+            }
+            else
+            {
+                IsRetest = false;
+                _currentTestRun.pcb_unit = new pcb_unit();
+                _currentTestRun.pcb_unit.pcb_unit_serial_sticker_manufacture = manufactureSerial;
+                _currentTestRun.pcb_unit.pcb_unit_serial_number = "TEST";
+            }
+
+            CreateNewTestRunResponses();
+
+            _currentSession = DataManager.Instance.AddRun(_currentSession, _currentTestRun, testUnit, !IsRetest);
+            _currentTestRun = _currentSession.runs.Last();
         }
 
         public void StartTestSession(string technicianName)
@@ -535,7 +317,14 @@ namespace ESLTestProcess.Data
              _currentSession.technician = technicain;
             _currentSession.session_time_stamp = DateTime.Now;
 
-            DataManager.Instance.AddSession(_currentSession);
+            _currentSession = DataManager.Instance.AddSession(_currentSession);
+        }
+
+        public void SaveTestSession()
+        {
+            var run = _currentTestRun;
+            var sessionRun = _currentSession.runs.Last();
+            DataManager.Instance.SaveResponses(_currentSession);
         }
     }
 }

@@ -39,9 +39,9 @@ namespace ESLTestProcess
             }
         }
 
-
         private void wizardPageSummaryPart2_Enter(object sender, EventArgs e)
         {
+            AddRetestLabelToWizard(wizardPageSummaryPart2);
             _activeTblLayoutPanel = tblSummaryPart2;
             TimeOutCallback(null);
         }

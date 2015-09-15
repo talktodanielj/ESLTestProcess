@@ -34,6 +34,8 @@ namespace ESLTestProcess
             _accelerometerTestStep1Running = false;
             stepWizardControl1.SelectedPage.AllowNext = false;
 
+            AddRetestLabelToWizard(wizardPageAccelTestStep1);
+
             _testParameters.Clear();
             _testParameters.Add(new Tuple<string, string>("Accelerometer X", TestParameters.ACCELEROMETER_X_LONG_EDGE));
             _testParameters.Add(new Tuple<string, string>("Accelerometer Y", TestParameters.ACCELEROMETER_Y_LONG_EDGE));
@@ -109,6 +111,8 @@ namespace ESLTestProcess
             _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
             _byteStreamHandler.ProcessResponseEventHandler -= wizardPageAccelTestStep1_ProcessResponseEventHandler;
+            ProcessControl.Instance.SaveTestSession();
+            RemoveRetestLabelFromWizard(wizardPageAccelTestStep1);
         }
 
     }

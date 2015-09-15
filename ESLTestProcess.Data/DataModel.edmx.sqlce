@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 08/11/2015 14:21:35
+-- Date Created: 09/15/2015 11:09:25
 -- Generated from EDMX file: C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\DataModel.edmx
 -- --------------------------------------------------
 
@@ -16,9 +16,9 @@
 GO
     ALTER TABLE [responses] DROP CONSTRAINT [FK_runresult];
 GO
-    ALTER TABLE [runs] DROP CONSTRAINT [FK_pcb_unitrun];
-GO
     ALTER TABLE [sessions] DROP CONSTRAINT [FK_techniciansession];
+GO
+    ALTER TABLE [runs] DROP CONSTRAINT [FK_pcb_unitrun];
 GO
 
 -- --------------------------------------------------
@@ -46,10 +46,8 @@ GO
 -- Creating table 'runs'
 CREATE TABLE [runs] (
     [run_id] int IDENTITY(1,1) NOT NULL,
-    [run_pcb_unit_id] nvarchar(4000)  NOT NULL,
     [run_start_timestamp] datetime  NOT NULL,
     [run_complete_timestamp] datetime  NOT NULL,
-    [run_session_id] int  NOT NULL,
     [session_session_id] int  NOT NULL,
     [pcb_unit_pcb_unit_id] int  NOT NULL
 );
@@ -59,9 +57,8 @@ GO
 CREATE TABLE [responses] (
     [response_id] int IDENTITY(1,1) NOT NULL,
     [response_parameter] nvarchar(4000)  NOT NULL,
-    [response_raw] varbinary(8000)  NULL,
+    [response_raw] nvarchar(4000)  NULL,
     [response_value] nvarchar(4000)  NOT NULL,
-    [response_run_id] int  NOT NULL,
     [response_outcome] smallint  NOT NULL,
     [response_report_column] smallint  NOT NULL,
     [run_run_id] int  NOT NULL
@@ -95,10 +92,10 @@ GO
 
 -- Creating table 'pcb_unit'
 CREATE TABLE [pcb_unit] (
-    [pcb_unit_id] int IDENTITY(1,1) NOT NULL,
+    [pcb_unit_id] int IDENTITY(421,1) NOT NULL,
     [pcb_unit_serial_number] nvarchar(4000)  NOT NULL,
     [pcb_unit_serial_sticker_manufacture] nvarchar(4000)  NOT NULL,
-    [pcb_unit_serial_sticker_test] nvarchar(4000)  NOT NULL
+    [pcb_unit_serial_sticker_test] nvarchar(4000)  NULL
 );
 GO
 
@@ -176,21 +173,6 @@ ON [responses]
     ([run_run_id]);
 GO
 
--- Creating foreign key on [pcb_unit_pcb_unit_id] in table 'runs'
-ALTER TABLE [runs]
-ADD CONSTRAINT [FK_pcb_unitrun]
-    FOREIGN KEY ([pcb_unit_pcb_unit_id])
-    REFERENCES [pcb_unit]
-        ([pcb_unit_id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_pcb_unitrun'
-CREATE INDEX [IX_FK_pcb_unitrun]
-ON [runs]
-    ([pcb_unit_pcb_unit_id]);
-GO
-
 -- Creating foreign key on [technician_technicain_id] in table 'sessions'
 ALTER TABLE [sessions]
 ADD CONSTRAINT [FK_techniciansession]
@@ -204,6 +186,21 @@ GO
 CREATE INDEX [IX_FK_techniciansession]
 ON [sessions]
     ([technician_technicain_id]);
+GO
+
+-- Creating foreign key on [pcb_unit_pcb_unit_id] in table 'runs'
+ALTER TABLE [runs]
+ADD CONSTRAINT [FK_pcb_unitrun]
+    FOREIGN KEY ([pcb_unit_pcb_unit_id])
+    REFERENCES [pcb_unit]
+        ([pcb_unit_id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_pcb_unitrun'
+CREATE INDEX [IX_FK_pcb_unitrun]
+ON [runs]
+    ([pcb_unit_pcb_unit_id]);
 GO
 
 -- --------------------------------------------------
