@@ -25,6 +25,8 @@ namespace ESLTestProcess.Data
         public const byte TESTJIG_DAC1 = 0x97;
         public const byte TESTJIG_DAC2 = 0x98;
         public const byte TESTJIG_SET_PIEZO = 0x99;
+        public const byte TESTJIG_PWR_DUT = 0x9A;
+        public const byte TESTJIG_SHUTDOWN_DUT = 0x9B;
 
         // Node test commands
         public const byte TEST_ID_BEGIN_TEST = 0x60;
@@ -84,7 +86,9 @@ namespace ESLTestProcess.Data
         public static readonly byte[] REQUEST_DAC1 = { 0x02, TESTJIG_DAC1, 0x03 };
         public static readonly byte[] REQUEST_DAC2 = { 0x02, TESTJIG_DAC2, 0x03 };
         public static readonly byte[] REQUEST_SET_PIEZO = { 0x02, TESTJIG_SET_PIEZO, 0x03 };
-
+        public static readonly byte[] REQUEST_PWR_DUT = { 0x02, TESTJIG_PWR_DUT, 0x03 };
+        public static readonly byte[] REQUEST_SHUTDOWN_DUT = { 0x02, TESTJIG_SHUTDOWN_DUT, 0x03 };
+        
         public static Response[] ResponseValues = 
         {
             new Response{ TestId = TEST_END, ExpectedLength = 3},
@@ -108,15 +112,13 @@ namespace ESLTestProcess.Data
             new Response{ TestId = TEST_ID_GET_BGRSSI_VALUE, ExpectedLength = 17},
             new Response{ TestId = TEST_ID_CAPTURE_HUB, ExpectedLength = 27},
 
-            new Response{ TestId = TESTJIG_LED_STATUS, ExpectedLength = 3},
-            new Response{ TestId = TESTJIG_BUTTON_PRESS_SEQ, ExpectedLength = 3},
-            new Response{ TestId = TESTJIG_SET_REED, ExpectedLength = 3},
-            new Response{ TestId = TESTJIG_RUN_CUR, ExpectedLength = 3},
-            new Response{ TestId = TESTJIG_SLEEP_CUR, ExpectedLength = 3},
-            new Response{ TestId = TESTJIG_VSUPPLY_DUT, ExpectedLength = 3},
-            new Response{ TestId = TESTJIG_DAC1, ExpectedLength = 3},
-            new Response{ TestId = TESTJIG_DAC2, ExpectedLength = 3},
-            new Response{ TestId = TESTJIG_SET_PIEZO, ExpectedLength = 3},
+            new Response{ TestId = TESTJIG_LED_STATUS, ExpectedLength = 5},
+            new Response{ TestId = TESTJIG_RUN_CUR, ExpectedLength = 4},
+            new Response{ TestId = TESTJIG_SLEEP_CUR, ExpectedLength = 4},
+            new Response{ TestId = TESTJIG_VSUPPLY_DUT, ExpectedLength = 4},
+            new Response{ TestId = TESTJIG_VDD_DUT, ExpectedLength = 4},
+            new Response{ TestId = TESTJIG_DAC1, ExpectedLength = 4},
+            new Response{ TestId = TESTJIG_DAC2, ExpectedLength = 4},
         };
     }
 }

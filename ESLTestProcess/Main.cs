@@ -280,29 +280,7 @@ namespace ESLTestProcess
 
         private List<Tuple<string, string>> _testParameters = new List<Tuple<string, string>>();
 
-        private void wizardPageProgramPCB_Initialize(object sender, AeroWizard.WizardPageInitEventArgs e)
-        {
-            if (tblPCBUnitId.RowCount == 1)
-            {
-                _activeTblLayoutPanel = tblPCBUnitId;
-
-                _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("PCB Id", TestParameters.NODE_ID));
-                GenerateTable(_testParameters.ToArray());
-            }
-
-            ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-            _timeOutTimer.Change(8000, Timeout.Infinite);
-            // Start the test process
-            _testExpired = false;
-            //ProcessControl.Instance.PrepareForTestRun();
-        }
-
-        private void wizardPageProgramPCB_Leave(object sender, EventArgs e)
-        {
-            _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
-        }
+        
 
         private void txtManufactureSerial_TextChanged(object sender, EventArgs e)
         {
@@ -312,10 +290,6 @@ namespace ESLTestProcess
                 wizardPageInsertPCB.AllowNext = false;
         }
 
-        private void wizardPageProgramPCB_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
-        {
-
-        }
 
         private void wizardPageSignIn_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
@@ -325,11 +299,6 @@ namespace ESLTestProcess
         private void wizardPageResultsStatus_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
 
-        }
-
-        private void wizardPageProgramPCB_Enter(object sender, EventArgs e)
-        {
-            //ProcessControl.Instance.BeginNewTestRun();
         }
 
         private void Main_KeyPress(object sender, KeyPressEventArgs e)
