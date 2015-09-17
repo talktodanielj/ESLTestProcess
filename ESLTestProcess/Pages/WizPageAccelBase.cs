@@ -49,7 +49,7 @@ namespace ESLTestProcess
 
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageAccelerometerBase_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-            _timeOutTimer.Change(5000, Timeout.Infinite);
+            
 
         }
 
@@ -77,6 +77,7 @@ namespace ESLTestProcess
                     _log.Info("Got begin test command");
                     Thread.Sleep(100);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_ACCELEROMETER_TEST);
+                    _timeOutTimer.Change(5000, Timeout.Infinite);
                     break;
 
                 case TestParameters.TEST_END:

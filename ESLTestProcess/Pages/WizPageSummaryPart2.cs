@@ -43,12 +43,19 @@ namespace ESLTestProcess
         {
             AddRetestLabelToWizard(wizardPageSummaryPart2);
             _activeTblLayoutPanel = tblSummaryPart2;
-            TimeOutCallback(null);
+            _rollbackFromSummaryPage2 = false;
+            Task.Run(() =>
+            {
+                Thread.Sleep(2000);
+                if(!_rollBackFromProgramPage)
+                    TimeOutCallback(null);
+            });
         }
 
+        private bool _rollbackFromSummaryPage2;
         private void wizardPageSummaryPart2_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
-
+            _rollbackFromSummaryPage2 = true;
         }
 
     }

@@ -109,7 +109,6 @@ namespace ESLTestProcess
         {
             var testRun = ProcessControl.Instance.GetCurrentTestRun();
             byte[] rawData;
-            response testResponse = null;
 
             switch (e.ResponseId)
             {

@@ -36,17 +36,15 @@ namespace ESLTestProcess.Data
         public event EventHandler<TestResponseEventArgs> TestResponseHandler;
 
         private session _currentSession;
-
-        private run _currentTestRun;
         public run GetCurrentTestRun()
         {
-            return _currentTestRun;
+            return _currentSession.runs.Last();
         }
 
-        private void CreateNewTestRunResponses()
+        private void CreateNewTestRunResponses(run currentTestRun)
         {
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.NODE_ID,
@@ -54,7 +52,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.HUB_ID,
@@ -63,7 +61,7 @@ namespace ESLTestProcess.Data
             });
 
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.BATTERY_VOLTAGE,
@@ -71,7 +69,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.TEMPERATURE_READING,
@@ -79,7 +77,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.LED_GREEN_FLASH,
@@ -87,7 +85,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.LED_RED_FLASH,
@@ -95,7 +93,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.PIEZO_TEST,
@@ -103,7 +101,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.REED_TEST,
@@ -111,7 +109,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.RTC_SET,
@@ -119,7 +117,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.RTC_GET,
@@ -128,7 +126,7 @@ namespace ESLTestProcess.Data
             });
 
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.KEY_ENT,
@@ -136,7 +134,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.KEY_1_6,
@@ -144,7 +142,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.KEY_2_7,
@@ -152,7 +150,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.KEY_3_8,
@@ -160,7 +158,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.KEY_4_9,
@@ -168,7 +166,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.KEY_5_0,
@@ -176,7 +174,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.ACCELEROMETER_X_BASE,
@@ -184,7 +182,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.ACCELEROMETER_Y_BASE,
@@ -192,7 +190,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.ACCELEROMETER_Z_BASE,
@@ -200,7 +198,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.ACCELEROMETER_X_LONG_EDGE,
@@ -208,7 +206,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.ACCELEROMETER_Y_LONG_EDGE,
@@ -216,7 +214,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.ACCELEROMETER_Z_LONG_EDGE,
@@ -224,7 +222,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.ACCELEROMETER_X_SHORT_EDGE,
@@ -232,7 +230,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.ACCELEROMETER_Y_SHORT_EDGE,
@@ -240,7 +238,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.ACCELEROMETER_Z_SHORT_EDGE,
@@ -248,7 +246,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.RF_BGR_RSSI,
@@ -256,7 +254,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.RF_HUB_ACK,
@@ -264,7 +262,7 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
-            _currentTestRun.responses.Add(new response
+            currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.RF_ACK_RSSI,
@@ -284,37 +282,47 @@ namespace ESLTestProcess.Data
             get;
             set;
         }
-
-
+        
         public void InitialiaseTestRun(string manufactureSerial)
         {
-            _currentTestRun = new run();
+            var currentTestRun = new run();
 
             var testUnit = DataManager.Instance.GetTestUnit(manufactureSerial);
             if (testUnit != null)
             {
                 IsRetest = true;
-                _currentTestRun.pcb_unit = testUnit;
+                // Check if this pcb unit is being tracked in the current DbContext
+                pcb_unit localReference = null;
+                foreach (var run in _currentSession.runs)
+                {
+                    if (testUnit.pcb_unit_id == run.pcb_unit.pcb_unit_id)
+                        localReference = run.pcb_unit;
+                }
+
+                if (localReference != null)
+                    currentTestRun.pcb_unit = localReference;
+                else
+                    currentTestRun.pcb_unit = testUnit;
             }
             else
             {
                 IsRetest = false;
-                _currentTestRun.pcb_unit = new pcb_unit();
-                _currentTestRun.pcb_unit.pcb_unit_serial_sticker_manufacture = manufactureSerial;
-                _currentTestRun.pcb_unit.pcb_unit_serial_number = "TEST";
+                currentTestRun.pcb_unit = new pcb_unit();
+                currentTestRun.pcb_unit.pcb_unit_serial_sticker_manufacture = manufactureSerial;
+                currentTestRun.pcb_unit.pcb_unit_serial_number = "TEST";
             }
 
-            CreateNewTestRunResponses();
+            CreateNewTestRunResponses(currentTestRun);
 
-            _currentSession = DataManager.Instance.AddRun(_currentSession, _currentTestRun, testUnit, !IsRetest);
-            _currentTestRun = _currentSession.runs.Last();
+            _currentSession = DataManager.Instance.AddRun(_currentSession, currentTestRun, !IsRetest);
+
         }
 
         public void StartTestSession(string technicianName)
         {
             var technicain = DataManager.Instance.GetTechnician(technicianName);
             _currentSession = new session();
-             _currentSession.technician = technicain;
+            _currentSession.technician = technicain;
             _currentSession.session_time_stamp = DateTime.Now;
 
             _currentSession = DataManager.Instance.AddSession(_currentSession);
@@ -322,8 +330,6 @@ namespace ESLTestProcess.Data
 
         public void SaveTestSession()
         {
-            var run = _currentTestRun;
-            var sessionRun = _currentSession.runs.Last();
             DataManager.Instance.SaveResponses(_currentSession);
         }
     }

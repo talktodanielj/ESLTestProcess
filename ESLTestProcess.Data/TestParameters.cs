@@ -60,7 +60,7 @@ namespace ESLTestProcess.Data
         // Test duration, Expected Key   
         public static readonly byte[] REQUEST_START_BUTTON_TEST = { 0x02, TEST_ID_BUTTON_TEST, 0x02, 0x00, 0x03 };
 
-        public static readonly byte[] REQUEST_START_ACCELEROMETER_TEST = { 0x02, TEST_ID_START_ACCELEROMETER_TEST, 0x05, 0x03 }; // Test duration default 5 seconds
+        public static readonly byte[] REQUEST_START_ACCELEROMETER_TEST = { 0x02, TEST_ID_START_ACCELEROMETER_TEST, 0x02, 0x03 }; // Test duration default 5 seconds
         public static readonly byte[] REQUEST_START_PIEZO_TEST = { 0x02, TEST_ID_START_PIEZO_TEST, 0x05, 0x03 }; //Test duration default 5 seconds
         public static readonly byte[] REQUEST_HUB_ID = { 0x02, TEST_ID_HUB_ID, 0x03 };
         public static readonly byte[] REQUEST_SET_NODE_ID = { 0x02, TEST_ID_SET_NODE_ID, 0x00, 0x00, 0x00, 0x03 };

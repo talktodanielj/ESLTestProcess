@@ -134,6 +134,12 @@ namespace ESLTestProcess
                     _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     _flashColourTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     Thread.Sleep(2000);
+                    CheckFinalKeyResponse(TestViewParameters.KEY_1_6);
+                    CheckFinalKeyResponse(TestViewParameters.KEY_2_7);
+                    CheckFinalKeyResponse(TestViewParameters.KEY_3_8);
+                    CheckFinalKeyResponse(TestViewParameters.KEY_4_9);
+                    CheckFinalKeyResponse(TestViewParameters.KEY_5_0);
+                    CheckFinalKeyResponse(TestViewParameters.KEY_ENT);
 
                     this.BeginInvoke(new MethodInvoker(delegate
                     {
@@ -209,6 +215,19 @@ namespace ESLTestProcess
             testResponse.response_outcome = (Int16)TestStatus.Pass;
 
         }
+
+        private void CheckFinalKeyResponse(string keyId)
+        {
+            var testRun = ProcessControl.Instance.GetCurrentTestRun();
+            var testResponse = testRun.responses.FirstOrDefault(r => r.response_parameter == keyId);
+            if (testResponse.response_outcome == (Int16)TestStatus.Unknown)
+            {
+                testResponse.response_raw = "";
+                testResponse.response_value = "Fail";
+                testResponse.response_outcome = (Int16)TestStatus.Fail;
+            }
+        }
+
 
         private void wizardPageKeyPress_Leave(object sender, EventArgs e)
         {

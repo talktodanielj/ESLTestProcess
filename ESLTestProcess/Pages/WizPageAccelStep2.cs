@@ -58,8 +58,6 @@ namespace ESLTestProcess
 
         void wizardPageAccelTestStep2_ProcessResponseEventHandler(object sender, ByteStreamHandler.ProcessResponseEventArgs e)
         {
-            var testRun = ProcessControl.Instance.GetCurrentTestRun();
-            response testResponse = null;
 
             switch (e.ResponseId)
             {
@@ -73,6 +71,7 @@ namespace ESLTestProcess
                     _log.Info("Got begin test command");
                     Thread.Sleep(100);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_ACCELEROMETER_TEST);
+                    _timeOutTimer.Change(5000, Timeout.Infinite);
                     break;
 
                 case TestParameters.TEST_END:

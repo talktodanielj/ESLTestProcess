@@ -463,6 +463,13 @@ namespace ESLTestProcess
 
         }
 
+        private void btnProgramNode_Click(object sender, EventArgs e)
+        {
+            var currentRun = ProcessControl.Instance.GetCurrentTestRun().run_complete = true;
+            ProcessControl.Instance.SaveTestSession();
+           
+        }
+
 
 
 

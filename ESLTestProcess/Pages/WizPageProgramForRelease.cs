@@ -16,11 +16,12 @@ namespace ESLTestProcess
         private void wizardPageProgramForRelease_Enter(object sender, EventArgs e)
         {
             AddRetestLabelToWizard(wizardPageProgramForRelease);
+            _rollBackFromProgramPage = false;
 
             var testRun = ProcessControl.Instance.GetCurrentTestRun();
 
-            lblProgramNodeId.Text = testRun.pcb_unit.pcb_unit_id.ToString();
-            lblSerial.Text = testRun.pcb_unit.pcb_unit_serial_number;
+            lblProgramNodeId.Text =  string.Format("Node ID: {0}", testRun.pcb_unit.pcb_unit_id.ToString());
+            lblSerial.Text = string.Format("Serial #: {0}", testRun.pcb_unit.pcb_unit_serial_sticker_manufacture);
             lblProgramHubId.Text = string.Format("Hub ID: {0}", ConfigurationManager.AppSettings["release_hub_id"]);
 
             cameFromFinishCommand = true;
@@ -35,8 +36,11 @@ namespace ESLTestProcess
             RemoveRetestLabelFromWizard(wizardPageProgramForRelease);
         }
 
+        private bool _rollBackFromProgramPage = false;
+
         private void wizardPageProgramForRelease_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
+            _rollBackFromProgramPage = true;
             wizardPageProgramForRelease_Leave(sender, e);
         }
     }

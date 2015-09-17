@@ -22,6 +22,7 @@ namespace ESLTestProcess.Data
         public int run_id { get; internal set; }
         public System.DateTime run_start_timestamp { get; set; }
         public System.DateTime run_complete_timestamp { get; set; }
+        public bool run_complete { get; set; }
     
         public virtual session session { get; set; }
         public virtual ICollection<response> responses { get; set; }

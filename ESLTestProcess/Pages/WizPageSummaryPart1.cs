@@ -34,7 +34,7 @@ namespace ESLTestProcess
                 _testParameters.Add(new Tuple<string, string>("Key 3/8", TestViewParameters.KEY_3_8));
                 _testParameters.Add(new Tuple<string, string>("Key 4/9", TestViewParameters.KEY_4_9));
                 _testParameters.Add(new Tuple<string, string>("Key 5/0", TestViewParameters.KEY_5_0));
-                
+
                 _activeTblLayoutPanel = tblSummaryPart1;
                 GenerateTable(_testParameters.ToArray());
             }
@@ -45,8 +45,13 @@ namespace ESLTestProcess
         {
             _activeTblLayoutPanel = tblSummaryPart1;
             AddRetestLabelToWizard(wizardPageSummaryPart1);
-            Thread.Sleep(2000);
-            TimeOutCallback(null);
+
+            Task.Run(() =>
+            {
+                Thread.Sleep(2000);
+                if (!_rollbackFromSummaryPage2)
+                    TimeOutCallback(null);
+            });
         }
 
         private void wizardPageSummaryPart1_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)

@@ -59,6 +59,32 @@ namespace ESLTestProcess.Data
             {
                 _log.Debug(ex);
             }
+
+            try
+            {
+                using (Entities entities = new Entities())
+                {
+                    entities.Database.ExecuteSqlCommand("ALTER TABLE pcb_unit DROP CONSTRAINT UC_pcb_manufacture_id");
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Debug(ex);
+            }
+
+            try
+            {
+                using (Entities entities = new Entities())
+                {
+                    entities.Database.ExecuteSqlCommand("ALTER TABLE pcb_unit ADD CONSTRAINT UC_pcb_manufacture_id UNIQUE (pcb_unit_serial_sticker_manufacture)");
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Debug(ex);
+            }
+
+
         }
 
         public bool AddTechnician(string technicianName)
@@ -133,7 +159,7 @@ namespace ESLTestProcess.Data
             }
         }
         
-        public session AddRun(session currentSession, run currentRun, pcb_unit pcbUnit, bool isNewPCB)
+        public session AddRun(session currentSession, run currentRun, bool isNewPCB)
         {
             try
             {
@@ -143,21 +169,25 @@ namespace ESLTestProcess.Data
 
                     currentRun.run_complete_timestamp = currentRun.run_start_timestamp = DateTime.Now;
                     currentRun.session = currentSession;
-                    if (isNewPCB)
-                    {
-                        entities.pcb_unit.Add(currentRun.pcb_unit);
-                    }
-                    else
-                    {
-                        //entities.Entry(currentRun.pcb_unit).State = EntityState.Unchanged;
-                        //entities.pcb_unit.Attach(currentRun.pcb_unit);
-                    }
+
+
                     currentSession.runs.Add(currentRun);
                     entities.runs.Add(currentRun);
 
                     foreach (var responseItem in currentRun.responses)
                     {
                         entities.responses.Add(responseItem);
+                    }
+                                     
+
+                    if (isNewPCB)
+                    {
+                        entities.pcb_unit.Add(currentRun.pcb_unit);
+                    }
+                    else
+                    {
+                        //entities.Entry(pcbUnit).State = EntityState.Unchanged;
+                        entities.pcb_unit.Attach(currentRun.pcb_unit);
                     }
 
                     

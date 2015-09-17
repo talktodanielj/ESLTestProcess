@@ -7,6 +7,7 @@
           <ScalarProperty Name="run_id" ColumnName="run_id" />
           <ScalarProperty Name="run_start_timestamp" ColumnName="run_start_timestamp" />
           <ScalarProperty Name="run_complete_timestamp" ColumnName="run_complete_timestamp" />
+          <ScalarProperty Name="run_complete" ColumnName="run_complete" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

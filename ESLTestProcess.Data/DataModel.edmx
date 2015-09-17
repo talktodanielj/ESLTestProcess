@@ -36,6 +36,7 @@
     <Property Name="run_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="run_start_timestamp" Type="datetime" Nullable="false" />
     <Property Name="run_complete_timestamp" Type="datetime" Nullable="false" />
+    <Property Name="run_complete" Type="bit" Nullable="false" />
     <Property Name="session_session_id" Type="int" Nullable="false" />
     <Property Name="pcb_unit_pcb_unit_id" Type="int" DefaultValue="400" Nullable="false" />
   </EntityType>
@@ -171,6 +172,7 @@
           <NavigationProperty Name="session" Relationship="Model.sessionrun" FromRole="run" ToRole="session" />
           <NavigationProperty Name="responses" Relationship="Model.runresult" FromRole="run" ToRole="result" />
           <NavigationProperty Name="pcb_unit" Relationship="Model.pcb_unitrun" FromRole="run" ToRole="pcb_unit" />
+          <Property Type="Boolean" Name="run_complete" Nullable="false" />
         </EntityType>
         <EntityType Name="response">
           <Key>
@@ -249,6 +251,7 @@
           <ScalarProperty Name="run_id" ColumnName="run_id" />
           <ScalarProperty Name="run_start_timestamp" ColumnName="run_start_timestamp" />
           <ScalarProperty Name="run_complete_timestamp" ColumnName="run_complete_timestamp" />
+          <ScalarProperty Name="run_complete" ColumnName="run_complete" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -68,9 +68,6 @@
             this.btn2_7 = new System.Windows.Forms.Button();
             this.btn1_6 = new System.Windows.Forms.Button();
             this.btnEnt = new System.Windows.Forms.Button();
-            this.wizardPageTransceiver = new AeroWizard.WizardPage();
-            this.themedLabel16 = new AeroWizard.ThemedLabel();
-            this.tblTransceiverTest = new System.Windows.Forms.TableLayoutPanel();
             this.wizardPageAccelerometerBase = new AeroWizard.WizardPage();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.tblAccelerometerBaseline = new System.Windows.Forms.TableLayoutPanel();
@@ -89,6 +86,9 @@
             this.pbXStep1 = new System.Windows.Forms.PictureBox();
             this.tblAccelerometerStep2 = new System.Windows.Forms.TableLayoutPanel();
             this.themedLabel15 = new AeroWizard.ThemedLabel();
+            this.wizardPageTransceiver = new AeroWizard.WizardPage();
+            this.themedLabel16 = new AeroWizard.ThemedLabel();
+            this.tblTransceiverTest = new System.Windows.Forms.TableLayoutPanel();
             this.wizardPageSummaryPart1 = new AeroWizard.WizardPage();
             this.lblTestSummaryPart1 = new System.Windows.Forms.Label();
             this.tblSummaryPart1 = new System.Windows.Forms.TableLayoutPanel();
@@ -115,7 +115,6 @@
             this.wizardPagePiezo.SuspendLayout();
             this.wizardPageKeyPress.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.wizardPageTransceiver.SuspendLayout();
             this.wizardPageAccelerometerBase.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.wizardPageAccelTestStep1.SuspendLayout();
@@ -124,6 +123,7 @@
             this.wizardPageAccelTestStep2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbXStep3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbXStep1)).BeginInit();
+            this.wizardPageTransceiver.SuspendLayout();
             this.wizardPageSummaryPart1.SuspendLayout();
             this.wizardPageSummaryPart2.SuspendLayout();
             this.wizardPageProgramForRelease.SuspendLayout();
@@ -369,7 +369,7 @@
             this.wizardPageResultsStatus.Controls.Add(this.themedLabel12);
             this.wizardPageResultsStatus.Controls.Add(this.tbllnitialStatus);
             this.wizardPageResultsStatus.Name = "wizardPageResultsStatus";
-            this.wizardPageResultsStatus.NextPage = this.wizardPagePiezo;
+            this.wizardPageResultsStatus.NextPage = this.wizardPageProgramForRelease;
             this.wizardPageResultsStatus.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageResultsStatus, "PCB initial status");
             this.wizardPageResultsStatus.TabIndex = 5;
@@ -587,41 +587,6 @@
             this.btnEnt.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnEnt.UseVisualStyleBackColor = false;
             // 
-            // wizardPageTransceiver
-            // 
-            this.wizardPageTransceiver.Controls.Add(this.themedLabel16);
-            this.wizardPageTransceiver.Controls.Add(this.tblTransceiverTest);
-            this.wizardPageTransceiver.Name = "wizardPageTransceiver";
-            this.wizardPageTransceiver.NextPage = this.wizardPageSummaryPart1;
-            this.wizardPageTransceiver.Size = new System.Drawing.Size(568, 512);
-            this.stepWizardControl1.SetStepText(this.wizardPageTransceiver, "Tranceiver test");
-            this.wizardPageTransceiver.TabIndex = 9;
-            this.wizardPageTransceiver.Text = "Tranceiver Test";
-            this.wizardPageTransceiver.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageTransceiver_Initialize);
-            this.wizardPageTransceiver.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageTransceiver_Rollback);
-            this.wizardPageTransceiver.Enter += new System.EventHandler(this.wizardPageTransceiver_Enter);
-            this.wizardPageTransceiver.Leave += new System.EventHandler(this.wizardPageTransceiver_Leave);
-            // 
-            // themedLabel16
-            // 
-            this.themedLabel16.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.themedLabel16.Location = new System.Drawing.Point(25, 23);
-            this.themedLabel16.Name = "themedLabel16";
-            this.themedLabel16.Size = new System.Drawing.Size(450, 23);
-            this.themedLabel16.TabIndex = 1;
-            this.themedLabel16.Text = "Sending data through the transceiver and waiting for a reply";
-            // 
-            // tblTransceiverTest
-            // 
-            this.tblTransceiverTest.ColumnCount = 1;
-            this.tblTransceiverTest.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblTransceiverTest.Location = new System.Drawing.Point(25, 87);
-            this.tblTransceiverTest.Name = "tblTransceiverTest";
-            this.tblTransceiverTest.RowCount = 1;
-            this.tblTransceiverTest.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblTransceiverTest.Size = new System.Drawing.Size(463, 159);
-            this.tblTransceiverTest.TabIndex = 0;
-            // 
             // wizardPageAccelerometerBase
             // 
             this.wizardPageAccelerometerBase.Controls.Add(this.pictureBox3);
@@ -834,6 +799,41 @@
             this.themedLabel15.Text = "Rotate the test jig to stand on the short edge as in the photo then hit the space" +
     "bar to begin the test.";
             // 
+            // wizardPageTransceiver
+            // 
+            this.wizardPageTransceiver.Controls.Add(this.themedLabel16);
+            this.wizardPageTransceiver.Controls.Add(this.tblTransceiverTest);
+            this.wizardPageTransceiver.Name = "wizardPageTransceiver";
+            this.wizardPageTransceiver.NextPage = this.wizardPageSummaryPart1;
+            this.wizardPageTransceiver.Size = new System.Drawing.Size(568, 512);
+            this.stepWizardControl1.SetStepText(this.wizardPageTransceiver, "Tranceiver test");
+            this.wizardPageTransceiver.TabIndex = 9;
+            this.wizardPageTransceiver.Text = "Tranceiver Test";
+            this.wizardPageTransceiver.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageTransceiver_Initialize);
+            this.wizardPageTransceiver.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageTransceiver_Rollback);
+            this.wizardPageTransceiver.Enter += new System.EventHandler(this.wizardPageTransceiver_Enter);
+            this.wizardPageTransceiver.Leave += new System.EventHandler(this.wizardPageTransceiver_Leave);
+            // 
+            // themedLabel16
+            // 
+            this.themedLabel16.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.themedLabel16.Location = new System.Drawing.Point(25, 23);
+            this.themedLabel16.Name = "themedLabel16";
+            this.themedLabel16.Size = new System.Drawing.Size(450, 23);
+            this.themedLabel16.TabIndex = 1;
+            this.themedLabel16.Text = "Sending data through the transceiver and waiting for a reply";
+            // 
+            // tblTransceiverTest
+            // 
+            this.tblTransceiverTest.ColumnCount = 1;
+            this.tblTransceiverTest.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblTransceiverTest.Location = new System.Drawing.Point(25, 87);
+            this.tblTransceiverTest.Name = "tblTransceiverTest";
+            this.tblTransceiverTest.RowCount = 1;
+            this.tblTransceiverTest.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblTransceiverTest.Size = new System.Drawing.Size(463, 159);
+            this.tblTransceiverTest.TabIndex = 0;
+            // 
             // wizardPageSummaryPart1
             // 
             this.wizardPageSummaryPart1.Controls.Add(this.lblTestSummaryPart1);
@@ -940,6 +940,7 @@
             this.btnProgramNode.TabIndex = 3;
             this.btnProgramNode.Text = "Program";
             this.btnProgramNode.UseVisualStyleBackColor = true;
+            this.btnProgramNode.Click += new System.EventHandler(this.btnProgramNode_Click);
             // 
             // lblProgramHubId
             // 
@@ -967,9 +968,9 @@
             this.lblProgramForRelease.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblProgramForRelease.Location = new System.Drawing.Point(56, 30);
             this.lblProgramForRelease.Name = "lblProgramForRelease";
-            this.lblProgramForRelease.Size = new System.Drawing.Size(305, 25);
+            this.lblProgramForRelease.Size = new System.Drawing.Size(413, 25);
             this.lblProgramForRelease.TabIndex = 0;
-            this.lblProgramForRelease.Text = "Program the Trap Node for release";
+            this.lblProgramForRelease.Text = "Program the Trap Node and Hub IDs for release";
             // 
             // menuStrip1
             // 
@@ -1021,7 +1022,6 @@
             this.wizardPagePiezo.PerformLayout();
             this.wizardPageKeyPress.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.wizardPageTransceiver.ResumeLayout(false);
             this.wizardPageAccelerometerBase.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.wizardPageAccelTestStep1.ResumeLayout(false);
@@ -1032,6 +1032,7 @@
             this.wizardPageAccelTestStep2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbXStep3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbXStep1)).EndInit();
+            this.wizardPageTransceiver.ResumeLayout(false);
             this.wizardPageSummaryPart1.ResumeLayout(false);
             this.wizardPageSummaryPart1.PerformLayout();
             this.wizardPageSummaryPart2.ResumeLayout(false);
