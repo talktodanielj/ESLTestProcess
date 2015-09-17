@@ -141,7 +141,7 @@ namespace ESLTestProcess.Data
 
         private int GetResponseLength(byte rxByte)
         {
-            var response = Parameters.ResponseValues.FirstOrDefault(r => r.TestId == rxByte);
+            var response = TestParameters.ResponseValues.FirstOrDefault(r => r.TestId == rxByte);
 
             if (response == null)
                 return 0;  // Indicates not found...

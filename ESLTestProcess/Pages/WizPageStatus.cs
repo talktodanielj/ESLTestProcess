@@ -54,10 +54,10 @@ namespace ESLTestProcess
             if (tbllnitialStatus.RowCount == 1)
             {
                 _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("Node Id", TestParameters.NODE_ID));
-                _testParameters.Add(new Tuple<string, string>("Hub Id", TestParameters.HUB_ID));
-                _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestParameters.BATTERY_VOLTAGE));
-                _testParameters.Add(new Tuple<string, string>("Temperature", TestParameters.TEMPERATURE_READING));
+                _testParameters.Add(new Tuple<string, string>("Node Id", TestViewParameters.NODE_ID));
+                _testParameters.Add(new Tuple<string, string>("Hub Id", TestViewParameters.HUB_ID));
+                _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestViewParameters.BATTERY_VOLTAGE));
+                _testParameters.Add(new Tuple<string, string>("Temperature", TestViewParameters.TEMPERATURE_READING));
 
                 _activeTblLayoutPanel = tbllnitialStatus;
                 GenerateTable(_testParameters.ToArray());
@@ -72,10 +72,10 @@ namespace ESLTestProcess
             AddRetestLabelToWizard(wizardPageResultsStatus);
 
             _testParameters.Clear();
-            _testParameters.Add(new Tuple<string, string>("Node Id", TestParameters.NODE_ID));
-            _testParameters.Add(new Tuple<string, string>("Hub Id", TestParameters.HUB_ID));
-            _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestParameters.BATTERY_VOLTAGE));
-            _testParameters.Add(new Tuple<string, string>("Temperature", TestParameters.TEMPERATURE_READING));
+            _testParameters.Add(new Tuple<string, string>("Node Id", TestViewParameters.NODE_ID));
+            _testParameters.Add(new Tuple<string, string>("Hub Id", TestViewParameters.HUB_ID));
+            _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestViewParameters.BATTERY_VOLTAGE));
+            _testParameters.Add(new Tuple<string, string>("Temperature", TestViewParameters.TEMPERATURE_READING));
 
             _activeTblLayoutPanel = tbllnitialStatus;
 
@@ -89,17 +89,17 @@ namespace ESLTestProcess
 
             _flashLedBtnTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
-            ResetTestParameter(TestParameters.BATTERY_VOLTAGE);
-            ResetTestParameter(TestParameters.TEMPERATURE_READING);
-            ResetTestParameter(TestParameters.NODE_ID);
-            ResetTestParameter(TestParameters.HUB_ID);
+            ResetTestParameter(TestViewParameters.BATTERY_VOLTAGE);
+            ResetTestParameter(TestViewParameters.TEMPERATURE_READING);
+            ResetTestParameter(TestViewParameters.NODE_ID);
+            ResetTestParameter(TestViewParameters.HUB_ID);
 
             pictureBoxLED1.Image = ESLTestProcess.Properties.Resources.test_spinner;
             pictureBoxLED2.Image = ESLTestProcess.Properties.Resources.test_spinner;
 
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageResultsStatus_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
 
             _timeOutTimer.Change(10000, Timeout.Infinite);
 
@@ -113,66 +113,66 @@ namespace ESLTestProcess
 
             switch (e.ResponseId)
             {
-                case Parameters.PARSE_ERROR:
+                case TestParameters.PARSE_ERROR:
                     _log.Info("Got a parse error");
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     break;
 
-                case Parameters.TEST_ID_BEGIN_TEST:
+                case TestParameters.TEST_ID_BEGIN_TEST:
                     _log.Info("Got begin test command");
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_NODE_ID);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_NODE_ID);
                     break;
 
-                case Parameters.TEST_ID_NODE_ID:
+                case TestParameters.TEST_ID_NODE_ID:
                     string nodeId = new string(new[] { (char)e.RawData[3], (char)e.RawData[2], (char)e.RawData[5], (char)e.RawData[4], (char)e.RawData[7], (char)e.RawData[6] });
-                    SetTestResponse(nodeId, TestParameters.NODE_ID, e.RawData, TestStatus.Pass);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_HUB_ID);
+                    SetTestResponse(nodeId, TestViewParameters.NODE_ID, e.RawData, TestStatus.Pass);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_HUB_ID);
                     break;
 
-                case Parameters.TEST_ID_HUB_ID:
+                case TestParameters.TEST_ID_HUB_ID:
                     string hubId = new string(new[] { (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[2], (char)e.RawData[3] });
-                    SetTestResponse(hubId, TestParameters.HUB_ID, e.RawData, TestStatus.Pass);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BATTERY_LEVEL);
+                    SetTestResponse(hubId, TestViewParameters.HUB_ID, e.RawData, TestStatus.Pass);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BATTERY_LEVEL);
                     break;
 
-                case Parameters.TEST_ID_BATTERY_LEVEL:
-                    rawData = e.RawData.Skip(2).Take(3).Reverse().ToArray();
+                case TestParameters.TEST_ID_BATTERY_LEVEL:
+                    rawData = e.RawData.Skip(2).Take(3).ToArray();
                     string batteryData = new string(new[] { (char)rawData[0], (char)rawData[1], (char)rawData[2] });
-                    int batLevel10mV = int.Parse(batteryData);
+                    int batLevel10mV = Convert.ToInt32(batteryData, 16);
                     double batteryLevel = batLevel10mV / 100.0;
-                    SetTestResponse(string.Format("{0:0.00}V", batteryLevel), TestParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Pass);
+                    SetTestResponse(string.Format("{0:0.00}V", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Pass);
                     _log.Info("Got battery level result");
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_TEMPERATURE_LEVEL);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_TEMPERATURE_LEVEL); 
                     break;
 
-                case Parameters.TEST_ID_TEMPERATURE_LEVEL:
+                case TestParameters.TEST_ID_TEMPERATURE_LEVEL:
                     rawData = e.RawData.Skip(2).Take(4).ToArray();
                     string temperatureData = new string(new[] { (char)rawData[2], (char)rawData[3] });
                     int temperature = Convert.ToInt32(temperatureData, 16);
 
                     _log.Info("Got temperature level");
 
-                    SetTestResponse(string.Format("{0:0.0}C", temperature), TestParameters.TEMPERATURE_READING, e.RawData, TestStatus.Pass);
+                    SetTestResponse(string.Format("{0:0.0}C", temperature), TestViewParameters.TEMPERATURE_READING, e.RawData, TestStatus.Pass);
                     _altColour = false;
                     _activeLEDBtn = 0;
                     _flashLedBtnTimer.Change(0, 500);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_FLASH_GREEN_LED);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_FLASH_GREEN_LED);
                     break;
 
-                case Parameters.TEST_ID_START_FLASH_GREEN_LED:
+                case TestParameters.TEST_ID_START_FLASH_GREEN_LED:
                     _flashLedBtnTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     _altColour = true;
                     FlashLEDBtnCallback(null);
                     pictureBoxLED1.Image = ESLTestProcess.Properties.Resources.tick;
 
-                    SetTestResponse("PASS", TestParameters.LED_GREEN_FLASH, e.RawData, TestStatus.Pass);
+                    SetTestResponse("PASS", TestViewParameters.LED_GREEN_FLASH, e.RawData, TestStatus.Pass);
                     _altColour = false;
                     _activeLEDBtn = 1;
                     _flashLedBtnTimer.Change(0, 500);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_FLASH_RED_LED);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_FLASH_RED_LED);
                     break;
 
-                case Parameters.TEST_ID_START_FLASH_RED_LED:
+                case TestParameters.TEST_ID_START_FLASH_RED_LED:
                     _flashLedBtnTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     _altColour = true;
                     FlashLEDBtnCallback(null);
@@ -180,7 +180,7 @@ namespace ESLTestProcess
 
                     _flashLedBtnTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
-                    SetTestResponse("PASS", TestParameters.LED_RED_FLASH, e.RawData, TestStatus.Pass);
+                    SetTestResponse("PASS", TestViewParameters.LED_RED_FLASH, e.RawData, TestStatus.Pass);
                     _log.Info("Got green RED flash");
 
                     AllowResultsPageToMoveNext();
@@ -216,6 +216,11 @@ namespace ESLTestProcess
             ProcessControl.Instance.SaveTestSession();
             RemoveRetestLabelFromWizard(wizardPageResultsStatus);
         }
+
+        //private void wizardPageResultsStatus_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        //{
+        //    wizardPageResultsStatus_Leave(sender, e);
+        //}
 
     }
 }

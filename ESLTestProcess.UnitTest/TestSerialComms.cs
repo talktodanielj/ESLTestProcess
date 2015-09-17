@@ -42,7 +42,7 @@ namespace ESLTestProcess.UnitTest
                 if (dataString.Contains("Inside begin_production_tests"))
                 {
                     Debug.WriteLine("Sending begin test command");
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     break;
                 }
             }

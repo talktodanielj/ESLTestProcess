@@ -81,7 +81,12 @@
   <ItemGroup>
     <Compile Include="ByteStreamHandler.cs" />
     <Compile Include="EntitiesExtension.cs" />
-    <Compile Include="Parameters.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TestParameters.cs" />
     <Compile Include="configuration.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
@@ -103,7 +108,7 @@
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TestHelper.cs" />
-    <Compile Include="TestParameters.cs" />
+    <Compile Include="TestViewParameters.cs" />
     <Compile Include="TestResponseEventArgs.cs" />
     <Compile Include="DataModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -148,6 +153,7 @@
       <LastGenOutput>DataModel.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="results.sqlce" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -173,6 +179,12 @@
       <ProductName>SQL Server Compact 4.0 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

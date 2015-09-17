@@ -17,10 +17,10 @@ namespace ESLTestProcess
             if (tblPiezoPanel.RowCount == 1)
             {
                 _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("Piezo test", TestParameters.PIEZO_TEST));
-                _testParameters.Add(new Tuple<string, string>("Reed test", TestParameters.REED_TEST));
-                _testParameters.Add(new Tuple<string, string>("Set RTC", TestParameters.RTC_SET));
-                _testParameters.Add(new Tuple<string, string>("Get RTC", TestParameters.RTC_GET));
+                _testParameters.Add(new Tuple<string, string>("Piezo test", TestViewParameters.PIEZO_TEST));
+                _testParameters.Add(new Tuple<string, string>("Reed test", TestViewParameters.REED_TEST));
+                _testParameters.Add(new Tuple<string, string>("Set RTC", TestViewParameters.RTC_SET));
+                _testParameters.Add(new Tuple<string, string>("Get RTC", TestViewParameters.RTC_GET));
 
                 _activeTblLayoutPanel = tblPiezoPanel;
                 GenerateTable(_testParameters.ToArray());
@@ -36,10 +36,10 @@ namespace ESLTestProcess
 
 
             _testParameters.Clear();
-            _testParameters.Add(new Tuple<string, string>("Piezo test", TestParameters.PIEZO_TEST));
-            _testParameters.Add(new Tuple<string, string>("Reed test", TestParameters.REED_TEST));
-            _testParameters.Add(new Tuple<string, string>("Set RTC", TestParameters.RTC_SET));
-            _testParameters.Add(new Tuple<string, string>("Get RTC", TestParameters.RTC_GET));
+            _testParameters.Add(new Tuple<string, string>("Piezo test", TestViewParameters.PIEZO_TEST));
+            _testParameters.Add(new Tuple<string, string>("Reed test", TestViewParameters.REED_TEST));
+            _testParameters.Add(new Tuple<string, string>("Set RTC", TestViewParameters.RTC_SET));
+            _testParameters.Add(new Tuple<string, string>("Get RTC", TestViewParameters.RTC_GET));
 
             _activeTblLayoutPanel = tblPiezoPanel;
 
@@ -49,14 +49,14 @@ namespace ESLTestProcess
             _gotReedTestResult = false;
             _reedTestRetries = 0;
             
-            ResetTestParameter(TestParameters.PIEZO_TEST);
-            ResetTestParameter(TestParameters.REED_TEST);
-            ResetTestParameter(TestParameters.RTC_SET);
-            ResetTestParameter(TestParameters.RTC_GET);
+            ResetTestParameter(TestViewParameters.PIEZO_TEST);
+            ResetTestParameter(TestViewParameters.REED_TEST);
+            ResetTestParameter(TestViewParameters.RTC_SET);
+            ResetTestParameter(TestViewParameters.RTC_GET);
 
             _byteStreamHandler.ProcessResponseEventHandler += wizardPagePiezo_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
             _timeOutTimer.Change(10000, Timeout.Infinite);
         }
 
@@ -76,33 +76,33 @@ namespace ESLTestProcess
 
             switch (e.ResponseId)
             {
-                case Parameters.PARSE_ERROR:
+                case TestParameters.PARSE_ERROR:
                     _log.Info("Got a parse error");
                     Thread.Sleep(10);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     break;
 
-                case Parameters.TEST_ID_BEGIN_TEST:
+                case TestParameters.TEST_ID_BEGIN_TEST:
                     _log.Info("Got begin test command");
                     Thread.Sleep(100);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_PIEZO_TEST);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_PIEZO_TEST);
                     // Send the command to the test jig to activate the piezo...
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_SET_PIEZO);
+                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SET_PIEZO);
                     break;
-                case Parameters.TEST_END:
+                case TestParameters.TEST_END:
                     _log.Info("Got test end");
 
                     if (!_gotPiezoTestResult && _piezoTestRetries < 3)
                     {
                         _piezoTestRetries++;
-                        CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_PIEZO_TEST);
+                        CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_PIEZO_TEST);
                         // Send the command to the test jig to activate the piezo...
-                        CommunicationManager.Instance.SendCommand(Parameters.REQUEST_SET_PIEZO);
+                        //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SET_PIEZO);
                     }
                     else if (!_gotReedTestResult && _reedTestRetries < 3)
                     {
                         _reedTestRetries++;
-                        CommunicationManager.Instance.SendCommand(Parameters.REQUEST_REED_SWITCH_TEST);
+                        CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_REED_SWITCH_TEST);
                     }
                     else
                     {
@@ -110,30 +110,30 @@ namespace ESLTestProcess
                     }
                     break;
 
-                case Parameters.TEST_ID_START_PIEZO_TEST:
+                case TestParameters.TEST_ID_START_PIEZO_TEST:
 
                     _gotPiezoTestResult = true;
-                    SetTestResponse("PASS", TestParameters.PIEZO_TEST, e.RawData, TestStatus.Pass);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_REED_SWITCH_TEST);
+                    SetTestResponse("PASS", TestViewParameters.PIEZO_TEST, e.RawData, TestStatus.Pass);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_REED_SWITCH_TEST);
                     // Send the command to the test jig to pull the reed switch low
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_SET_REED);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SET_REED);
                     break;
 
-                case Parameters.TEST_ID_REED_SWITCH_TEST:
+                case TestParameters.TEST_ID_REED_SWITCH_TEST:
 
                     // Next test...
-                    SetTestResponse("PASS", TestParameters.REED_TEST, e.RawData, TestStatus.Pass);
+                    SetTestResponse("PASS", TestViewParameters.REED_TEST, e.RawData, TestStatus.Pass);
                     RequestSetRTC();
                     break;
 
-                case Parameters.TEST_ID_SET_RTC_VALUE:
+                case TestParameters.TEST_ID_SET_RTC_VALUE:
 
                     _rtcDateTimeString =_rtcDateTime.ToString("dd/MM/yy HH:mm:ss");
-                    SetTestResponse(_rtcDateTimeString, TestParameters.RTC_SET, e.RawData, TestStatus.Pass);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_RTC_VALUE);
+                    SetTestResponse(_rtcDateTimeString, TestViewParameters.RTC_SET, e.RawData, TestStatus.Pass);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_RTC_VALUE);
                     break;
 
-                case Parameters.TEST_ID_RTC_VALUE:
+                case TestParameters.TEST_ID_RTC_VALUE:
                     var temperatureResponseValue = new string(new []{(char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], 
                                                              (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7], 
                                                              (char)e.RawData[8], (char)e.RawData[9], (char)e.RawData[10], 
@@ -148,7 +148,7 @@ namespace ESLTestProcess
                     else
                         temperatureResponse = TestStatus.Fail;
 
-                    SetTestResponse(temperatureResponseValue, TestParameters.RTC_GET, e.RawData, temperatureResponse);
+                    SetTestResponse(temperatureResponseValue, TestViewParameters.RTC_GET, e.RawData, temperatureResponse);
                     _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     Thread.Sleep(2000);
                     TimeOutCallback(null);
@@ -164,7 +164,7 @@ namespace ESLTestProcess
             _rtcDateTime = DateTime.Now;
 
             // Get the current date and time and set the RTC
-            byte[] commandBytes = Parameters.REQUEST_SET_RTC_VALUE;
+            byte[] commandBytes = TestParameters.REQUEST_SET_RTC_VALUE;
 
             commandBytes[2] = TestHelper.ToBcd(_rtcDateTime.Year - 2000)[0];
             commandBytes[3] = TestHelper.ToBcd(_rtcDateTime.Month)[0];
@@ -185,6 +185,11 @@ namespace ESLTestProcess
             _byteStreamHandler.ProcessResponseEventHandler -= wizardPagePiezo_ProcessResponseEventHandler;
             ProcessControl.Instance.SaveTestSession();
             RemoveRetestLabelFromWizard(wizardPagePiezo);
+        }
+
+        private void wizardPagePiezo_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+            wizardPagePiezo_Leave(sender, e);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace ESLTestProcess
                 _activeTblLayoutPanel = tblPCBUnitId;
 
                 _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("PCB Id", TestParameters.NODE_ID));
+                _testParameters.Add(new Tuple<string, string>("PCB Id", TestViewParameters.NODE_ID));
                 GenerateTable(_testParameters.ToArray());
             }
 
@@ -37,22 +37,22 @@ namespace ESLTestProcess
             stepWizardControl1.SelectedPage.AllowNext = false;
 
             _testParameters.Clear();
-            _testParameters.Add(new Tuple<string, string>("PCB Id", TestParameters.NODE_ID));
+            _testParameters.Add(new Tuple<string, string>("PCB Id", TestViewParameters.NODE_ID));
             _activeTblLayoutPanel = tblPCBUnitId;
 
-            ResetTestParameter(TestParameters.PIEZO_TEST);
+            ResetTestParameter(TestViewParameters.NODE_ID);
 
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageProgramPCB_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
-            _timeOutTimer.Change(12000, Timeout.Infinite);
+            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
+            _timeOutTimer.Change(2000, Timeout.Infinite);
 
-            Task.Run(() =>
-            {
-                CommunicationManager.Instance.SendCommand(Parameters.REQUEST_PWR_DUT);
-                Thread.Sleep(2000);
-                CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
-            });
+            //Task.Run(() =>
+            //{
+            //    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_PWR_DUT);
+            //    Thread.Sleep(2000);
+            //    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
+            //});
         }
 
 
@@ -63,25 +63,25 @@ namespace ESLTestProcess
 
             switch (e.ResponseId)
             {
-                case Parameters.PARSE_ERROR:
+                case TestParameters.PARSE_ERROR:
                     _log.Info("Got a parse error");
                     Thread.Sleep(10);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     break;
 
-                case Parameters.TEST_ID_BEGIN_TEST:
+                case TestParameters.TEST_ID_BEGIN_TEST:
                     _log.Info("Got begin test command");
                     Thread.Sleep(100);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_NODE_ID);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_NODE_ID);
 
                     break;
-                case Parameters.TEST_ID_NODE_ID:
+                case TestParameters.TEST_ID_NODE_ID:
                     string nodeId = new string(new[] { (char)e.RawData[3], (char)e.RawData[2], (char)e.RawData[5], (char)e.RawData[4], (char)e.RawData[7], (char)e.RawData[6] });
-                    SetTestResponse(nodeId, TestParameters.NODE_ID, e.RawData, TestStatus.Pass);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_HUB_ID);
+                    SetTestResponse(nodeId, TestViewParameters.NODE_ID, e.RawData, TestStatus.Pass);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_HUB_ID);
                     break;
 
-                case Parameters.TEST_END:
+                case TestParameters.TEST_END:
                     _log.Info("Got test end");
 
                     break;
@@ -95,18 +95,20 @@ namespace ESLTestProcess
         {
             _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
-
-
-
+            _byteStreamHandler.ProcessResponseEventHandler -= wizardPageProgramPCB_ProcessResponseEventHandler;
+            ProcessControl.Instance.SaveTestSession();
+            RemoveRetestLabelFromWizard(wizardPageProgramPCB);
         }
 
         private void wizardPageProgramPCB_Commit(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
-            _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
-            _byteStreamHandler.ProcessResponseEventHandler -= wizardPagePiezo_ProcessResponseEventHandler;
-            ProcessControl.Instance.SaveTestSession();
-            RemoveRetestLabelFromWizard(wizardPageProgramPCB);
+
         }
-    }
+
+        private void wizardPageProgramPCB_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+            wizardPageProgramPCB_Leave(sender, e);
+        }
+
+     }
 }

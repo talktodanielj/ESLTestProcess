@@ -18,22 +18,22 @@ namespace ESLTestProcess
             {
                 _testParameters.Clear();
 
-                _testParameters.Add(new Tuple<string, string>("Node Id", TestParameters.NODE_ID));
-                _testParameters.Add(new Tuple<string, string>("Hub Id", TestParameters.HUB_ID));
-                _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestParameters.BATTERY_VOLTAGE));
-                _testParameters.Add(new Tuple<string, string>("Temperature", TestParameters.TEMPERATURE_READING));
+                _testParameters.Add(new Tuple<string, string>("Node Id", TestViewParameters.NODE_ID));
+                _testParameters.Add(new Tuple<string, string>("Hub Id", TestViewParameters.HUB_ID));
+                _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestViewParameters.BATTERY_VOLTAGE));
+                _testParameters.Add(new Tuple<string, string>("Temperature", TestViewParameters.TEMPERATURE_READING));
 
-                _testParameters.Add(new Tuple<string, string>("Piezo test", TestParameters.PIEZO_TEST));
-                _testParameters.Add(new Tuple<string, string>("Reed test", TestParameters.REED_TEST));
-                _testParameters.Add(new Tuple<string, string>("Set RTC", TestParameters.RTC_SET));
-                _testParameters.Add(new Tuple<string, string>("Get RTC", TestParameters.RTC_GET));
+                _testParameters.Add(new Tuple<string, string>("Piezo test", TestViewParameters.PIEZO_TEST));
+                _testParameters.Add(new Tuple<string, string>("Reed test", TestViewParameters.REED_TEST));
+                _testParameters.Add(new Tuple<string, string>("Set RTC", TestViewParameters.RTC_SET));
+                _testParameters.Add(new Tuple<string, string>("Get RTC", TestViewParameters.RTC_GET));
 
-                _testParameters.Add(new Tuple<string, string>("Key ENT", TestParameters.KEY_ENT));
-                _testParameters.Add(new Tuple<string, string>("Key 1/6", TestParameters.KEY_1_6));
-                _testParameters.Add(new Tuple<string, string>("Key 2/7", TestParameters.KEY_2_7));
-                _testParameters.Add(new Tuple<string, string>("Key 3/8", TestParameters.KEY_3_8));
-                _testParameters.Add(new Tuple<string, string>("Key 4/9", TestParameters.KEY_4_9));
-                _testParameters.Add(new Tuple<string, string>("Key 5/0", TestParameters.KEY_5_0));
+                _testParameters.Add(new Tuple<string, string>("Key ENT", TestViewParameters.KEY_ENT));
+                _testParameters.Add(new Tuple<string, string>("Key 1/6", TestViewParameters.KEY_1_6));
+                _testParameters.Add(new Tuple<string, string>("Key 2/7", TestViewParameters.KEY_2_7));
+                _testParameters.Add(new Tuple<string, string>("Key 3/8", TestViewParameters.KEY_3_8));
+                _testParameters.Add(new Tuple<string, string>("Key 4/9", TestViewParameters.KEY_4_9));
+                _testParameters.Add(new Tuple<string, string>("Key 5/0", TestViewParameters.KEY_5_0));
                 
                 _activeTblLayoutPanel = tblSummaryPart1;
                 GenerateTable(_testParameters.ToArray());
@@ -48,5 +48,11 @@ namespace ESLTestProcess
             Thread.Sleep(2000);
             TimeOutCallback(null);
         }
+
+        private void wizardPageSummaryPart1_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+
+        }
+
     }
 }

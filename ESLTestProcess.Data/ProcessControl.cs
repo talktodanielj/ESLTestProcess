@@ -49,7 +49,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.NODE_ID,
+                response_parameter = TestViewParameters.NODE_ID,
                 response_report_column = 1,
                 response_value = "Unknown"
             });
@@ -57,7 +57,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.HUB_ID,
+                response_parameter = TestViewParameters.HUB_ID,
                 response_report_column = 2,
                 response_value = "Unknown"
             });
@@ -66,7 +66,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.BATTERY_VOLTAGE,
+                response_parameter = TestViewParameters.BATTERY_VOLTAGE,
                 response_report_column = 4,
                 response_value = "Unknown"
             });
@@ -74,7 +74,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.TEMPERATURE_READING,
+                response_parameter = TestViewParameters.TEMPERATURE_READING,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -82,7 +82,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.LED_GREEN_FLASH,
+                response_parameter = TestViewParameters.LED_GREEN_FLASH,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -90,7 +90,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.LED_RED_FLASH,
+                response_parameter = TestViewParameters.LED_RED_FLASH,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -98,7 +98,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.PIEZO_TEST,
+                response_parameter = TestViewParameters.PIEZO_TEST,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -106,7 +106,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.REED_TEST,
+                response_parameter = TestViewParameters.REED_TEST,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -114,7 +114,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.RTC_SET,
+                response_parameter = TestViewParameters.RTC_SET,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -122,7 +122,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.RTC_GET,
+                response_parameter = TestViewParameters.RTC_GET,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -131,7 +131,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.KEY_ENT,
+                response_parameter = TestViewParameters.KEY_ENT,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -139,7 +139,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.KEY_1_6,
+                response_parameter = TestViewParameters.KEY_1_6,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -147,7 +147,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.KEY_2_7,
+                response_parameter = TestViewParameters.KEY_2_7,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -155,7 +155,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.KEY_3_8,
+                response_parameter = TestViewParameters.KEY_3_8,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -163,7 +163,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.KEY_4_9,
+                response_parameter = TestViewParameters.KEY_4_9,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -171,7 +171,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.KEY_5_0,
+                response_parameter = TestViewParameters.KEY_5_0,
                 response_report_column = 5,
                 response_value = "Unknown"
             });
@@ -179,7 +179,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.ACCELEROMETER_X_BASE,
+                response_parameter = TestViewParameters.ACCELEROMETER_X_BASE,
                 response_report_column = 6,
                 response_value = "Unknown"
             });
@@ -187,7 +187,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.ACCELEROMETER_Y_BASE,
+                response_parameter = TestViewParameters.ACCELEROMETER_Y_BASE,
                 response_report_column = 7,
                 response_value = "Unknown"
             });
@@ -195,7 +195,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.ACCELEROMETER_Z_BASE,
+                response_parameter = TestViewParameters.ACCELEROMETER_Z_BASE,
                 response_report_column = 8,
                 response_value = "Unknown"
             });
@@ -203,7 +203,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.ACCELEROMETER_X_LONG_EDGE,
+                response_parameter = TestViewParameters.ACCELEROMETER_X_LONG_EDGE,
                 response_report_column = 9,
                 response_value = "Unknown"
             });
@@ -211,7 +211,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.ACCELEROMETER_Y_LONG_EDGE,
+                response_parameter = TestViewParameters.ACCELEROMETER_Y_LONG_EDGE,
                 response_report_column = 10,
                 response_value = "Unknown"
             });
@@ -219,7 +219,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.ACCELEROMETER_Z_LONG_EDGE,
+                response_parameter = TestViewParameters.ACCELEROMETER_Z_LONG_EDGE,
                 response_report_column = 11,
                 response_value = "Unknown"
             });
@@ -227,7 +227,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.ACCELEROMETER_X_SHORT_EDGE,
+                response_parameter = TestViewParameters.ACCELEROMETER_X_SHORT_EDGE,
                 response_report_column = 12,
                 response_value = "Unknown"
             });
@@ -235,7 +235,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.ACCELEROMETER_Y_SHORT_EDGE,
+                response_parameter = TestViewParameters.ACCELEROMETER_Y_SHORT_EDGE,
                 response_report_column = 13,
                 response_value = "Unknown"
             });
@@ -243,7 +243,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.ACCELEROMETER_Z_SHORT_EDGE,
+                response_parameter = TestViewParameters.ACCELEROMETER_Z_SHORT_EDGE,
                 response_report_column = 14,
                 response_value = "Unknown"
             });
@@ -251,7 +251,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.RF_BGR_RSSI,
+                response_parameter = TestViewParameters.RF_BGR_RSSI,
                 response_report_column = 15,
                 response_value = "Unknown"
             });
@@ -259,7 +259,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.RF_HUB_ACK,
+                response_parameter = TestViewParameters.RF_HUB_ACK,
                 response_report_column = 16,
                 response_value = "Unknown"
             });
@@ -267,7 +267,7 @@ namespace ESLTestProcess.Data
             _currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestParameters.RF_ACK_RSSI,
+                response_parameter = TestViewParameters.RF_ACK_RSSI,
                 response_report_column = 17,
                 response_value = "Unknown"
             });

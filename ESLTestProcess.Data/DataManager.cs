@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlServerCe;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -73,6 +74,7 @@ namespace ESLTestProcess.Data
             catch (Exception ex)
             {
                 _log.Error(ex);
+                throw;
             }
             return false;
         }
@@ -89,6 +91,7 @@ namespace ESLTestProcess.Data
             catch (Exception ex)
             {
                 _log.Error(ex);
+                throw;
             }
             return new string[0];
         }
@@ -105,6 +108,7 @@ namespace ESLTestProcess.Data
             catch (Exception ex)
             {
                 _log.Error(ex);
+                throw;
             }
             return null;
         }
@@ -220,6 +224,55 @@ namespace ESLTestProcess.Data
                 {
                     entities.sessions.Attach(currentSession);
                     return entities.SaveChanges() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Error(ex);
+                throw;
+            }
+        }
+
+        public void ExportTestData(string fileName)
+        {
+            try
+            {
+                using (var exportFile = new System.IO.StreamWriter(fileName, false))
+                {
+                    using (Entities entities = new Entities())
+                    {
+                        using (var connection = new SqlCeConnection(entities.Database.Connection.ConnectionString))
+                        {
+                            SqlCeCommand command = connection.CreateCommand();
+                            command.CommandText = ASCIIEncoding.ASCII.GetString(ESLTestProcess.Data.Properties.Resources.results);
+                            connection.Open();
+                            using (SqlCeDataReader reader = command.ExecuteReader())
+                            {
+                                // Write out the column headings
+                                StringBuilder sb = new StringBuilder();
+                                for (int i = 0; i < reader.FieldCount; i++)
+                                {
+                                    if (i > 0)
+                                        sb.Append(",");
+                                    sb.Append(reader.GetName(i));
+                                }
+                                exportFile.WriteLine(sb.ToString());
+                                
+                                // Write the data for each row
+                                while (reader.Read())
+                                {
+                                    sb.Clear();
+                                    for (int i = 0; i < reader.FieldCount; i++)
+                                    {
+                                        if (i > 0)
+                                            sb.Append(",");
+                                        sb.Append(reader.GetValue(i).ToString());
+                                    }
+                                    exportFile.WriteLine(sb.ToString());
+                                }
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)

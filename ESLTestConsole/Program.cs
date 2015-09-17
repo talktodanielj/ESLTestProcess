@@ -35,43 +35,43 @@ namespace ESLTestConsole
                         if (input.Contains("q"))
                             break;
                         else if (input.Trim() == "1")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                         else if (input.Trim() == "2")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_NODE_ID);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_NODE_ID);
                         else if (input.Trim() == "3")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BATTERY_LEVEL);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BATTERY_LEVEL);
                         else if (input.Trim() == "4")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_TEMPERATURE_LEVEL);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_TEMPERATURE_LEVEL);
                         else if (input.Trim() == "5")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_FLASH_GREEN_LED);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_FLASH_GREEN_LED);
                         else if (input.Trim() == "6")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_FLASH_RED_LED);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_FLASH_RED_LED);
                         else if (input.Trim() == "7")
                         {
-                            byte[] commandBytes = Parameters.REQUEST_START_BUTTON_TEST;
+                            byte[] commandBytes = TestParameters.REQUEST_START_BUTTON_TEST;
                             //commandBytes[2] = 1; // Wait 1 second for a response
                             //commandBytes[3] = 4; // Looking for KEY_5_0
                             CommunicationManager.Instance.SendCommand(commandBytes);
                         }
                         else if (input.Trim() == "a")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_ACCELEROMETER_TEST);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_ACCELEROMETER_TEST);
                         else if (input.Trim() == "p")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_START_PIEZO_TEST);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_PIEZO_TEST);
                         else if (input.Trim() == "h")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_HUB_ID);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_HUB_ID);
                         else if (input.Trim() == "r")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_REED_SWITCH_TEST);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_REED_SWITCH_TEST);
                         else if (input.Trim() == "d")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_DUMP_EPROM_TO_CONSOLE);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_DUMP_EPROM_TO_CONSOLE);
                         else if (input.Trim() == "t")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_RTC_VALUE);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_RTC_VALUE);
                         else if (input.Trim() == "b")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_GET_BGRSSI_VALUE);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_GET_BGRSSI_VALUE);
                         else if (input.Trim() == "c")
-                            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_CAPTURE_HUB);
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_CAPTURE_HUB);
                         else if (input.Contains("n"))
                         {
-                            byte[] commandBytes = Parameters.REQUEST_SET_NODE_ID;
+                            byte[] commandBytes = TestParameters.REQUEST_SET_NODE_ID;
                             input = input.Trim();
                             if (input.Length > 1 && input.Length < 5)
                             {
@@ -94,7 +94,7 @@ namespace ESLTestConsole
                         }
                         else if (input.Contains("i"))
                         {
-                            byte[] commandBytes = Parameters.REQUEST_SET_HUB_ID;
+                            byte[] commandBytes = TestParameters.REQUEST_SET_HUB_ID;
                             input = input.Trim();
                             if (input.Length > 1 && input.Length < 4)
                             {
@@ -117,7 +117,7 @@ namespace ESLTestConsole
                         }
                         else if (input.Contains("s"))
                         {
-                            byte[] commandBytes = Parameters.REQUEST_SET_RTC_VALUE;
+                            byte[] commandBytes = TestParameters.REQUEST_SET_RTC_VALUE;
 
                             commandBytes[2] = TestHelper.ToBcd(DateTime.Now.Year - 2000)[0];
                             commandBytes[3] = TestHelper.ToBcd(DateTime.Now.Month)[0];
@@ -139,21 +139,21 @@ namespace ESLTestConsole
 
         static void _byteSTreamHandler_ProcessResponseEventHandler(object sender, ByteStreamHandler.ProcessResponseEventArgs e)
         {
-            if (e.ResponseId == Parameters.PARSE_ERROR)
+            if (e.ResponseId == TestParameters.PARSE_ERROR)
             {
                 Console.WriteLine("Got a parse error");
             }
-            else if (e.ResponseId == Parameters.TEST_ID_BEGIN_TEST)
+            else if (e.ResponseId == TestParameters.TEST_ID_BEGIN_TEST)
             {
                 Console.WriteLine("Got begin test command");
 
             }
-            else if (e.ResponseId == Parameters.TEST_END)
+            else if (e.ResponseId == TestParameters.TEST_END)
             {
                 Console.WriteLine("Got test end response");
 
             }
-            else if (e.ResponseId == Parameters.TEST_ID_BUTTON_TEST)
+            else if (e.ResponseId == TestParameters.TEST_ID_BUTTON_TEST)
             {
                 switch (e.RawData[2])
                 {
@@ -235,7 +235,7 @@ namespace ESLTestConsole
 
                 if (responseData.Length > 1)
                 {
-                    if (responseData[0] == 0x02 && responseData[1] == Parameters.REQUEST_CAPTURE_HUB[1])
+                    if (responseData[0] == 0x02 && responseData[1] == TestParameters.REQUEST_CAPTURE_HUB[1])
                     {
                         Console.WriteLine("Hub Ack");
                         Console.WriteLine(data);

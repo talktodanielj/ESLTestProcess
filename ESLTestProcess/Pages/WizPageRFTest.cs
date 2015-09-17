@@ -17,9 +17,9 @@ namespace ESLTestProcess
             if (tblTransceiverTest.RowCount == 1)
             {
                 _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("Background RSSI", TestParameters.RF_BGR_RSSI));
-                _testParameters.Add(new Tuple<string, string>("HUB Acknowledgment", TestParameters.RF_HUB_ACK));
-                _testParameters.Add(new Tuple<string, string>("Ack RSSI value", TestParameters.RF_ACK_RSSI));
+                _testParameters.Add(new Tuple<string, string>("Background RSSI", TestViewParameters.RF_BGR_RSSI));
+                _testParameters.Add(new Tuple<string, string>("HUB Acknowledgment", TestViewParameters.RF_HUB_ACK));
+                _testParameters.Add(new Tuple<string, string>("Ack RSSI value", TestViewParameters.RF_ACK_RSSI));
 
                 _activeTblLayoutPanel = tblTransceiverTest;
                 GenerateTable(_testParameters.ToArray());
@@ -34,20 +34,20 @@ namespace ESLTestProcess
             AddRetestLabelToWizard(wizardPageTransceiver);
 
             _testParameters.Clear();
-            _testParameters.Add(new Tuple<string, string>("Background RSSI", TestParameters.RF_BGR_RSSI));
-            _testParameters.Add(new Tuple<string, string>("HUB Acknowledgment", TestParameters.RF_HUB_ACK));
-            _testParameters.Add(new Tuple<string, string>("Ack RSSI value", TestParameters.RF_ACK_RSSI));
+            _testParameters.Add(new Tuple<string, string>("Background RSSI", TestViewParameters.RF_BGR_RSSI));
+            _testParameters.Add(new Tuple<string, string>("HUB Acknowledgment", TestViewParameters.RF_HUB_ACK));
+            _testParameters.Add(new Tuple<string, string>("Ack RSSI value", TestViewParameters.RF_ACK_RSSI));
 
             _activeTblLayoutPanel = tblTransceiverTest;
             _rssiStage = 0;
 
-            ResetTestParameter(TestParameters.RF_BGR_RSSI);
-            ResetTestParameter(TestParameters.RF_HUB_ACK);
-            ResetTestParameter(TestParameters.RF_ACK_RSSI);
+            ResetTestParameter(TestViewParameters.RF_BGR_RSSI);
+            ResetTestParameter(TestViewParameters.RF_HUB_ACK);
+            ResetTestParameter(TestViewParameters.RF_ACK_RSSI);
 
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageTransceiver_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
             _timeOutTimer.Change(10000, Timeout.Infinite);
         }
 
@@ -62,23 +62,23 @@ namespace ESLTestProcess
 
             switch (e.ResponseId)
             {
-                case Parameters.PARSE_ERROR:
+                case TestParameters.PARSE_ERROR:
                     _log.Info("Got a parse error");
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     break;
 
-                case Parameters.TEST_ID_BEGIN_TEST:
+                case TestParameters.TEST_ID_BEGIN_TEST:
                     _log.Info("Got begin test command");
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_GET_BGRSSI_VALUE);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_GET_BGRSSI_VALUE);
                     break;
 
-                case Parameters.TEST_ID_GET_BGRSSI_VALUE:
+                case TestParameters.TEST_ID_GET_BGRSSI_VALUE:
 
                     if (_rssiStage == 0)
                     {
                         string initialRssi = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7], (char)e.RawData[8] }).Trim();
-                        SetTestResponse(initialRssi, TestParameters.RF_BGR_RSSI, e.RawData, TestStatus.Pass);
-                        CommunicationManager.Instance.SendCommand(Parameters.REQUEST_CAPTURE_HUB);
+                        SetTestResponse(initialRssi, TestViewParameters.RF_BGR_RSSI, e.RawData, TestStatus.Pass);
+                        CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_CAPTURE_HUB);
                     }
                     else
                     {
@@ -97,11 +97,11 @@ namespace ESLTestProcess
                         {
                             responseOutcome = TestStatus.Fail;
                         }
-                        SetTestResponse(ackRssiData, TestParameters.RF_ACK_RSSI, e.RawData, responseOutcome);
+                        SetTestResponse(ackRssiData, TestViewParameters.RF_ACK_RSSI, e.RawData, responseOutcome);
                     }
                     break;
 
-                case Parameters.TEST_ID_CAPTURE_HUB:
+                case TestParameters.TEST_ID_CAPTURE_HUB:
 
                     _rssiStage = 1;
 
@@ -114,8 +114,8 @@ namespace ESLTestProcess
                         (char)e.RawData[22],(char)e.RawData[23]
                     }).Trim();
 
-                    SetTestResponse(hubAck, TestParameters.RF_HUB_ACK, e.RawData, TestStatus.Pass);
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_GET_BGRSSI_VALUE);
+                    SetTestResponse(hubAck, TestViewParameters.RF_HUB_ACK, e.RawData, TestStatus.Pass);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_GET_BGRSSI_VALUE);
                     break;
 
                 default:
@@ -131,6 +131,12 @@ namespace ESLTestProcess
             _byteStreamHandler.ProcessResponseEventHandler -= wizardPageTransceiver_ProcessResponseEventHandler;
             ProcessControl.Instance.SaveTestSession();
             RemoveRetestLabelFromWizard(wizardPageTransceiver);
+        }
+
+
+        private void wizardPageTransceiver_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+            wizardPageTransceiver_Leave(sender, e);
         }
     }
 }

@@ -1,0 +1,52 @@
+
+SELECT technician_name, run_id,pcb_unit_id
+		,run_start_timestamp, pcb_unit_serial_number, pcb_unit_serial_sticker_manufacture
+		, DATEDIFF(s, run_start_timestamp, run_complete_timestamp) AS test_duration_sec
+		,battery_voltage, temperature_reading, piezo_test, reed_test, rtc_set, rtc_get
+		,key_1_6, key_2_7, key_3_8, key_4_9, key_5_0, key_ENT
+		,rf_bgr_rssi, rf_hub_ack, rf_ack_rsi
+		,acceleromter_x_base, acceleromter_y_base, acceleromter_z_base
+		,acceleromter_x_long_edge, acceleromter_y_long_edge, acceleromter_z_long_edge
+		,acceleromter_x_short_edge, acceleromter_y_short_edge, acceleromter_z_short_edge
+FROM
+	
+	(SELECT  pcb_unit_id, pcb_unit_serial_number, pcb_unit_serial_sticker_manufacture, 
+		run_id, technician_name, run_start_timestamp, run_complete_timestamp,
+      	MAX(CASE WHEN response_parameter = 'node_id' THEN response_value ELSE NULL END) [node_id],
+      	MAX(CASE WHEN response_parameter = 'hub_id' THEN response_value ELSE NULL END) [hub_id],
+      	MAX(CASE WHEN response_parameter = 'battery_voltage' THEN response_value ELSE NULL END) [battery_voltage],
+      	MAX(CASE WHEN response_parameter = 'temperature_reading' THEN response_value ELSE NULL END) [temperature_reading],
+      	MAX(CASE WHEN response_parameter = 'piezo_test' THEN response_value ELSE NULL END) [piezo_test],
+      	MAX(CASE WHEN response_parameter = 'reed_test' THEN response_value ELSE NULL END) [reed_test],
+      	MAX(CASE WHEN response_parameter = 'rtc_set' THEN response_value ELSE NULL END) [rtc_set],
+      	MAX(CASE WHEN response_parameter = 'rtc_get' THEN response_value ELSE NULL END) [rtc_get],
+      	MAX(CASE WHEN response_parameter = 'key_1_6' THEN response_value ELSE NULL END) [key_1_6],
+      	MAX(CASE WHEN response_parameter = 'key_2_7' THEN response_value ELSE NULL END) [key_2_7],
+      	MAX(CASE WHEN response_parameter = 'key_3_8' THEN response_value ELSE NULL END) [key_3_8],
+      	MAX(CASE WHEN response_parameter = 'key_4_9' THEN response_value ELSE NULL END) [key_4_9],
+      	MAX(CASE WHEN response_parameter = 'key_5_0' THEN response_value ELSE NULL END) [key_5_0],
+      	MAX(CASE WHEN response_parameter = 'key_ENT' THEN response_value ELSE NULL END) [key_ENT],
+      	MAX(CASE WHEN response_parameter = 'rf_bgr_rssi' THEN response_value ELSE NULL END) [rf_bgr_rssi],
+      	MAX(CASE WHEN response_parameter = 'rf_hub_ack' THEN response_value ELSE NULL END) [rf_hub_ack],
+      	MAX(CASE WHEN response_parameter = 'rf_ack_rsi' THEN response_value ELSE NULL END) [rf_ack_rsi],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_x_base' THEN response_value ELSE NULL END) [acceleromter_x_base],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_y_base' THEN response_value ELSE NULL END) [acceleromter_y_base],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_z_base' THEN response_value ELSE NULL END) [acceleromter_z_base],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_x_long_edge' THEN response_value ELSE NULL END) [acceleromter_x_long_edge],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_y_long_edge' THEN response_value ELSE NULL END) [acceleromter_y_long_edge],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_z_long_edge' THEN response_value ELSE NULL END) [acceleromter_z_long_edge],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_x_short_edge' THEN response_value ELSE NULL END) [acceleromter_x_short_edge],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_y_short_edge' THEN response_value ELSE NULL END) [acceleromter_y_short_edge],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_z_short_edge' THEN response_value ELSE NULL END) [acceleromter_z_short_edge]
+	FROM responses
+		JOIN runs
+			ON  run_run_id = run_id
+		JOIN pcb_unit
+			ON pcb_unit_id = pcb_unit_pcb_unit_id
+		JOIN sessions
+			ON session_session_id = session_id
+		JOIN technicians
+			ON technicain_id = technician_technicain_id
+		GROUP BY run_id, pcb_unit_id, technician_name, run_start_timestamp, run_complete_timestamp, 
+				pcb_unit_serial_number, pcb_unit_serial_sticker_manufacture
+	) AS results	

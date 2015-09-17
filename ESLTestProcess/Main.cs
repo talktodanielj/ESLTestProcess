@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using log4net;
 using System.Threading;
+using System.Configuration;
 
 namespace ESLTestProcess
 {
@@ -29,6 +30,10 @@ namespace ESLTestProcess
             if (CommunicationManager.Instance.OpenConnection())
             {
                 CommunicationManager.Instance.SerialPort.DataReceived += SerialPort_DataReceived;
+            }
+            else
+            {
+                MessageBox.Show(string.Format("Failed to open COM port {0}", ConfigurationManager.AppSettings["serial_port"]), "Test Jig Connection Error", MessageBoxButtons.OK);
             }
 
             this.KeyPreview = true;
@@ -81,7 +86,7 @@ namespace ESLTestProcess
                 AddRow(
                   new Label() { Text = parameter.Item1, Anchor = AnchorStyles.Left, AutoSize = true }
                 , new Label() { Text = "Unknown", Anchor = AnchorStyles.Left, AutoSize = true, Name = parameter.Item2 }
-                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = TestParameters.GetIconName(parameter.Item2) });
+                , new PictureBox() { Image = ESLTestProcess.Properties.Resources.test_spinner, Anchor = AnchorStyles.None, Size = new Size(24, 24), SizeMode = PictureBoxSizeMode.StretchImage, Name = TestViewParameters.GetIconName(parameter.Item2) });
             }
 
             _activeTblLayoutPanel.AutoSize = true;
@@ -123,16 +128,16 @@ namespace ESLTestProcess
 
             if (_activeTblLayoutPanel != null)
             {
-                var iconControl = (PictureBox)_activeTblLayoutPanel.Controls.Find(TestParameters.GetIconName(e.Parameter), true).FirstOrDefault();
+                var iconControl = (PictureBox)_activeTblLayoutPanel.Controls.Find(TestViewParameters.GetIconName(e.Parameter), true).FirstOrDefault();
 
                 if (iconControl == null)
                 {
-                    if (e.Parameter == TestParameters.LED_GREEN_FLASH)
+                    if (e.Parameter == TestViewParameters.LED_GREEN_FLASH)
                     {
                         iconControl = pictureBoxLED1;
                     }
 
-                    if (e.Parameter == TestParameters.LED_RED_FLASH)
+                    if (e.Parameter == TestViewParameters.LED_RED_FLASH)
                     {
                         iconControl = pictureBoxLED2;
                     }
@@ -280,7 +285,7 @@ namespace ESLTestProcess
 
         private List<Tuple<string, string>> _testParameters = new List<Tuple<string, string>>();
 
-        
+
 
         private void txtManufactureSerial_TextChanged(object sender, EventArgs e)
         {
@@ -308,7 +313,7 @@ namespace ESLTestProcess
                 if (e.KeyChar == Convert.ToChar(Keys.Space) && !_accelerometerBaseTestRunning)
                 {
                     _accelerometerBaseTestRunning = true;
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                 }
             }
 
@@ -317,7 +322,7 @@ namespace ESLTestProcess
                 if (e.KeyChar == Convert.ToChar(Keys.Space) && !_accelerometerTestStep1Running)
                 {
                     _accelerometerTestStep1Running = true;
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                 }
             }
 
@@ -326,7 +331,7 @@ namespace ESLTestProcess
                 if (e.KeyChar == Convert.ToChar(Keys.Space) && !_accelerometerTestStep2Running)
                 {
                     _accelerometerTestStep2Running = true;
-                    CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                 }
             }
         }
@@ -433,6 +438,50 @@ namespace ESLTestProcess
                 txtManufactureSerial.Text = "";
             }
         }
+
+        private void exportResultsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            saveDialog.AddExtension = true;
+            saveDialog.CreatePrompt = false;
+            saveDialog.CheckFileExists = false;
+            saveDialog.CheckPathExists = true;
+            saveDialog.DefaultExt = "csv";
+            saveDialog.OverwritePrompt = true;
+            saveDialog.Title = "Export test results as CSV file";
+
+            var diaogResult = saveDialog.ShowDialog();
+
+            if (diaogResult == System.Windows.Forms.DialogResult.OK)
+            {
+                DataManager.Instance.ExportTestData(saveDialog.FileName);
+            }
+        }
+
+        private void wizardPageSignIn_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     }

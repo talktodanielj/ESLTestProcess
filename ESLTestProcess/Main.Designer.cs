@@ -101,6 +101,9 @@
             this.lblProgramHubId = new System.Windows.Forms.Label();
             this.lblProgramNodeId = new System.Windows.Forms.Label();
             this.lblProgramForRelease = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
@@ -124,13 +127,14 @@
             this.wizardPageSummaryPart1.SuspendLayout();
             this.wizardPageSummaryPart2.SuspendLayout();
             this.wizardPageProgramForRelease.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // stepWizardControl1
             // 
             this.stepWizardControl1.CancelButtonText = "Cancel";
             this.stepWizardControl1.FinishButtonText = "Finish";
-            this.stepWizardControl1.Location = new System.Drawing.Point(0, 0);
+            this.stepWizardControl1.Location = new System.Drawing.Point(0, 24);
             this.stepWizardControl1.Name = "stepWizardControl1";
             this.stepWizardControl1.NextButtonText = "Next";
             this.stepWizardControl1.Pages.Add(this.wizardPageSignIn);
@@ -139,14 +143,14 @@
             this.stepWizardControl1.Pages.Add(this.wizardPageResultsStatus);
             this.stepWizardControl1.Pages.Add(this.wizardPagePiezo);
             this.stepWizardControl1.Pages.Add(this.wizardPageKeyPress);
-            this.stepWizardControl1.Pages.Add(this.wizardPageTransceiver);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelerometerBase);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestStep1);
             this.stepWizardControl1.Pages.Add(this.wizardPageAccelTestStep2);
+            this.stepWizardControl1.Pages.Add(this.wizardPageTransceiver);
             this.stepWizardControl1.Pages.Add(this.wizardPageSummaryPart1);
             this.stepWizardControl1.Pages.Add(this.wizardPageSummaryPart2);
             this.stepWizardControl1.Pages.Add(this.wizardPageProgramForRelease);
-            this.stepWizardControl1.Size = new System.Drawing.Size(866, 690);
+            this.stepWizardControl1.Size = new System.Drawing.Size(866, 666);
             this.stepWizardControl1.StepListFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
             this.stepWizardControl1.StepListWidth = 250;
             this.stepWizardControl1.TabIndex = 0;
@@ -165,12 +169,13 @@
             this.wizardPageSignIn.Controls.Add(this.themedLabel1);
             this.wizardPageSignIn.Name = "wizardPageSignIn";
             this.wizardPageSignIn.NextPage = this.wizardPageInsertPCB;
-            this.wizardPageSignIn.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageSignIn.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageSignIn, "Technician Sign In");
             this.wizardPageSignIn.TabIndex = 2;
             this.wizardPageSignIn.Text = "Begin testing...";
             this.wizardPageSignIn.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageSignIn_Commit);
             this.wizardPageSignIn.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageSignIn_Initialize);
+            this.wizardPageSignIn.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageSignIn_Rollback);
             // 
             // themedLabel7
             // 
@@ -227,7 +232,7 @@
             this.wizardPageInsertPCB.Controls.Add(this.themedLabel3);
             this.wizardPageInsertPCB.Name = "wizardPageInsertPCB";
             this.wizardPageInsertPCB.NextPage = this.wizardPageProgramPCB;
-            this.wizardPageInsertPCB.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageInsertPCB.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageInsertPCB, "Insert PCB for testing.");
             this.wizardPageInsertPCB.TabIndex = 3;
             this.wizardPageInsertPCB.Text = "Insert PCB";
@@ -288,12 +293,13 @@
             this.wizardPageProgramPCB.Controls.Add(this.themedLabel8);
             this.wizardPageProgramPCB.Name = "wizardPageProgramPCB";
             this.wizardPageProgramPCB.NextPage = this.wizardPageResultsStatus;
-            this.wizardPageProgramPCB.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageProgramPCB.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageProgramPCB, "Program the node PCB");
             this.wizardPageProgramPCB.TabIndex = 4;
             this.wizardPageProgramPCB.Text = "Program PCB";
             this.wizardPageProgramPCB.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageProgramPCB_Commit);
             this.wizardPageProgramPCB.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageProgramPCB_Initialize);
+            this.wizardPageProgramPCB.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageProgramPCB_Rollback);
             this.wizardPageProgramPCB.Enter += new System.EventHandler(this.wizardPageProgramPCB_Enter);
             this.wizardPageProgramPCB.Leave += new System.EventHandler(this.wizardPageProgramPCB_Leave);
             // 
@@ -364,7 +370,7 @@
             this.wizardPageResultsStatus.Controls.Add(this.tbllnitialStatus);
             this.wizardPageResultsStatus.Name = "wizardPageResultsStatus";
             this.wizardPageResultsStatus.NextPage = this.wizardPagePiezo;
-            this.wizardPageResultsStatus.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageResultsStatus.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageResultsStatus, "PCB initial status");
             this.wizardPageResultsStatus.TabIndex = 5;
             this.wizardPageResultsStatus.Text = "Initial Status";
@@ -450,11 +456,12 @@
             this.wizardPagePiezo.Controls.Add(this.tblPiezoPanel);
             this.wizardPagePiezo.Name = "wizardPagePiezo";
             this.wizardPagePiezo.NextPage = this.wizardPageKeyPress;
-            this.wizardPagePiezo.Size = new System.Drawing.Size(568, 536);
+            this.wizardPagePiezo.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPagePiezo, "Piezo and Reed Test");
             this.wizardPagePiezo.TabIndex = 11;
             this.wizardPagePiezo.Text = "Piezo and Reed Test";
             this.wizardPagePiezo.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPagePiezo_Initialize);
+            this.wizardPagePiezo.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPagePiezo_Rollback);
             this.wizardPagePiezo.Enter += new System.EventHandler(this.wizardPagePiezo_Enter);
             this.wizardPagePiezo.Leave += new System.EventHandler(this.wizardPagePiezo_Leave);
             // 
@@ -483,11 +490,12 @@
             // 
             this.wizardPageKeyPress.Controls.Add(this.panel1);
             this.wizardPageKeyPress.Name = "wizardPageKeyPress";
-            this.wizardPageKeyPress.NextPage = this.wizardPageTransceiver;
-            this.wizardPageKeyPress.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageKeyPress.NextPage = this.wizardPageAccelerometerBase;
+            this.wizardPageKeyPress.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageKeyPress, "Key press test");
             this.wizardPageKeyPress.TabIndex = 10;
             this.wizardPageKeyPress.Text = "Key press test";
+            this.wizardPageKeyPress.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageKeyPress_Rollback);
             this.wizardPageKeyPress.Enter += new System.EventHandler(this.wizardPageKeyPress_Enter);
             this.wizardPageKeyPress.Leave += new System.EventHandler(this.wizardPageKeyPress_Leave);
             // 
@@ -584,12 +592,13 @@
             this.wizardPageTransceiver.Controls.Add(this.themedLabel16);
             this.wizardPageTransceiver.Controls.Add(this.tblTransceiverTest);
             this.wizardPageTransceiver.Name = "wizardPageTransceiver";
-            this.wizardPageTransceiver.NextPage = this.wizardPageAccelerometerBase;
-            this.wizardPageTransceiver.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageTransceiver.NextPage = this.wizardPageSummaryPart1;
+            this.wizardPageTransceiver.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageTransceiver, "Tranceiver test");
             this.wizardPageTransceiver.TabIndex = 9;
             this.wizardPageTransceiver.Text = "Tranceiver Test";
             this.wizardPageTransceiver.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageTransceiver_Initialize);
+            this.wizardPageTransceiver.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageTransceiver_Rollback);
             this.wizardPageTransceiver.Enter += new System.EventHandler(this.wizardPageTransceiver_Enter);
             this.wizardPageTransceiver.Leave += new System.EventHandler(this.wizardPageTransceiver_Leave);
             // 
@@ -619,11 +628,12 @@
             this.wizardPageAccelerometerBase.Controls.Add(this.tblAccelerometerBaseline);
             this.wizardPageAccelerometerBase.Controls.Add(this.themedLabel13);
             this.wizardPageAccelerometerBase.Name = "wizardPageAccelerometerBase";
-            this.wizardPageAccelerometerBase.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageAccelerometerBase.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageAccelerometerBase, "Accelerometer baseline");
             this.wizardPageAccelerometerBase.TabIndex = 6;
             this.wizardPageAccelerometerBase.Text = "Accelerometer Baseline Measurements";
             this.wizardPageAccelerometerBase.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageAccelerometerBase_Initialize);
+            this.wizardPageAccelerometerBase.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageAccelerometerBase_Rollback);
             this.wizardPageAccelerometerBase.Enter += new System.EventHandler(this.wizardPageAccelerometerBase_Enter);
             this.wizardPageAccelerometerBase.Leave += new System.EventHandler(this.wizardPageAccelerometerBase_Leave);
             // 
@@ -670,11 +680,12 @@
             this.wizardPageAccelTestStep1.Controls.Add(this.themedLabel14);
             this.wizardPageAccelTestStep1.Controls.Add(this.tblAccelerometerStep1);
             this.wizardPageAccelTestStep1.Name = "wizardPageAccelTestStep1";
-            this.wizardPageAccelTestStep1.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageAccelTestStep1.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageAccelTestStep1, "Accelerometer test: Step 1");
             this.wizardPageAccelTestStep1.TabIndex = 7;
             this.wizardPageAccelTestStep1.Text = "Accelerometer test: Step 1";
             this.wizardPageAccelTestStep1.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageAccelTestStep1_Initialize);
+            this.wizardPageAccelTestStep1.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageAccelTestStep1_Rollback);
             this.wizardPageAccelTestStep1.Enter += new System.EventHandler(this.wizardPageAccelTestStep1_Enter);
             this.wizardPageAccelTestStep1.Leave += new System.EventHandler(this.wizardPageAccelTestStep1_Leave);
             // 
@@ -750,12 +761,13 @@
             this.wizardPageAccelTestStep2.Controls.Add(this.tblAccelerometerStep2);
             this.wizardPageAccelTestStep2.Controls.Add(this.themedLabel15);
             this.wizardPageAccelTestStep2.Name = "wizardPageAccelTestStep2";
-            this.wizardPageAccelTestStep2.NextPage = this.wizardPageSummaryPart1;
-            this.wizardPageAccelTestStep2.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageAccelTestStep2.NextPage = this.wizardPageTransceiver;
+            this.wizardPageAccelTestStep2.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageAccelTestStep2, "Accelerometer test: Step 2");
             this.wizardPageAccelTestStep2.TabIndex = 8;
             this.wizardPageAccelTestStep2.Text = "Accelerometer test: Step 2";
             this.wizardPageAccelTestStep2.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageAccelTestStep2_Initialize);
+            this.wizardPageAccelTestStep2.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageAccelTestStep2_Rollback);
             this.wizardPageAccelTestStep2.Enter += new System.EventHandler(this.wizardPageAccelTestStep2_Enter);
             this.wizardPageAccelTestStep2.Leave += new System.EventHandler(this.wizardPageAccelTestStep2_Leave);
             // 
@@ -828,11 +840,12 @@
             this.wizardPageSummaryPart1.Controls.Add(this.tblSummaryPart1);
             this.wizardPageSummaryPart1.Name = "wizardPageSummaryPart1";
             this.wizardPageSummaryPart1.NextPage = this.wizardPageSummaryPart2;
-            this.wizardPageSummaryPart1.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageSummaryPart1.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageSummaryPart1, "Test Summary Part 1");
             this.wizardPageSummaryPart1.TabIndex = 12;
             this.wizardPageSummaryPart1.Text = "Test Summary Part 1";
             this.wizardPageSummaryPart1.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageSummaryPart1_Initialize);
+            this.wizardPageSummaryPart1.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageSummaryPart1_Rollback);
             this.wizardPageSummaryPart1.Enter += new System.EventHandler(this.wizardPageSummaryPart1_Enter);
             // 
             // lblTestSummaryPart1
@@ -862,11 +875,12 @@
             this.wizardPageSummaryPart2.Controls.Add(this.tblSummaryPart2);
             this.wizardPageSummaryPart2.Name = "wizardPageSummaryPart2";
             this.wizardPageSummaryPart2.NextPage = this.wizardPageProgramForRelease;
-            this.wizardPageSummaryPart2.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageSummaryPart2.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageSummaryPart2, "Test Summary Part 2");
             this.wizardPageSummaryPart2.TabIndex = 13;
             this.wizardPageSummaryPart2.Text = "Test Summary Part 2";
             this.wizardPageSummaryPart2.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageSummaryPart2_Initialize);
+            this.wizardPageSummaryPart2.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageSummaryPart2_Rollback);
             this.wizardPageSummaryPart2.Enter += new System.EventHandler(this.wizardPageSummaryPart2_Enter);
             // 
             // lblTestSummaryPart2
@@ -898,11 +912,12 @@
             this.wizardPageProgramForRelease.Controls.Add(this.lblProgramNodeId);
             this.wizardPageProgramForRelease.Controls.Add(this.lblProgramForRelease);
             this.wizardPageProgramForRelease.Name = "wizardPageProgramForRelease";
-            this.wizardPageProgramForRelease.Size = new System.Drawing.Size(568, 536);
+            this.wizardPageProgramForRelease.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageProgramForRelease, "Program for release");
             this.wizardPageProgramForRelease.TabIndex = 14;
             this.wizardPageProgramForRelease.Text = "Program for release";
             this.wizardPageProgramForRelease.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageProgramForRelease_Initialize);
+            this.wizardPageProgramForRelease.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageProgramForRelease_Rollback);
             this.wizardPageProgramForRelease.Enter += new System.EventHandler(this.wizardPageProgramForRelease_Enter);
             this.wizardPageProgramForRelease.Leave += new System.EventHandler(this.wizardPageProgramForRelease_Leave);
             // 
@@ -956,12 +971,38 @@
             this.lblProgramForRelease.TabIndex = 0;
             this.lblProgramForRelease.Text = "Program the Trap Node for release";
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(866, 24);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportResultsToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // exportResultsToolStripMenuItem
+            // 
+            this.exportResultsToolStripMenuItem.Name = "exportResultsToolStripMenuItem";
+            this.exportResultsToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.exportResultsToolStripMenuItem.Text = "Export Results";
+            this.exportResultsToolStripMenuItem.Click += new System.EventHandler(this.exportResultsToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(866, 690);
             this.Controls.Add(this.stepWizardControl1);
+            this.Controls.Add(this.menuStrip1);
             this.MinimizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -997,7 +1038,10 @@
             this.wizardPageSummaryPart2.PerformLayout();
             this.wizardPageProgramForRelease.ResumeLayout(false);
             this.wizardPageProgramForRelease.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1075,6 +1119,9 @@
         private System.Windows.Forms.Label lblProgramNodeId;
         private System.Windows.Forms.Label lblProgramForRelease;
         private System.Windows.Forms.Label lblSerial;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportResultsToolStripMenuItem;
 
 
     }

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 09/15/2015 11:09:25
+-- Date Created: 09/17/2015 09:59:49
 -- Generated from EDMX file: C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\DataModel.edmx
 -- --------------------------------------------------
 
@@ -92,7 +92,7 @@ GO
 
 -- Creating table 'pcb_unit'
 CREATE TABLE [pcb_unit] (
-    [pcb_unit_id] int IDENTITY(421,1) NOT NULL,
+    [pcb_unit_id] int IDENTITY(1,1) NOT NULL,
     [pcb_unit_serial_number] nvarchar(4000)  NOT NULL,
     [pcb_unit_serial_sticker_manufacture] nvarchar(4000)  NOT NULL,
     [pcb_unit_serial_sticker_test] nvarchar(4000)  NULL

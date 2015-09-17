@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ESLTestProcess
 {
-    public partial class Main 
+    public partial class Main
     {
         int _activeKey = -1;
         bool _altColour = false;
@@ -71,13 +71,25 @@ namespace ESLTestProcess
             SetKeyColour(Color.ForestGreen, KEY_3_8);
             SetKeyColour(Color.ForestGreen, KEY_4_9);
             SetKeyColour(Color.ForestGreen, KEY_5_0);
-            
+
             _flashColourTimer.Change(0, 500);
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageKeyPress_ProcessResponseEventHandler;
 
             _activeKey = KEY_ENT;
-            CommunicationManager.Instance.SendCommand(Parameters.REQUEST_BEGIN_TEST);
-            _timeOutTimer.Change(40000, Timeout.Infinite);
+
+            gotKEY_1_6 = gotKEY_2_7 = gotKEY_3_8 = gotKEY_4_9 = gotKEY_5_0 = gotKEY_ENT = false;
+
+            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
+
+            Task.Run(() =>
+            {
+                Thread.Sleep(10000);
+                _flashColourTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                this.BeginInvoke(new MethodInvoker(delegate
+                    {
+                        wizardPageKeyPress.AllowNext = true;
+                    }));
+            });
         }
 
         private const int KEY_ENT = 2;
@@ -88,69 +100,91 @@ namespace ESLTestProcess
         private const int KEY_5_0 = 4;
         private const int KEY_END_TEST = 100;
 
+        private bool gotKEY_ENT;
+        private bool gotKEY_1_6;
+        private bool gotKEY_2_7;
+        private bool gotKEY_3_8;
+        private bool gotKEY_4_9;
+        private bool gotKEY_5_0;
+
         void wizardPageKeyPress_ProcessResponseEventHandler(object sender, ByteStreamHandler.ProcessResponseEventArgs e)
         {
-            if (e.ResponseId == Parameters.PARSE_ERROR)
+            if (e.ResponseId == TestParameters.PARSE_ERROR)
             {
                 _log.Info("Got a parse error");
 
-                CommunicationManager.Instance.SendCommand(Parameters.REQUEST_NODE_ID);
+                CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
             }
-            else if (e.ResponseId == Parameters.TEST_ID_BEGIN_TEST)
+            else if (e.ResponseId == TestParameters.TEST_ID_BEGIN_TEST)
             {
                 _log.Info("Got begin test command");
                 Console.WriteLine("Sending keypress test command");
 
-                byte[] commandBytes = Parameters.REQUEST_START_BUTTON_TEST;
-                commandBytes[2] = 30; // Give 10 seconds to complete the test
+                byte[] commandBytes = TestParameters.REQUEST_START_BUTTON_TEST;
+                commandBytes[2] = 07; // Give 10 seconds to complete the test
                 commandBytes[3] = (byte)KEY_5_0; // The final key in the sequence that indicates the test should stop
                 CommunicationManager.Instance.SendCommand(commandBytes);
             }
-            else if (e.ResponseId == Parameters.TEST_END)
+            else if (e.ResponseId == TestParameters.TEST_END)
             {
                 _log.Info("Detected end of test");
 
                 if (_activeKey == KEY_END_TEST)
                 {
                     _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    _flashColourTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     Thread.Sleep(2000);
-                    TimeOutCallback(null);
+
+                    this.BeginInvoke(new MethodInvoker(delegate
+                    {
+                        wizardPageKeyPress.AllowNext = true;
+
+                        if (gotKEY_1_6 && gotKEY_2_7 && gotKEY_3_8 && gotKEY_4_9 && gotKEY_5_0 && gotKEY_ENT)
+                            stepWizardControl1.NextPage();
+                    }));
+
                 }
             }
-            else if (e.ResponseId == Parameters.TEST_ID_BUTTON_TEST)
+            else if (e.ResponseId == TestParameters.TEST_ID_BUTTON_TEST)
             {
                 var currentKey = _activeKey;
 
                 switch (e.RawData[2])
                 {
                     case KEY_1_6:
+                        gotKEY_1_6 = true;
                         _log.Info("Key 1/6");
-                        RecordKeyResponse(TestParameters.KEY_1_6, e.RawData);
+                        RecordKeyResponse(TestViewParameters.KEY_1_6, e.RawData);
                         _activeKey = KEY_2_7;
                         break;
                     case KEY_ENT:
+                        gotKEY_ENT = true;
                         _log.Info("Key ENT");
-                        RecordKeyResponse(TestParameters.KEY_ENT, e.RawData);
+                        RecordKeyResponse(TestViewParameters.KEY_ENT, e.RawData);
                         _activeKey = KEY_1_6;
                         break;
                     case KEY_5_0:
+                        gotKEY_5_0 = true;
                         _log.Info("Key 5/0");
-                        RecordKeyResponse(TestParameters.KEY_5_0, e.RawData);
+                        RecordKeyResponse(TestViewParameters.KEY_5_0, e.RawData);
                         _activeKey = KEY_END_TEST;
                         break;
                     case KEY_4_9:
+                        gotKEY_4_9 = true;
                         _log.Info("Key 4/9");
-                        RecordKeyResponse(TestParameters.KEY_4_9, e.RawData);
+                        RecordKeyResponse(TestViewParameters.KEY_4_9, e.RawData);
                         _activeKey = KEY_5_0;
                         break;
                     case KEY_3_8:
+                        gotKEY_3_8 = true;
                         _log.Info("Key 3/8");
-                        RecordKeyResponse(TestParameters.KEY_3_8, e.RawData);
+                        RecordKeyResponse(TestViewParameters.KEY_3_8, e.RawData);
                         _activeKey = KEY_4_9;
-                        break;
+                         break;
                     case KEY_2_7:
+                        gotKEY_2_7 = true;
                         _log.Info("Key 2/7");
-                        RecordKeyResponse(TestParameters.KEY_2_7, e.RawData);
+                        RecordKeyResponse(TestViewParameters.KEY_2_7, e.RawData);
                         _activeKey = KEY_3_8;
                         break;
                     default:
@@ -158,7 +192,7 @@ namespace ESLTestProcess
                         break;
                 }
                 SetKeyColour(Color.YellowGreen, currentKey);
-                                
+
             }
             else
             {
@@ -182,6 +216,11 @@ namespace ESLTestProcess
             _byteStreamHandler.ProcessResponseEventHandler -= wizardPageKeyPress_ProcessResponseEventHandler;
             ProcessControl.Instance.SaveTestSession();
             RemoveRetestLabelFromWizard(wizardPageKeyPress);
+        }
+
+        private void wizardPageKeyPress_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+            wizardPageKeyPress_Leave(sender, e);
         }
     }
 }

@@ -35,5 +35,9 @@ namespace ESLTestProcess
             RemoveRetestLabelFromWizard(wizardPageProgramForRelease);
         }
 
+        private void wizardPageProgramForRelease_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)
+        {
+            wizardPageProgramForRelease_Leave(sender, e);
+        }
     }
 }
