@@ -1,0 +1,85 @@
+﻿/* 
+ * File:   elex_test.h
+ * Author: daniel
+ *
+ * Created on 20 August 2015, 08:58
+ */
+
+#ifndef ELEX_TEST_H
+#define	ELEX_TEST_H
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
+
+    typedef struct test_command {
+        int commandId;
+        int length;
+    } TESTCOMMAND;
+
+#define STX 0x02
+#define ETX 0x03
+
+
+#define BEGIN_TESTS                       0x60
+#define REQUEST_NODE_ID                   0x61
+    
+#define REQUEST_BATTERY_LEVEL             0x63
+#define REQUEST_TEMPERATURE_LEVEL         0x64
+#define REQUEST_START_FLASH_GREEN_LED     0x65
+#define REQUEST_START_FLASH_RED_LED       0x66
+#define REQUEST_BUTTON_TEST               0x67
+
+#define REQUEST_START_ACCELEROMETER_TEST  0x69
+#define REQUEST_START_PIEZO_TEST          0x70
+#define REQUEST_HUB_ID                    0x71
+#define REQUEST_SET_NODE_ID               0x72
+#define REQUEST_REED_SWITCH_TEST          0x73
+#define REQUEST_SET_HUB_ID                0x74
+#define REQUEST_DUMP_EPROM_TO_CONSOLE     0x75
+#define REQUEST_RTC_VALUE                 0x76  
+#define REQUEST_SET_RTC_VALUE             0x77  
+#define REQUEST_GET_BGRSSI_VALUE          0x78
+#define REQUEST_CAPTURE_HUB               0x79
+#define BUTTONS_INITIALISED               0x80
+
+#define TEST_END                                  0x50    
+#define PARSE_ERROR                               0x51
+
+    static const TESTCOMMAND commands[] = {
+        { .commandId = BEGIN_TESTS, .length = 3},
+        { .commandId = REQUEST_NODE_ID, .length = 3},
+
+        { .commandId = REQUEST_BATTERY_LEVEL, .length = 3},
+        { .commandId = REQUEST_TEMPERATURE_LEVEL, .length = 3},
+        { .commandId = REQUEST_START_FLASH_GREEN_LED, .length = 3},
+        { .commandId = REQUEST_START_FLASH_RED_LED, .length = 3},
+        { .commandId = REQUEST_BUTTON_TEST, .length = 5},
+
+        { .commandId = REQUEST_START_ACCELEROMETER_TEST, .length = 4},
+        { .commandId = REQUEST_START_PIEZO_TEST, .length = 4},
+        { .commandId = REQUEST_HUB_ID, .length = 3},
+        { .commandId = REQUEST_SET_NODE_ID, .length = 6},
+        { .commandId = REQUEST_REED_SWITCH_TEST, .length = 4},
+        { .commandId = REQUEST_SET_HUB_ID, .length = 5},
+        { .commandId = REQUEST_DUMP_EPROM_TO_CONSOLE, .length = 3},
+        { .commandId = REQUEST_RTC_VALUE, .length = 3},
+        { .commandId = REQUEST_SET_RTC_VALUE, .length = 9},
+        { .commandId = REQUEST_GET_BGRSSI_VALUE, .length = 3},
+        { .commandId = REQUEST_CAPTURE_HUB, .length = 3},
+    };
+
+#define MAX_PAY_LOAD 30
+
+    static unsigned char payload[MAX_PAY_LOAD];
+    
+    void begin_production_tests();
+    void clear_payload_array();
+
+
+#ifdef	__cplusplus
+}
+#endif
+
+#endif	/* ELEX_TEST_H */
+

@@ -57,6 +57,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.themedLabel12 = new AeroWizard.ThemedLabel();
             this.tbllnitialStatus = new System.Windows.Forms.TableLayoutPanel();
+            this.wizardPageProgramForRelease = new AeroWizard.WizardPage();
+            this.lblSerial = new System.Windows.Forms.Label();
+            this.btnProgramNode = new System.Windows.Forms.Button();
+            this.lblProgramHubId = new System.Windows.Forms.Label();
+            this.lblProgramNodeId = new System.Windows.Forms.Label();
+            this.lblProgramForRelease = new System.Windows.Forms.Label();
             this.wizardPagePiezo = new AeroWizard.WizardPage();
             this.lblPezoAndReed = new System.Windows.Forms.Label();
             this.tblPiezoPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -95,12 +101,6 @@
             this.wizardPageSummaryPart2 = new AeroWizard.WizardPage();
             this.lblTestSummaryPart2 = new System.Windows.Forms.Label();
             this.tblSummaryPart2 = new System.Windows.Forms.TableLayoutPanel();
-            this.wizardPageProgramForRelease = new AeroWizard.WizardPage();
-            this.lblSerial = new System.Windows.Forms.Label();
-            this.btnProgramNode = new System.Windows.Forms.Button();
-            this.lblProgramHubId = new System.Windows.Forms.Label();
-            this.lblProgramNodeId = new System.Windows.Forms.Label();
-            this.lblProgramForRelease = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,6 +112,7 @@
             this.wizardPageResultsStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED1)).BeginInit();
+            this.wizardPageProgramForRelease.SuspendLayout();
             this.wizardPagePiezo.SuspendLayout();
             this.wizardPageKeyPress.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -126,7 +127,6 @@
             this.wizardPageTransceiver.SuspendLayout();
             this.wizardPageSummaryPart1.SuspendLayout();
             this.wizardPageSummaryPart2.SuspendLayout();
-            this.wizardPageProgramForRelease.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -369,7 +369,7 @@
             this.wizardPageResultsStatus.Controls.Add(this.themedLabel12);
             this.wizardPageResultsStatus.Controls.Add(this.tbllnitialStatus);
             this.wizardPageResultsStatus.Name = "wizardPageResultsStatus";
-            this.wizardPageResultsStatus.NextPage = this.wizardPageProgramForRelease;
+            this.wizardPageResultsStatus.NextPage = this.wizardPagePiezo;
             this.wizardPageResultsStatus.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageResultsStatus, "PCB initial status");
             this.wizardPageResultsStatus.TabIndex = 5;
@@ -449,6 +449,74 @@
             this.tbllnitialStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 125F));
             this.tbllnitialStatus.Size = new System.Drawing.Size(443, 125);
             this.tbllnitialStatus.TabIndex = 0;
+            // 
+            // wizardPageProgramForRelease
+            // 
+            this.wizardPageProgramForRelease.Controls.Add(this.lblSerial);
+            this.wizardPageProgramForRelease.Controls.Add(this.btnProgramNode);
+            this.wizardPageProgramForRelease.Controls.Add(this.lblProgramHubId);
+            this.wizardPageProgramForRelease.Controls.Add(this.lblProgramNodeId);
+            this.wizardPageProgramForRelease.Controls.Add(this.lblProgramForRelease);
+            this.wizardPageProgramForRelease.Name = "wizardPageProgramForRelease";
+            this.wizardPageProgramForRelease.Size = new System.Drawing.Size(568, 512);
+            this.stepWizardControl1.SetStepText(this.wizardPageProgramForRelease, "Program for release");
+            this.wizardPageProgramForRelease.TabIndex = 14;
+            this.wizardPageProgramForRelease.Text = "Program for release";
+            this.wizardPageProgramForRelease.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageProgramForRelease_Initialize);
+            this.wizardPageProgramForRelease.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageProgramForRelease_Rollback);
+            this.wizardPageProgramForRelease.Enter += new System.EventHandler(this.wizardPageProgramForRelease_Enter);
+            this.wizardPageProgramForRelease.Leave += new System.EventHandler(this.wizardPageProgramForRelease_Leave);
+            // 
+            // lblSerial
+            // 
+            this.lblSerial.AutoSize = true;
+            this.lblSerial.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSerial.Location = new System.Drawing.Point(59, 142);
+            this.lblSerial.Name = "lblSerial";
+            this.lblSerial.Size = new System.Drawing.Size(79, 25);
+            this.lblSerial.TabIndex = 4;
+            this.lblSerial.Text = "Serial #:";
+            // 
+            // btnProgramNode
+            // 
+            this.btnProgramNode.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProgramNode.Location = new System.Drawing.Point(64, 190);
+            this.btnProgramNode.Name = "btnProgramNode";
+            this.btnProgramNode.Size = new System.Drawing.Size(140, 45);
+            this.btnProgramNode.TabIndex = 3;
+            this.btnProgramNode.Text = "Program";
+            this.btnProgramNode.UseVisualStyleBackColor = true;
+            this.btnProgramNode.Click += new System.EventHandler(this.btnProgramNode_Click);
+            // 
+            // lblProgramHubId
+            // 
+            this.lblProgramHubId.AutoSize = true;
+            this.lblProgramHubId.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgramHubId.Location = new System.Drawing.Point(59, 110);
+            this.lblProgramHubId.Name = "lblProgramHubId";
+            this.lblProgramHubId.Size = new System.Drawing.Size(74, 25);
+            this.lblProgramHubId.TabIndex = 2;
+            this.lblProgramHubId.Text = "Hub ID:";
+            // 
+            // lblProgramNodeId
+            // 
+            this.lblProgramNodeId.AutoSize = true;
+            this.lblProgramNodeId.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgramNodeId.Location = new System.Drawing.Point(59, 80);
+            this.lblProgramNodeId.Name = "lblProgramNodeId";
+            this.lblProgramNodeId.Size = new System.Drawing.Size(85, 25);
+            this.lblProgramNodeId.TabIndex = 1;
+            this.lblProgramNodeId.Text = "Node ID:";
+            // 
+            // lblProgramForRelease
+            // 
+            this.lblProgramForRelease.AutoSize = true;
+            this.lblProgramForRelease.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgramForRelease.Location = new System.Drawing.Point(56, 30);
+            this.lblProgramForRelease.Name = "lblProgramForRelease";
+            this.lblProgramForRelease.Size = new System.Drawing.Size(413, 25);
+            this.lblProgramForRelease.TabIndex = 0;
+            this.lblProgramForRelease.Text = "Program the Trap Node and Hub IDs for release";
             // 
             // wizardPagePiezo
             // 
@@ -904,74 +972,6 @@
             this.tblSummaryPart2.Size = new System.Drawing.Size(562, 464);
             this.tblSummaryPart2.TabIndex = 0;
             // 
-            // wizardPageProgramForRelease
-            // 
-            this.wizardPageProgramForRelease.Controls.Add(this.lblSerial);
-            this.wizardPageProgramForRelease.Controls.Add(this.btnProgramNode);
-            this.wizardPageProgramForRelease.Controls.Add(this.lblProgramHubId);
-            this.wizardPageProgramForRelease.Controls.Add(this.lblProgramNodeId);
-            this.wizardPageProgramForRelease.Controls.Add(this.lblProgramForRelease);
-            this.wizardPageProgramForRelease.Name = "wizardPageProgramForRelease";
-            this.wizardPageProgramForRelease.Size = new System.Drawing.Size(568, 512);
-            this.stepWizardControl1.SetStepText(this.wizardPageProgramForRelease, "Program for release");
-            this.wizardPageProgramForRelease.TabIndex = 14;
-            this.wizardPageProgramForRelease.Text = "Program for release";
-            this.wizardPageProgramForRelease.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageProgramForRelease_Initialize);
-            this.wizardPageProgramForRelease.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageProgramForRelease_Rollback);
-            this.wizardPageProgramForRelease.Enter += new System.EventHandler(this.wizardPageProgramForRelease_Enter);
-            this.wizardPageProgramForRelease.Leave += new System.EventHandler(this.wizardPageProgramForRelease_Leave);
-            // 
-            // lblSerial
-            // 
-            this.lblSerial.AutoSize = true;
-            this.lblSerial.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSerial.Location = new System.Drawing.Point(59, 142);
-            this.lblSerial.Name = "lblSerial";
-            this.lblSerial.Size = new System.Drawing.Size(79, 25);
-            this.lblSerial.TabIndex = 4;
-            this.lblSerial.Text = "Serial #:";
-            // 
-            // btnProgramNode
-            // 
-            this.btnProgramNode.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnProgramNode.Location = new System.Drawing.Point(64, 190);
-            this.btnProgramNode.Name = "btnProgramNode";
-            this.btnProgramNode.Size = new System.Drawing.Size(140, 45);
-            this.btnProgramNode.TabIndex = 3;
-            this.btnProgramNode.Text = "Program";
-            this.btnProgramNode.UseVisualStyleBackColor = true;
-            this.btnProgramNode.Click += new System.EventHandler(this.btnProgramNode_Click);
-            // 
-            // lblProgramHubId
-            // 
-            this.lblProgramHubId.AutoSize = true;
-            this.lblProgramHubId.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProgramHubId.Location = new System.Drawing.Point(59, 110);
-            this.lblProgramHubId.Name = "lblProgramHubId";
-            this.lblProgramHubId.Size = new System.Drawing.Size(74, 25);
-            this.lblProgramHubId.TabIndex = 2;
-            this.lblProgramHubId.Text = "Hub ID:";
-            // 
-            // lblProgramNodeId
-            // 
-            this.lblProgramNodeId.AutoSize = true;
-            this.lblProgramNodeId.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProgramNodeId.Location = new System.Drawing.Point(59, 80);
-            this.lblProgramNodeId.Name = "lblProgramNodeId";
-            this.lblProgramNodeId.Size = new System.Drawing.Size(85, 25);
-            this.lblProgramNodeId.TabIndex = 1;
-            this.lblProgramNodeId.Text = "Node ID:";
-            // 
-            // lblProgramForRelease
-            // 
-            this.lblProgramForRelease.AutoSize = true;
-            this.lblProgramForRelease.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProgramForRelease.Location = new System.Drawing.Point(56, 30);
-            this.lblProgramForRelease.Name = "lblProgramForRelease";
-            this.lblProgramForRelease.Size = new System.Drawing.Size(413, 25);
-            this.lblProgramForRelease.TabIndex = 0;
-            this.lblProgramForRelease.Text = "Program the Trap Node and Hub IDs for release";
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1018,6 +1018,8 @@
             this.wizardPageResultsStatus.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED1)).EndInit();
+            this.wizardPageProgramForRelease.ResumeLayout(false);
+            this.wizardPageProgramForRelease.PerformLayout();
             this.wizardPagePiezo.ResumeLayout(false);
             this.wizardPagePiezo.PerformLayout();
             this.wizardPageKeyPress.ResumeLayout(false);
@@ -1037,8 +1039,6 @@
             this.wizardPageSummaryPart1.PerformLayout();
             this.wizardPageSummaryPart2.ResumeLayout(false);
             this.wizardPageSummaryPart2.PerformLayout();
-            this.wizardPageProgramForRelease.ResumeLayout(false);
-            this.wizardPageProgramForRelease.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

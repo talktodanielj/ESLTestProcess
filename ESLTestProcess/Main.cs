@@ -39,15 +39,18 @@ namespace ESLTestProcess
             this.KeyPreview = true;
         }
 
+        // Use an ISO 8859-1 encoder for extended ASCII
+        //private Encoding _encoding = System.Text.Encoding.GetEncoding(28591);
+
         void SerialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
-            string data = CommunicationManager.Instance.SerialPort.ReadExisting();
+            int rxCount = CommunicationManager.Instance.SerialPort.BytesToRead;
+            byte[] rxData = new byte[rxCount];
+            int readCount = CommunicationManager.Instance.SerialPort.Read(rxData, 0, rxCount);
 
-            if (data != null)
+            if (readCount > 0)
             {
-                var responseData = ASCIIEncoding.ASCII.GetBytes(data.Trim());
-                Console.WriteLine(BitConverter.ToString(responseData));
-                _byteStreamHandler.AddToBytesQueue(responseData);
+                _byteStreamHandler.AddToBytesQueue(rxData);
             }
         }
 

@@ -1,0 +1,490 @@
+﻿#include "switches.h"
+#include "p24fj128.h"
+#include "hw.h"
+#include "timer.h"
+#include "func.h"
+#include "async.h"
+#include "iic.h"
+#include "led.h"
+#include "eventlog.h"
+#include "rtc.h"
+#include "accel.h"
+#include "maths.h"
+#include "main.h"
+#include "elex_test.h"
+
+
+/* ################################################################ */
+#define VERSION              "1.31a"        /* #####   UPDATE ME - Format is "Y.XX" (Y <= 7, XX <= 31)   ###### */
+/* ################################################################ */
+
+
+#define NAME                 "TNode V"      /* powerup id string, all bar actual revision number */
+#define VDD                  360            /* uP voltage in units of 10mV */
+
+/*
+    RSSI defines. These control the update rate of the background RSSI level as well as the
+    amount of averaging and the background delta above which the system thinks there is
+    currently a transmission on the ether. 
+ */
+
+#define DEFAULT_RSSI_DELTA   9              /* below this delta from background RSSI, signal assumed to be background noise */
+#define DELTA_ADAPTION_CNT   32             /* minimum number of failed updates required to adapt to new delta */
+#define RSSI_AVERAGE_CNT     32             /* number of samples in RSSI average/running average */
+#define BKGND_RSSI_WAIT_TMO  (SEC(5))       /* how long we perform the background RSSI monitoring for at initialisation */ 
+
+#define RX_FRAME_TMO         (MSEC(500))    /* how long we wait for a receive frame after a transmission requiring a response, to EOF */ 
+#define TXFAIL_SD_COUNT      3              /* $$$ if we get this many tx failures in a row, any reason, transmitter is stood down for a period */
+
+/* 
+    State machine defines for RF test process.
+ */
+
+#define SM_RF_TEST_SLEEP             0
+#define SM_RF_TEST_CHK_SVN           1
+#define SM_RF_TEST_CHK_QUEUED_TX     2
+#define SM_RF_TEST_CHK_ETHER_FREE    3
+#define SM_RF_TEST_TX_DATA           4
+#define SM_RF_TEST_WAIT_FRAME        5
+#define SM_RF_TEST_TX_ALLOWED        6
+#define SM_RF_TEST_SET_RX_MODE       7
+#define SM_RF_TEST_EVENT_MONITOR     8
+#define SM_RF_TEST_LOAD_PWRUP_PKT    9
+#define SM_RF_TEST_END               10
+
+/*
+    Datalink rx packet defines
+ */
+
+#define DL_RF_TEST_NOFRAME           0
+#define DL_RF_TEST_GOODFRAME         1
+#define DL_RF_TEST_FULLFRAME_CHKERR  2
+
+int rx_pkt(void);
+void load_tx_svn_pkt(unsigned char);
+void load_tx_event_pkt(EVENT *);
+void load_tx_diagn_pkt(COMMS_DIAG *pdiagn);
+void refresh_txbuf_criticals(void);
+
+extern volatile unsigned int async_tmr;
+extern volatile unsigned int rfrx_frame_tmr; /* timer for monitoring incoming rx off-air frame, up counter tick rate */
+extern volatile unsigned int rx_frame_qf; /* QF of current frame under rx decode */
+extern CPUCORE CORE __attribute__((address(0x0000)));
+extern volatile FLAGS flags;
+extern volatile FLAGS1 flags1;
+extern unsigned int svn_wdtmr; /* wd timer for timing supervision transmissions, up counter, wd counts */
+extern unsigned int status_wdtmr; /* wd timer for status check, up counter, wd counts */
+extern unsigned int tempmon_wdtmr; /* wd timer for checking system temperature, up counter, wd counts */
+extern unsigned int bgrssi_wdtmr; /* wd timer for updating background RSSI level, up counter, wd counts */
+extern unsigned int txsd_wdtmr; /* wd timer for transmitter standdown, down counter, wd counts */
+extern unsigned int bgevnt_wdtmr; /* wd timer for periodic trap event detection, up counter, wd counts */
+extern DL_FRMRF rftxbuf;
+extern DL_FRMRF rfrxbuf;
+extern int bkgnd_rssi; /* RSSI level of background noise */
+extern unsigned char sm_state; /* variable controlling main state machine */
+extern int tx_fail_count;
+extern int tx_frame_retries;
+extern int tx_standoff; /* delay in watchdogs before we can attempt a transmission */
+extern unsigned char randnum; /* continually updated random number for use with txn standoffs */
+extern DATTIME time;
+extern COMMS_DIAG comms_diag; /* communications diagnostics */
+extern const char *pver;
+
+void puthex4_payload(unsigned char* payload, unsigned char ch, int position) {
+    ch = (ch & 0x0f) + '0';
+
+    if (ch <= '9')
+        payload[position] = ch;
+
+    else
+        payload[position] = (ch + ('a' - 10 - '0'));
+}
+
+void puthex8_payload(unsigned char* payload, unsigned char ch, int position) {
+    puthex4_payload(payload, ch >> 4, position);
+    puthex4_payload(payload, ch, position + 1);
+}
+
+void puthex16_payload(unsigned char* payload, unsigned int val, int position) {
+    puthex8_payload(payload, val >> 8, position);
+    puthex8_payload(payload, val & 0xff, position + 2);
+}
+
+void putdecs_payload(unsigned char* payload, signed int ival, int position) {
+    char s[7];
+    unsigned char i;
+    unsigned int val;
+
+    s[6] = '\0';
+
+    if (ival < 0) {
+        val = -ival;
+        s[0] = '-';
+    } else {
+        val = ival;
+        s[0] = ' ';
+    }
+    for (i = 0; i <= 4; i++) {
+        s[5 - i] = (val % 10) + '0';
+        val /= 10;
+    }
+    if (s[1] == '0')
+        s[1] = ' ';
+
+    if ((s[2] == '0') && (s[1] == ' '))
+        s[2] = ' ';
+
+    if ((s[3] == '0') && (s[2] == ' '))
+        s[3] = ' ';
+
+    if ((s[4] == '0') && (s[3] == ' '))
+        s[4] = ' ';
+
+    for (i = 5; i >= 1; i--) {
+        if (s[i] == ' ') {
+            s[i] = s[0];
+            s[0] = ' ';
+            break;
+        }
+    }
+    //iputs( s ) ;
+    // Copy into the payload;
+    for (i = 0; i < 7; i++) {
+        payload[position + i] = s[i];
+    }
+
+}
+
+void send_response(int responseId, unsigned char* data, int dataLength);
+
+/***************************************************************************
+ *    function process_packet_for_test()
+ *
+ *    This routine analyses and processes the received packet. 
+ */
+int process_packet_for_test(void) {
+
+    int retval;
+
+    retval = SM_RF_TEST_SLEEP; /* default return value */
+
+    if ((rfrxbuf.hdr.id16 == rftxbuf.hdr.id16) && (rfrxbuf.hdr.id == rftxbuf.hdr.id) && (rfrxbuf.hdr.hub_id == rftxbuf.hdr.hub_id)) {
+        switch (rfrxbuf.hdr.msg_type) {
+            case MSGTYP_DATETIME_REQ:
+                comms_diag.dattime_req++;
+                break;
+
+            case MSGTYP_ACK:
+
+                clear_payload_array();
+                // Create the response payload
+                payload[0] = 'N';
+                puthex8_payload(payload, rftxbuf.hdr.id16, 1);
+                puthex16_payload(payload, rftxbuf.hdr.id, 3);
+                payload[7] = ' ';
+                puthex8_payload(payload, rftxbuf.hdr.seqno, 8);
+                payload[10] = ' ';
+                puthex8_payload(payload, rftxbuf.hdr.msg_type, 11);
+                payload[13] = ' ';
+                payload[14] = 'H';
+                puthex8_payload(payload, rfrxbuf.hdr.id16, 15);
+                puthex16_payload(payload, rfrxbuf.hdr.id, 17);
+                payload[21] = ' ';
+                puthex8_payload(payload, rfrxbuf.hdr.seqno, 22);
+                send_response(REQUEST_CAPTURE_HUB, payload, 24);
+
+                return SM_RF_TEST_END;
+
+                if (rfrxbuf.hdr.seqno == rftxbuf.hdr.seqno) {
+                    //iputs("HUB: Ack "); 
+                    comms_diag.ack++;
+                    flags.bit.txn_loaded = 0;
+                    flags1.bit.network_id_mode = 0; /* can cancel this mode as talking to hub verified */
+
+                    if (rftxbuf.hdr.msg_type == MSGTYP_SVN) {
+                        svn_wdtmr = 0;
+                        tx_frame_retries = 0;
+                    }
+                    if (rfrxbuf.adat.data[0] == SUBTYP_ACK_WAIT) {
+                        retval = SM_RF_TEST_SET_RX_MODE; /* we have been told to wait a bit for another frame */
+                        comms_diag.ackwait++;
+                    } else if (rfrxbuf.adat.data[0] == SUBTYP_ACK_DIAGN_REQ) {
+                        load_tx_diagn_pkt(&comms_diag);
+                        retval = SM_RF_TEST_TX_DATA;
+                    } else if (rfrxbuf.adat.data[0] == SUBTYP_ACK_RESET) {
+                        delay(9); // poop delete, just to see message above
+                        while (1); /* execute reset */
+                    } else {
+                        //iputs("Norm\r\n"); 
+                    }
+                } else {
+                    comms_diag.wrong_seqno++;
+                }
+                break;
+
+            case MSGTYP_NACK:
+
+                if (rfrxbuf.hdr.seqno == rftxbuf.hdr.seqno) {
+                    comms_diag.nack++;
+                } else {
+                    comms_diag.wrong_seqno++;
+                }
+                break;
+
+            case MSGTYP_DATETIME:
+
+                if (rfrxbuf.hdr.seqno == rftxbuf.hdr.seqno) {
+                    //iputs("HUB: DT\r\n"); 
+                    comms_diag.dattime++;
+                    flags.bit.txn_loaded = 0;
+                    rtc_init((DATTIME *) & rfrxbuf.adat.data[0]);
+                } else {
+                    comms_diag.wrong_seqno++;
+                }
+                break;
+
+            case MSGTYP_SVN:
+                //iputs("HUB: Svn\r\n"); 
+                comms_diag.svn++;
+                break;
+
+            case MSGTYP_EVENT:
+                //iputs("HUB: Evnt\r\n"); // poop delete
+                comms_diag.event++;
+                break;
+
+            default:
+                //iputs("HUB: Err\r\n"); // poop delete
+                comms_diag.ill_frm++;
+                break;
+        }
+    } else {
+        comms_diag.wrong_id++;
+    }
+    return ( retval);
+}
+
+void initialiseRfTest() {
+    if (!(CORE.rcfgcal & 0x8000)) {
+        time.yearhour = 0x1000; /* years from 2000, 0 - 99, hours 0 - 23        */
+        time.mthday = 0x0101; /* month 0 - 11, day 1 - 31                     */
+        time.minsec = 0x0000; /* min 0 - 59, sec 0 - 59                       */
+        rtc_init(&time);
+    }
+
+    flags1.bit.network_id_mode = 1; /* indicate node needs transmission immediately, syncs time etc */
+    init_accel();
+    delay(1);
+    flags1.bit.async_diag_enable = 1; // poop default 0
+
+    sm_state = SM_RF_TEST_LOAD_PWRUP_PKT;
+
+}
+
+unsigned int sleepRssiTest(void) {
+    delay(20);
+
+    svn_wdtmr++;
+    status_wdtmr++;
+    tempmon_wdtmr++;
+    bgrssi_wdtmr++;
+    bgevnt_wdtmr++;
+
+    if (txsd_wdtmr)
+        txsd_wdtmr--;
+
+    return 0;
+}
+
+void rssi_test() {
+
+    int retval;
+    initialiseRfTest();
+    delay(1);
+    async_tmr = 0;
+
+    while (1) {
+        wd_retrig();
+
+        switch (sm_state) {
+
+            case SM_RF_TEST_END:
+                // When we get to this state we have the HUB ID and RSSI test so end the loop
+                return;
+
+            case SM_RF_TEST_SLEEP:
+                sleepRssiTest();
+                sm_state = SM_RF_TEST_EVENT_MONITOR;
+                break;
+
+            case SM_RF_TEST_LOAD_PWRUP_PKT:
+                pver = VERSION;
+                rftxbuf.adat.datarf.event_data[2] = ((*pver - '0') << 5) + ((*(pver + 2) - '0')*10 + (*(pver + 3) - '0'));
+                load_tx_svn_pkt(MSGTYP_PWRUP); /* show unit has just performed a restart */
+                sm_state = SM_RF_TEST_SLEEP;
+                break;
+
+            case SM_RF_TEST_CHK_SVN:
+                if ((svn_wdtmr >= SVN_PERIOD_WD) && !(flags.bit.txn_loaded)) /* only load svn if we can transmit it */ {
+                    sm_state = SM_RF_TEST_TX_ALLOWED;
+                    rftxbuf.hdr.msg_type = MSGTYP_SVN;
+                } else {
+                    sm_state = SM_RF_TEST_SLEEP;
+                }
+                break;
+
+            case SM_RF_TEST_CHK_QUEUED_TX:
+                if (!txsd_wdtmr) {
+                    if (flags.bit.txn_loaded) {
+                        sm_state = SM_RF_TEST_TX_ALLOWED;
+                    } else {
+                        //sm_state = SM_CHK_EVENT_LOG;
+                    }
+                } else {
+                    sm_state = SM_RF_TEST_SLEEP;
+                }
+                break;
+
+            case SM_RF_TEST_CHK_ETHER_FREE:
+                wake_tcvr();
+                set_tcvr_rx();
+
+                if (rftxbuf.hdr.msg_type == MSGTYP_SVN)
+                    load_tx_svn_pkt(MSGTYP_SVN);
+
+                else
+                    refresh_txbuf_criticals();
+
+                fdelay(20);
+
+                while (!(get_tcvr_rssi(&retval)));
+                if (((retval - bkgnd_rssi) / 16) < DEFAULT_RSSI_DELTA) {
+                    sm_state = SM_RF_TEST_TX_DATA;
+                    flags.bit.capture_hub = 1; /* at present all frames need to capture hub */
+                } else {
+                    randnum = random_gen();
+
+                    if (++tx_fail_count >= TXFAIL_SD_COUNT) {
+                        tx_fail_count = 0; /* when we come out of standdown start again from scratch */
+                        txsd_wdtmr = TX_SD_PERIOD_WD;
+                        comms_diag.txsd++;
+                    } else {
+                    }
+
+                    flags.bit.tx_standoff = 1; /* all txns need standoff unless specifically disabled via NO_TX_STANDOFF */
+
+                    comms_diag.collisions++;
+                    sm_state = SM_RF_TEST_SLEEP;
+                }
+                break;
+
+            case SM_RF_TEST_TX_DATA:
+                comms_diag.total_frm_tx++;
+                send_frame(&rftxbuf);
+                sm_state = SM_RF_TEST_SET_RX_MODE;
+                break;
+
+            case SM_RF_TEST_SET_RX_MODE:
+                rfrxr_sampling_on();
+                set_tcvr_rx();
+                sm_state = SM_RF_TEST_WAIT_FRAME;
+                rfrx_frame_tmr = 0; /* start timer to wait for frame */
+                break;
+
+            case SM_RF_TEST_WAIT_FRAME:
+                retval = rx_pkt();
+                if (retval == DL_RF_TEST_NOFRAME) {
+                    if (rfrx_frame_tmr >= RX_FRAME_TMO) {
+                        ledoff1(); // poop delete
+
+                        rfrxr_sampling_off();
+                        flags.bit.capture_hub = 1; /* on timeout always try to capture hub */
+
+                        if (++tx_fail_count >= TXFAIL_SD_COUNT) {
+                            tx_fail_count = 0; /* when we come out of standdown start again from scratch */
+                            txsd_wdtmr = TX_SD_PERIOD_WD;
+                            comms_diag.txsd++;
+                        }
+                        comms_diag.frame_tmo++;
+                        sm_state = SM_RF_TEST_SLEEP;
+                        tx_frame_retries++;
+#if NO_TX_STANDOFF == 1
+
+                        flags.bit.tx_standoff = 0;
+
+#else
+
+                        flags.bit.tx_standoff = 1; /* all txns need standoff unless specifically disabled via NO_TX_STANDOFF */
+
+#endif
+                    }
+                } else if (retval == DL_RF_TEST_GOODFRAME) {
+                    ledoff1(); // poop delete
+                    rfrxr_sampling_off();
+
+                    if (rfrxbuf.hdr.msg_type != MSGTYP_NACK) /* do not reset fail count on NACK of our frame sent */ {
+                        tx_fail_count = 0;
+                    }
+                    sm_state = process_packet_for_test();
+                } else if (retval == DL_RF_TEST_FULLFRAME_CHKERR) {
+                    rfrxr_sampling_off();
+
+                    if (++tx_fail_count >= TXFAIL_SD_COUNT) {
+                        tx_fail_count = 0; /* when we come out of standdown start again from scratch */
+                        txsd_wdtmr = TX_SD_PERIOD_WD;
+                        comms_diag.txsd++;
+                    }
+                    comms_diag.ff_chkerr++;
+                    tx_frame_retries++;
+                    sm_state = SM_RF_TEST_SLEEP;
+
+                    flags.bit.tx_standoff = 1; /* all txns need standoff unless specifically disabled via NO_TX_STANDOFF */
+                } else {
+                    rfrxr_sampling_off();
+                    sm_state = SM_RF_TEST_SLEEP;
+                }
+                break;
+
+            case SM_RF_TEST_TX_ALLOWED:
+                if (flags.bit.instant_tx || flags1.bit.network_id_mode) /* are we allowed to tx immediately? */ {
+                    if (flags.bit.tx_standoff) /* tx_standoff doesn't get set again till another frame can be loaded */ {
+                        txsd_wdtmr = randnum & 0x0f; /* make the random standoff 0 <= SD < 16 watchdogs */
+                        flags.bit.tx_standoff = 0; /* clear this as have loaded the standoff time */
+                        sm_state = SM_RF_TEST_SLEEP;
+                    } else {
+                        sm_state = SM_RF_TEST_CHK_ETHER_FREE; /* allowed to proceed to here as no standoff requested */
+                    }
+                } else {
+
+                    load_time(&time);
+                    time.minsec >>= 8; /* ignore seconds */
+
+                    if (time.minsec >= 0x30) /* reduce to single interval for easy testing */
+                        time.minsec -= 0x30;
+
+                    if ((time.minsec >= 0) && (time.minsec < 0x03)) {
+
+                        if (flags.bit.tx_standoff) /* tx_standoff doesn't get set again till another frame can be loaded */ {
+                            txsd_wdtmr = randnum & 0x0f; /* make the random standoff 0 <= SD < 16 watchdogs */
+                            flags.bit.tx_standoff = 0; /* clear this as have loaded the standoff time */
+                            sm_state = SM_RF_TEST_SLEEP;
+                        } else {
+                            sm_state = SM_RF_TEST_CHK_ETHER_FREE; /* allowed to proceed to here as no standoff requested */
+                        }
+                    } else {
+                        sm_state = SM_RF_TEST_SLEEP;
+                    }
+                }
+                break;
+
+            case SM_RF_TEST_EVENT_MONITOR:
+                sm_state = SM_RF_TEST_CHK_QUEUED_TX;
+                flags.bit.event_trig = 0;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+

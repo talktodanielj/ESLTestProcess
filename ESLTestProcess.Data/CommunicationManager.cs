@@ -97,6 +97,8 @@ namespace ESLTestProcess.Data
                     //List<byte> command = new List<byte>();
                     //command.AddRange(buffer);
                     //command.Add(checkSum); 
+                    Console.WriteLine("Sending {0}", BitConverter.ToString(buffer));
+
                     foreach (var dataByte in buffer)
                     {
                         // Need this sleep or else the node code doest keep up...

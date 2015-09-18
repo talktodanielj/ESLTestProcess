@@ -1,0 +1,601 @@
+﻿
+#include "switches.h"
+#include "p24fj128.h"
+#include "hw.h"
+#include "timer.h"
+#include "func.h"
+#include "async.h"
+#include "iic.h"
+#include "led.h"
+#include "eventlog.h"
+#include "rtc.h"
+#include "accel.h"
+#include "maths.h"
+#include "main.h"
+#include "elex_test.h"
+
+extern volatile unsigned int async_tmr;
+
+void puthex4_payload(unsigned char* payload, unsigned char ch, int position);
+void puthex8_payload(unsigned char* payload, unsigned char ch, int position);
+void puthex16_payload(unsigned char* payload, unsigned int val, int position);
+void putdecs_payload(unsigned char* payload, signed int ival, int position);
+
+void clear_payload_array() {
+    int i = 0;
+    for (i = 0; i < MAX_PAY_LOAD; i++) {
+        payload[i] = '\0';
+    }
+}
+
+void send_response(int responseId, unsigned char* data, int dataLength) {
+    iputc(STX);
+    iputc(responseId);
+    int i = 0;
+    for (i = 0; i < dataLength; i++) {
+        iputc(*data);
+        data++;
+    }
+    iputc(ETX);
+}
+
+void send_simple_response(int responseId) {
+    //iputs("Sending simple response\r\n");
+    clear_payload_array();
+    send_response(responseId, payload, 0);
+}
+
+void green_led_test() {
+    int i;
+    ledon1();
+    for (i = 0; i < 24; i++) {
+        delay(6);
+        //CORE.latg ^= LED1_MSK;
+    }
+    ledoff1();
+    send_simple_response(REQUEST_START_FLASH_GREEN_LED);
+}
+
+void puthex16Ext(unsigned int val) {
+    iputs("-0x");
+    puthex8(val >> 8);
+    iputs("-0x");
+    puthex8(val & 0xff);
+}
+
+void red_led_test() {
+    int i;
+    ledon2();
+    for (i = 0; i < 24; i++) {
+        delay(6);
+        //CORE.latg ^= LED2_MSK;
+    }
+    ledoff2();
+    send_simple_response(REQUEST_START_FLASH_RED_LED);
+}
+
+void test_battery_level() {
+    unsigned char battLvl = read_batt() / 10;
+    //iputs("Batt "); // poop delete
+    //putdec( battLvl ) ; // poop delete
+    //puthex16Ext(battLvl);
+    
+    clear_payload_array();
+    //puthex16Ext(battLvl);
+    puthex16_payload(payload, battLvl, 0);
+    send_response(REQUEST_BATTERY_LEVEL, payload, 4);
+}
+
+void test_read_temp() {
+    int tempLvl = read_temp();
+    clear_payload_array();
+    puthex16_payload(payload, tempLvl, 0);
+    send_response(REQUEST_TEMPERATURE_LEVEL, payload, 4);
+}
+
+extern int xaccel;
+extern int yaccel;
+extern int zaccel;
+extern int xaccelav;
+extern int yaccelav;
+extern int zaccelav;
+
+void test_accelerometer(int sampleTime) {
+
+    PIEZO_INT_EN = 0; /* kill piezo interrupt */
+    wake_accel();
+
+    while (async_tmr < SEC(sampleTime)) {
+
+        get3daccel(); /* just poll for next avail samples */
+        putdecs_payload(payload, xaccel, 0);
+        payload[8] = ' ';
+        putdecs_payload(payload, yaccel, 9);
+        payload[17] = ' ';
+        putdecs_payload(payload, zaccel, 18);
+        delay(15);
+        send_response(REQUEST_START_ACCELEROMETER_TEST, payload, 26);
+    }
+    sleep_accel();
+    delay(100);
+    send_simple_response(TEST_END);
+    PIEZO_INT_EN = 1;
+}
+
+void test_piezo(int sampleTime) {
+
+    do {
+        if (PIEZO_INT_FLAG == 1) {
+            PIEZO_INT_FLAG = 0;
+            send_simple_response(REQUEST_START_PIEZO_TEST);
+            return;
+        }
+        delay(12);
+
+    } while (async_tmr < SEC(sampleTime));
+
+    send_simple_response(TEST_END);
+}
+
+extern DATTIME time;
+
+void print_time_to_payload(DATTIME *ptim, unsigned char* payload) {
+    puthex8_payload(payload, ptim->mthday & 0xff, 0); /* day */
+    payload[2] = '/';
+    puthex8_payload(payload, ptim->mthday >> 8, 3); /* month */
+    payload[5] = '/';
+    puthex8_payload(payload, ptim->yearhour >> 8, 6); /* year */
+    payload[8] = ' ';
+    puthex8_payload(payload, ptim->yearhour & 0xff, 9); /* hour */
+    payload[11] = ':';
+    puthex8_payload(payload, ptim->minsec >> 8, 12); /* mins */
+    payload[14] = ':';
+    puthex8_payload(payload, ptim->minsec & 0xff, 15); /* secs */
+}
+
+void test_request_rtc() {
+    load_time(&time);
+    clear_payload_array();
+    print_time_to_payload(&time, payload);
+    send_response(REQUEST_RTC_VALUE, payload, 17);
+}
+
+#define RTCYEAR 0
+#define RTCMTH 1
+#define RTCDAY 2
+#define RTCHOUR 3
+#define RTCMIN 4
+#define RTCSEC 5
+
+unsigned char tohexn(unsigned char ch);
+
+void test_set_rtc() {
+
+    DATTIME rtcDateTime;
+
+    unsigned char rtc_value_stage = RTCYEAR;
+    unsigned int dattmp = 0;
+
+    int i = 0;
+
+    // Process the payload
+    for (i = 0; i < 6; i++) {
+
+        dattmp = payload[i];
+        switch (rtc_value_stage) {
+
+            case RTCYEAR:
+                rtc_value_stage = RTCMTH;
+                rtcDateTime.yearhour = dattmp << 8;
+                dattmp = 0;
+                break;
+
+            case RTCMTH:
+                rtc_value_stage = RTCDAY;
+                rtcDateTime.mthday = dattmp << 8;
+                dattmp = 0;
+                break;
+
+            case RTCDAY:
+                rtc_value_stage = RTCHOUR;
+                rtcDateTime.mthday += dattmp;
+                dattmp = 0;
+                break;
+
+            case RTCHOUR:
+                rtc_value_stage = RTCMIN;
+                rtcDateTime.yearhour += dattmp;
+                dattmp = 0;
+                break;
+
+            case RTCMIN:
+                rtc_value_stage = RTCSEC;
+                rtcDateTime.minsec = dattmp << 8;
+                dattmp = 0;
+                break;
+
+            case RTCSEC:
+                rtcDateTime.minsec += dattmp;
+            default:
+                break;
+        }
+    }
+    rtc_init(&rtcDateTime);
+    send_simple_response(REQUEST_SET_RTC_VALUE);
+}
+
+void test_reed_switch(int sampleTime) {
+    /* Initial settings
+     CORE.trise = 0x0044 ;
+     CORE.late = 0x0010 ;
+     */
+
+    CORE.trise = 0x0044; // RE6 set for input
+    CORE.late = 0x0030; //  SET RE5 High
+
+    while (async_tmr < SEC(sampleTime)) {
+        if (CORE.porte & 0x0040) {
+            //iputs("Change: RE6 port set high\r\n");
+        } else {
+            //iputs("Change: RE6 port set low\r\n");
+            send_simple_response(REQUEST_REED_SWITCH_TEST);
+            // Reset to original
+            CORE.trise = 0x0044;
+            CORE.late = 0x0010;
+            return;
+        }
+        delay(40);
+    }
+
+    // Reset to original
+    CORE.trise = 0x0044;
+    CORE.late = 0x0010;
+    send_simple_response(TEST_END);
+}
+
+void iic_ee_dump(unsigned int st_addr);
+extern EEMEM *PEEMEM;
+unsigned int iic_bwrite(unsigned int addr, unsigned char dat);
+void iic_bread(unsigned int addr, unsigned char *pdat);
+
+void test_write_node_id() {
+
+    unsigned int dattmp = 0;
+    int i = 0;
+
+    // Process the payload
+    for (i = 0; i < 3; i++) {
+        dattmp <<= 4;
+        dattmp += tohexn(payload[i]);
+    }
+
+    unsigned int eeaddr_offset;
+
+    eeaddr_offset = (unsigned int) &PEEMEM->id16;
+    iic_bwrite(eeaddr_offset, 0);
+    eeaddr_offset = (unsigned int) &PEEMEM->id;
+    iic_bwrite(eeaddr_offset, dattmp & 0xff);
+    iic_bwrite(eeaddr_offset + 1, dattmp >> 8);
+}
+
+void test_write_hub_id() {
+
+    unsigned int dattmp = 0;
+    int i = 0;
+
+    for (i = 0; i < 2; i++) {
+        dattmp <<= 4;
+        dattmp += tohexn(payload[i]);
+    }
+
+    // Assign the address
+    unsigned int eeaddr_offset;
+    eeaddr_offset = (unsigned int) &PEEMEM->hub_id;
+    iic_bwrite(eeaddr_offset, dattmp & 0xff);
+}
+
+void test_get_node_id() {
+
+    unsigned int eeaddr_offset;
+    unsigned char idByte;
+    unsigned char idByte2;
+
+    clear_payload_array();
+
+    eeaddr_offset = (unsigned int) &PEEMEM->id16;
+    iic_bread(eeaddr_offset, &idByte);
+    puthex8_payload(payload, idByte, 0);
+    eeaddr_offset = (unsigned int) &PEEMEM->id;
+    iic_bread(eeaddr_offset, &idByte2);
+    iic_bread(eeaddr_offset + 1, &idByte);
+    puthex8_payload(payload, idByte, 2);
+    puthex8_payload(payload, idByte2, 4);
+
+    send_response(REQUEST_NODE_ID, payload, 6);
+}
+
+void test_get_hub_id() {
+
+    unsigned int eeaddr_offset;
+    unsigned char idByte;
+
+    clear_payload_array();
+
+    eeaddr_offset = (unsigned int) &PEEMEM->hub_id;
+    iic_bread(eeaddr_offset++, &idByte);
+    puthex8_payload(payload, idByte, 0);
+    iic_bread(eeaddr_offset, &idByte);
+    puthex8_payload(payload, idByte, 2);
+
+    send_response(REQUEST_HUB_ID, payload, 4);
+}
+
+extern int bkgnd_rssi;
+extern int rx_rssi;
+
+void test_get_bgrssi() {
+    update_bkgnd_rssi();
+    clear_payload_array();
+    putdecs_payload(payload, rssi_db(bkgnd_rssi), 0);
+    putdecs_payload(payload, rssi_db(rx_rssi), 7);
+    send_response(REQUEST_GET_BGRSSI_VALUE, payload, 14);
+}
+
+void adcinit(void);
+unsigned int quicksampl(unsigned int anum, unsigned int amsk);
+
+void test_button_keys(int sampleTime, int expectedKey) {
+    int i;
+    unsigned int pressed;
+    unsigned int msk;
+    int norm[6] = {31, 27, 21, 31, 17, 31}; // global normalisation values
+    int diff[6];
+    unsigned int btnsaveregs[18];
+    unsigned int btntmpregs[8];
+
+    adcinit();
+    delay(100);
+
+    for (i = 0; i < 20; i++) {
+        btntmpregs[0] = quicksampl(12, 0x1000); // init port states.
+        btntmpregs[1] = quicksampl(11, 0x0800);
+        btntmpregs[2] = quicksampl(3, 0x0008);
+        btntmpregs[3] = quicksampl(4, 0x0010);
+        btntmpregs[4] = quicksampl(6, 0x0040);
+        btntmpregs[5] = quicksampl(7, 0x0080);
+        delay(1);
+    }
+    
+    send_simple_response(BUTTONS_INITIALISED);
+    
+    pressed = 0;
+
+    while (async_tmr < SEC(sampleTime)) {
+        btnsaveregs[0] = quicksampl(12, 0x1000); // 1 don't scan these while outputting async or accessing SPI buses etc.
+        btnsaveregs[1] = quicksampl(11, 0x0800); // 2
+        btnsaveregs[2] = quicksampl(3, 0x0008); // 3
+        btnsaveregs[3] = quicksampl(4, 0x0010); // 4
+        btnsaveregs[4] = quicksampl(6, 0x0040); // 5
+        btnsaveregs[5] = quicksampl(7, 0x0080); // ENT
+
+        for (i = 0; i < 6; i++) {
+            diff[i] = ((int) (btntmpregs[i] - btnsaveregs[i]) * norm[5]) / norm[i];
+        }
+        msk = 0x0001;
+
+        for (i = 0; i < 6; i++) {
+            if (diff[i] > 22) {
+                pressed |= msk;
+                if (!(pressed & (~msk))) {
+                    ledon2();
+                }
+            } else {
+                pressed &= ~msk;
+            }
+            msk <<= 1;
+        }
+
+        if (pressed > 0) {
+            clear_payload_array();
+            payload[0] = pressed;
+            send_response(REQUEST_BUTTON_TEST, payload, 1);
+
+            // If we got what we were looking for return early
+            if (pressed == expectedKey) {
+                ledoff2();
+                send_simple_response(TEST_END);
+                return;
+            }
+            /*switch (pressed) {
+                
+                create_key_press_reponse(pressed);
+                
+                case 1:
+                    iputs("Key 1/6");
+                    break;
+                case 2:
+                    iputs("Key ENT");
+                    break;
+                case 4:
+                    iputs("Key 5/0");
+                    break;
+                case 8:
+                    iputs("Key 4/9");
+                    break;
+                case 16:
+                    iputs("Key 3/8");
+                    break;
+                case 32:
+                    iputs("Key 2/7");
+                    break;
+                default:
+                    iputs("Invalid key code");
+                    break;
+                 
+            }
+            iputs(" - {");
+            puthex8(pressed);
+            iputs("}was pressed\r\n");
+             * */
+        }
+        delay(10);
+        ledoff2();
+    }
+    send_simple_response(TEST_END);
+}
+
+void rssi_test();
+
+void process_test_command(const unsigned int commandId) {
+    switch (commandId) {
+        case BEGIN_TESTS:
+            send_simple_response(BEGIN_TESTS);
+            break;
+        case REQUEST_NODE_ID:
+            test_get_node_id();
+            break;
+        case REQUEST_BATTERY_LEVEL:
+            test_battery_level();
+            break;
+        case REQUEST_TEMPERATURE_LEVEL:
+            test_read_temp();
+            break;
+        case REQUEST_START_FLASH_GREEN_LED:
+            green_led_test();
+            break;
+        case REQUEST_START_FLASH_RED_LED:
+            red_led_test();
+            break;
+        case REQUEST_BUTTON_TEST:
+            test_button_keys(payload[0], payload[1]); // payload[0] contains the sample time and expected key
+            break;
+        case REQUEST_START_ACCELEROMETER_TEST:
+            test_accelerometer(payload[0]);
+            break;
+        case REQUEST_START_PIEZO_TEST:
+            test_piezo(payload[0]);
+            break;
+        case REQUEST_HUB_ID:
+            test_get_hub_id();
+            break;
+        case REQUEST_SET_NODE_ID:
+            test_write_node_id();
+            break;
+        case REQUEST_REED_SWITCH_TEST:
+            test_reed_switch(payload[0]);
+            break;
+        case REQUEST_SET_HUB_ID:
+            test_write_hub_id();
+            break;
+        case REQUEST_DUMP_EPROM_TO_CONSOLE:
+            iic_ee_dump(0);
+            break;
+        case REQUEST_RTC_VALUE:
+            test_request_rtc();
+            break;
+        case REQUEST_SET_RTC_VALUE:
+            test_set_rtc();
+            break;
+        case REQUEST_GET_BGRSSI_VALUE:
+            test_get_bgrssi();
+            break;
+        case REQUEST_CAPTURE_HUB:
+            rssi_test();
+            break;
+        default:
+            iputs("Unknown Command id:");
+            iputc(commandId);
+            iputs("\r\n");
+            break;
+    }
+}
+
+int getCommandLength(int commandID) {
+    int i = 0;
+    for (i = 0; i < sizeof (commands); i++) {
+        if (commands[i].commandId == commandID) {
+            return commands[i].length;
+        }
+    }
+    return -1;
+}
+
+int getCommandPayloadZize(int commandID) {
+    int i = 0;
+    for (i = 0; i < sizeof (commands); i++) {
+        if (commands[i].commandId == commandID) {
+            return commands[i].length - 3;
+        }
+    }
+    return -1;
+}
+
+extern volatile FLAGS flags;
+extern volatile FLAGS1 flags1;
+
+void begin_production_tests() {
+
+    //iputs("In production tests\r\n");
+    //test_battery_level();
+
+    init_accel(); // Make sure we do this!
+
+    unsigned char ch;
+    unsigned int got_nonesc;
+    int rxSoFar = 0;
+    int commandId = 0;
+
+    clear_payload_array();
+    int expectETXPosAt = 2;
+
+    delay(1);
+    async_tmr = 0;
+    got_nonesc = 0;
+    while (async_tmr < SEC(250)) {
+        if (getc(&ch)) {
+            if (ch == CH_ESC) {
+                if (got_nonesc) // force immediate exit 
+                {
+                    putcrlf();
+                    return;
+                }
+            } else {//if (ch != CH_NULL) {
+                got_nonesc = 1;
+                async_tmr = 0;
+
+                // Look for the start of transmission byte
+                if (ch == 0x02 && rxSoFar == 0) {
+                    rxSoFar++;
+                } else if (rxSoFar == 1) {
+                    commandId = ch;
+                    clear_payload_array();
+                    expectETXPosAt = getCommandLength(commandId) - 1;
+                    rxSoFar++;
+
+                } else if (rxSoFar > 1 && rxSoFar < expectETXPosAt) {
+                    // Here we gather the command payload
+                    payload[rxSoFar - 2] = ch;
+                    rxSoFar++;
+
+                } else if (rxSoFar == expectETXPosAt) // 
+                {
+                    if (ch == 0x03) // TODO: Need to account for checksum as well
+                    {
+                        // We have the complete command
+                        process_test_command(commandId);
+                        rxSoFar = 0;
+                    } else {
+                        // Reset everything and look for the next STX byte
+                        rxSoFar = 0;
+                    }
+                } else {
+                    send_simple_response(PARSE_ERROR);
+                    rxSoFar = 0;
+                }
+            }
+        }
+        delay(0);
+    }
+}
+
+

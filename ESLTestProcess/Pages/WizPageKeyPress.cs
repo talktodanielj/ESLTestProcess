@@ -83,7 +83,7 @@ namespace ESLTestProcess
 
             Task.Run(() =>
             {
-                Thread.Sleep(10000);
+                Thread.Sleep(40000);
                 _flashColourTimer.Change(Timeout.Infinite, Timeout.Infinite);
                 this.BeginInvoke(new MethodInvoker(delegate
                     {
@@ -121,9 +121,15 @@ namespace ESLTestProcess
                 Console.WriteLine("Sending keypress test command");
 
                 byte[] commandBytes = TestParameters.REQUEST_START_BUTTON_TEST;
-                commandBytes[2] = 07; // Give 10 seconds to complete the test
+                commandBytes[2] = 10; // Give 10 seconds to complete the test
                 commandBytes[3] = (byte)KEY_5_0; // The final key in the sequence that indicates the test should stop
                 CommunicationManager.Instance.SendCommand(commandBytes);
+            }
+            else if (e.ResponseId == TestParameters.TEST_ID_BUTTONS_INITIALISED)
+            {
+                // Send the command to the test jig to begin testing
+                Thread.Sleep(100);
+                CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BUTTON_PRESS_SEQ);
             }
             else if (e.ResponseId == TestParameters.TEST_END)
             {
@@ -186,7 +192,7 @@ namespace ESLTestProcess
                         _log.Info("Key 3/8");
                         RecordKeyResponse(TestViewParameters.KEY_3_8, e.RawData);
                         _activeKey = KEY_4_9;
-                         break;
+                        break;
                     case KEY_2_7:
                         gotKEY_2_7 = true;
                         _log.Info("Key 2/7");

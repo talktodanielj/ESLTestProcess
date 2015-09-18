@@ -57,7 +57,7 @@ namespace ESLTestProcess
             _byteStreamHandler.ProcessResponseEventHandler += wizardPagePiezo_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
             CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
-            _timeOutTimer.Change(10000, Timeout.Infinite);
+            _timeOutTimer.Change(15000, Timeout.Infinite);
         }
 
         DateTime _rtcDateTime;
@@ -86,8 +86,17 @@ namespace ESLTestProcess
                     _log.Info("Got begin test command");
                     Thread.Sleep(100);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_PIEZO_TEST);
-                    // Send the command to the test jig to activate the piezo...
-                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SET_PIEZO);
+                    //Task.Run(() =>
+                    //{
+                    //    int count = 0;
+                    //    while (count < 10)
+                    //    {
+                            // Send the command to the test jig to activate the piezo...
+                            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SET_PIEZO);
+                           // count++;
+                            //Thread.Sleep(300);
+                    //    }
+                    //});
                     break;
                 case TestParameters.TEST_END:
                     _log.Info("Got test end");
@@ -97,12 +106,16 @@ namespace ESLTestProcess
                         _piezoTestRetries++;
                         CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_PIEZO_TEST);
                         // Send the command to the test jig to activate the piezo...
-                        //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SET_PIEZO);
+                        Thread.Sleep(100);
+                        CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SET_PIEZO);
                     }
                     else if (!_gotReedTestResult && _reedTestRetries < 3)
                     {
                         _reedTestRetries++;
                         CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_REED_SWITCH_TEST);
+                        // Send the command to the test jig to pull the reed switch low
+                        Thread.Sleep(100);
+                        CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SET_REED);
                     }
                     else
                     {
@@ -116,6 +129,7 @@ namespace ESLTestProcess
                     SetTestResponse("PASS", TestViewParameters.PIEZO_TEST, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_REED_SWITCH_TEST);
                     // Send the command to the test jig to pull the reed switch low
+                    Thread.Sleep(100);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SET_REED);
                     break;
 

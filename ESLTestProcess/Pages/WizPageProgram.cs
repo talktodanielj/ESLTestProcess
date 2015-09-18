@@ -20,6 +20,7 @@ namespace ESLTestProcess
 
                 _testParameters.Clear();
                 _testParameters.Add(new Tuple<string, string>("PCB Id", TestViewParameters.NODE_ID));
+                _testParameters.Add(new Tuple<string, string>("Run Current", TestViewParameters.RUN_CURRENT));
                 GenerateTable(_testParameters.ToArray());
             }
 
@@ -41,26 +42,26 @@ namespace ESLTestProcess
             _activeTblLayoutPanel = tblPCBUnitId;
 
             ResetTestParameter(TestViewParameters.NODE_ID);
+            ResetTestParameter(TestViewParameters.RUN_CURRENT);
 
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageProgramPCB_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
-            _timeOutTimer.Change(2000, Timeout.Infinite);
+            //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
+            _timeOutTimer.Change(13000, Timeout.Infinite);
 
-            //Task.Run(() =>
-            //{
-            //    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_PWR_DUT);
-            //    Thread.Sleep(2000);
-            //    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
-            //});
+            Task.Run(() =>
+            {
+                CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SHUTDOWN_DUT);
+                Thread.Sleep(1000);
+                CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_PWR_DUT);
+                Thread.Sleep(3000);
+                CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_RUN_CUR);
+            });
         }
 
 
         void wizardPageProgramPCB_ProcessResponseEventHandler(object sender, ByteStreamHandler.ProcessResponseEventArgs e)
         {
-            var testRun = ProcessControl.Instance.GetCurrentTestRun();
-            response testResponse = null;
-
             switch (e.ResponseId)
             {
                 case TestParameters.PARSE_ERROR:
@@ -68,17 +69,28 @@ namespace ESLTestProcess
                     Thread.Sleep(10);
                     //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     break;
-
                 case TestParameters.TEST_ID_BEGIN_TEST:
                     _log.Info("Got begin test command");
                     Thread.Sleep(100);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_NODE_ID);
+                    break;
 
+                case TestParameters.TESTJIG_RUN_CUR:
+                    _log.Info("Got run current command");
+                    var result = (int)e.RawData[2];
+                    // Multiply by conversion factor to get current in mV
+                    double current = result * 0.294117647;
+                    var currentData = string.Format("{0:0.##} mA", current.ToString());
+                    SetTestResponse(currentData, TestViewParameters.RUN_CURRENT, e.RawData, TestStatus.Pass);
+                    Thread.Sleep(100);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     break;
                 case TestParameters.TEST_ID_NODE_ID:
                     string nodeId = new string(new[] { (char)e.RawData[3], (char)e.RawData[2], (char)e.RawData[5], (char)e.RawData[4], (char)e.RawData[7], (char)e.RawData[6] });
                     SetTestResponse(nodeId, TestViewParameters.NODE_ID, e.RawData, TestStatus.Pass);
-                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_HUB_ID);
+                    _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    Thread.Sleep(300);
+                    TimeOutCallback(null);
                     break;
 
                 case TestParameters.TEST_END:

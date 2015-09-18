@@ -43,6 +43,9 @@ namespace ESLTestProcess.Data
         public static string KEY_3_8 = "key_3_8";
         public static string KEY_4_9 = "key_4_9";
         public static string KEY_5_0 = "key_5_0";
+
+        public static string RUN_CURRENT = "run_current";
+        public static string VOLTAGE_SUPPLY = "voltage_supply";
         
         public static string GetStatusName(string parameter)
         {

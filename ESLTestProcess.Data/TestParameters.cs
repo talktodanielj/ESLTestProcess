@@ -47,6 +47,7 @@ namespace ESLTestProcess.Data
         public const byte TEST_ID_SET_RTC_VALUE = 0x77;
         public const byte TEST_ID_GET_BGRSSI_VALUE = 0x78;
         public const byte TEST_ID_CAPTURE_HUB = 0x79;
+        public const byte TEST_ID_BUTTONS_INITIALISED = 0x80;
 
         public const byte TEST_END = 0x50;
         public const byte PARSE_ERROR = 0x51;
@@ -111,6 +112,7 @@ namespace ESLTestProcess.Data
             new Response{ TestId = TEST_ID_SET_RTC_VALUE, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_GET_BGRSSI_VALUE, ExpectedLength = 17},
             new Response{ TestId = TEST_ID_CAPTURE_HUB, ExpectedLength = 27},
+            new Response{ TestId = TEST_ID_BUTTONS_INITIALISED, ExpectedLength = 3},
 
             new Response{ TestId = TESTJIG_LED_STATUS, ExpectedLength = 5},
             new Response{ TestId = TESTJIG_RUN_CUR, ExpectedLength = 4},

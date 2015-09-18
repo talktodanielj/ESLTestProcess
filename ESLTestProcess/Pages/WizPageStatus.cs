@@ -56,6 +56,7 @@ namespace ESLTestProcess
                 _testParameters.Clear();
                 _testParameters.Add(new Tuple<string, string>("Node Id", TestViewParameters.NODE_ID));
                 _testParameters.Add(new Tuple<string, string>("Hub Id", TestViewParameters.HUB_ID));
+                _testParameters.Add(new Tuple<string, string>("Volatge Supply", TestViewParameters.VOLTAGE_SUPPLY));
                 _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestViewParameters.BATTERY_VOLTAGE));
                 _testParameters.Add(new Tuple<string, string>("Temperature", TestViewParameters.TEMPERATURE_READING));
 
@@ -74,6 +75,7 @@ namespace ESLTestProcess
             _testParameters.Clear();
             _testParameters.Add(new Tuple<string, string>("Node Id", TestViewParameters.NODE_ID));
             _testParameters.Add(new Tuple<string, string>("Hub Id", TestViewParameters.HUB_ID));
+            _testParameters.Add(new Tuple<string, string>("Volatge Supply", TestViewParameters.VOLTAGE_SUPPLY));
             _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestViewParameters.BATTERY_VOLTAGE));
             _testParameters.Add(new Tuple<string, string>("Temperature", TestViewParameters.TEMPERATURE_READING));
 
@@ -101,9 +103,11 @@ namespace ESLTestProcess
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
             CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
 
-            _timeOutTimer.Change(10000, Timeout.Infinite);
+            _timeOutTimer.Change(15000, Timeout.Infinite);
 
         }
+
+        private double _testJigVoltage = 0;
 
         void wizardPageResultsStatus_ProcessResponseEventHandler(object sender, ByteStreamHandler.ProcessResponseEventArgs e)
         {
@@ -131,6 +135,15 @@ namespace ESLTestProcess
                 case TestParameters.TEST_ID_HUB_ID:
                     string hubId = new string(new[] { (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[2], (char)e.RawData[3] });
                     SetTestResponse(hubId, TestViewParameters.HUB_ID, e.RawData, TestStatus.Pass);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_VSUPPLY_DUT);
+                    break;
+
+                case TestParameters.TESTJIG_VSUPPLY_DUT:
+                    
+                    var result = (int)e.RawData[2];
+                    _testJigVoltage = result * 0.039215686;
+                    var voltageSupplyData = string.Format("{0:0.##} V", _testJigVoltage.ToString());
+                    SetTestResponse(voltageSupplyData, TestViewParameters.VOLTAGE_SUPPLY, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BATTERY_LEVEL);
                     break;
 
@@ -139,7 +152,12 @@ namespace ESLTestProcess
                     string batteryData = new string(new[] { (char)rawData[0], (char)rawData[1], (char)rawData[2] });
                     int batLevel10mV = Convert.ToInt32(batteryData, 16);
                     double batteryLevel = batLevel10mV / 100.0;
-                    SetTestResponse(string.Format("{0:0.00}V", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Pass);
+
+                    if(batLevel10mV == _testJigVoltage)
+                        SetTestResponse(string.Format("{0:0.00}V", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Pass);
+                    else
+                        SetTestResponse(string.Format("{0:0.00}V", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Fail);
+
                     _log.Info("Got battery level result");
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_TEMPERATURE_LEVEL); 
                     break;
