@@ -83,7 +83,7 @@ namespace ESLTestProcess
 
             Task.Run(() =>
             {
-                Thread.Sleep(40000);
+                Thread.Sleep(15000);
                 _flashColourTimer.Change(Timeout.Infinite, Timeout.Infinite);
                 this.BeginInvoke(new MethodInvoker(delegate
                     {

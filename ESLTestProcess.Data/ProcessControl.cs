@@ -281,7 +281,23 @@ namespace ESLTestProcess.Data
             currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestViewParameters.SLEEP_CURRENT,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
+
+            currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
                 response_parameter = TestViewParameters.VOLTAGE_SUPPLY,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
+
+            currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestViewParameters.EXT_SK3_TEST1,
                 response_report_column = 17,
                 response_value = "Unknown"
             });

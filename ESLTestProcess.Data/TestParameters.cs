@@ -48,6 +48,8 @@ namespace ESLTestProcess.Data
         public const byte TEST_ID_GET_BGRSSI_VALUE = 0x78;
         public const byte TEST_ID_CAPTURE_HUB = 0x79;
         public const byte TEST_ID_BUTTONS_INITIALISED = 0x80;
+        public const byte TEST_ID_SLEEP = 0x81;
+        public const byte TEST_ID_EXT_SK3 = 0x82;
 
         public const byte TEST_END = 0x50;
         public const byte PARSE_ERROR = 0x51;
@@ -74,6 +76,7 @@ namespace ESLTestProcess.Data
         public static readonly byte[] REQUEST_SET_RTC_VALUE = { 0x02, TEST_ID_SET_RTC_VALUE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03 };
         public static readonly byte[] REQUEST_GET_BGRSSI_VALUE = { 0x02, TEST_ID_GET_BGRSSI_VALUE, 0x03 };
         public static readonly byte[] REQUEST_CAPTURE_HUB = { 0x02, TEST_ID_CAPTURE_HUB, 0x03 };
+        public static readonly byte[] REQUEST_START_SLEEP = { 0x02, TEST_ID_SLEEP, 0x03 };
 
         
         // Test Jig commands
@@ -89,6 +92,7 @@ namespace ESLTestProcess.Data
         public static readonly byte[] REQUEST_SET_PIEZO = { 0x02, TESTJIG_SET_PIEZO, 0x03 };
         public static readonly byte[] REQUEST_PWR_DUT = { 0x02, TESTJIG_PWR_DUT, 0x03 };
         public static readonly byte[] REQUEST_SHUTDOWN_DUT = { 0x02, TESTJIG_SHUTDOWN_DUT, 0x03 };
+        public static readonly byte[] REQUEST_EXT_SK3_TEST = { 0x02, TEST_ID_EXT_SK3, 0x00, 0x03 }; 
 
         public static Response[] ResponseValues = 
         {
@@ -96,7 +100,7 @@ namespace ESLTestProcess.Data
             new Response{ TestId = PARSE_ERROR, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_BEGIN_TEST, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_NODE_ID, ExpectedLength = 9},
-            new Response{ TestId = TEST_ID_BATTERY_LEVEL, ExpectedLength = 7},
+            new Response{ TestId = TEST_ID_BATTERY_LEVEL, ExpectedLength = 10},
             new Response{ TestId = TEST_ID_TEMPERATURE_LEVEL, ExpectedLength = 7},
             new Response{ TestId = TEST_ID_START_FLASH_GREEN_LED, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_START_FLASH_RED_LED, ExpectedLength = 3},
@@ -113,6 +117,8 @@ namespace ESLTestProcess.Data
             new Response{ TestId = TEST_ID_GET_BGRSSI_VALUE, ExpectedLength = 17},
             new Response{ TestId = TEST_ID_CAPTURE_HUB, ExpectedLength = 27},
             new Response{ TestId = TEST_ID_BUTTONS_INITIALISED, ExpectedLength = 3},
+            new Response{ TestId = TEST_ID_SLEEP, ExpectedLength = 7},
+            new Response{ TestId = TEST_ID_EXT_SK3, ExpectedLength = 3},
 
             new Response{ TestId = TESTJIG_LED_STATUS, ExpectedLength = 5},
             new Response{ TestId = TESTJIG_RUN_CUR, ExpectedLength = 4},

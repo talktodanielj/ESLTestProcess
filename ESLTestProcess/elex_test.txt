@@ -75,15 +75,10 @@ void red_led_test() {
 }
 
 void test_battery_level() {
-    unsigned char battLvl = read_batt() / 10;
-    //iputs("Batt "); // poop delete
-    //putdec( battLvl ) ; // poop delete
-    //puthex16Ext(battLvl);
-    
+    int battLvl = read_batt()/10;
     clear_payload_array();
-    //puthex16Ext(battLvl);
-    puthex16_payload(payload, battLvl, 0);
-    send_response(REQUEST_BATTERY_LEVEL, payload, 4);
+    putdecs_payload(payload, battLvl, 0);
+    send_response(REQUEST_BATTERY_LEVEL, payload, 7);
 }
 
 void test_read_temp() {
@@ -276,6 +271,8 @@ void test_write_node_id() {
     eeaddr_offset = (unsigned int) &PEEMEM->id;
     iic_bwrite(eeaddr_offset, dattmp & 0xff);
     iic_bwrite(eeaddr_offset + 1, dattmp >> 8);
+    
+    send_simple_response(REQUEST_SET_NODE_ID);
 }
 
 void test_write_hub_id() {
@@ -287,11 +284,13 @@ void test_write_hub_id() {
         dattmp <<= 4;
         dattmp += tohexn(payload[i]);
     }
-
     // Assign the address
     unsigned int eeaddr_offset;
     eeaddr_offset = (unsigned int) &PEEMEM->hub_id;
     iic_bwrite(eeaddr_offset, dattmp & 0xff);
+    iic_bwrite(eeaddr_offset + 1, dattmp >> 8);
+    
+    send_simple_response(REQUEST_SET_HUB_ID);
 }
 
 void test_get_node_id() {
@@ -365,9 +364,9 @@ void test_button_keys(int sampleTime, int expectedKey) {
         btntmpregs[5] = quicksampl(7, 0x0080);
         delay(1);
     }
-    
+
     send_simple_response(BUTTONS_INITIALISED);
-    
+
     pressed = 0;
 
     while (async_tmr < SEC(sampleTime)) {
@@ -446,6 +445,48 @@ void test_button_keys(int sampleTime, int expectedKey) {
 
 void rssi_test();
 
+unsigned int  sleep( void );
+
+void test_sleep()
+{
+    int retVal = sleep();
+//    clear_payload_array();
+//    puthex16_payload(payload, retVal, 0);
+//    send_response(REQUEST_SLEEP , payload, 4);
+}
+
+
+
+void test_ext_header_sk3(int mode)
+{
+    unsigned short int latfOriginal = CORE.latf;
+    unsigned short int trisfOriginal = CORE.trisf;
+   
+    // Set RF2 and RF3 to output
+    CORE.trisf |= 0x0004;
+    CORE.trisf |= 0x0008;
+    
+    if(mode == 0)
+    {
+        // Set RF2 = 1 and RF3 = 0, test jig DAC1 should read 2/3 * 255
+        CORE.latf |= 0x0004;
+        CORE.latf &= (~0x0008);
+    }
+    else if( mode == 1)
+    {
+        // Set RF2 = 0 and RF3 = 0, test jig DAC1 should read 1/3 * 255
+        CORE.latf &= (~0x0004);
+        CORE.latf &= (~0x0008);
+    }
+    
+    delay(30);
+    // Set back to the original values
+    CORE.latf = latfOriginal;
+    CORE.trisf = trisfOriginal
+    send_simple_response(REQUEST_TEST_EXT_SK3);
+}
+
+
 void process_test_command(const unsigned int commandId) {
     switch (commandId) {
         case BEGIN_TESTS:
@@ -502,6 +543,12 @@ void process_test_command(const unsigned int commandId) {
         case REQUEST_CAPTURE_HUB:
             rssi_test();
             break;
+        case REQUEST_SLEEP:
+            test_sleep();
+            break;
+        case REQUEST_TEST_EXT_SK3:
+            test_ext_header_sk3(payload[0]);
+            break;
         default:
             iputs("Unknown Command id:");
             iputc(commandId);
@@ -534,9 +581,6 @@ extern volatile FLAGS flags;
 extern volatile FLAGS1 flags1;
 
 void begin_production_tests() {
-
-    //iputs("In production tests\r\n");
-    //test_battery_level();
 
     init_accel(); // Make sure we do this!
 

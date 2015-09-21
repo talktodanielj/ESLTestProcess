@@ -440,6 +440,8 @@ namespace ESLTestProcess
                 cameFromFinishCommand = false;
                 txtManufactureSerial.Text = "";
             }
+            // Set the focus
+            txtManufactureSerial.Select();
         }
 
         private void exportResultsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -471,6 +473,11 @@ namespace ESLTestProcess
             var currentRun = ProcessControl.Instance.GetCurrentTestRun().run_complete = true;
             ProcessControl.Instance.SaveTestSession();
            
+        }
+
+        private void wizardPageSignIn_Enter(object sender, EventArgs e)
+        {
+            cbTechnician.Select();
         }
 
 

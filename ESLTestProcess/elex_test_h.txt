@@ -23,7 +23,7 @@ extern "C" {
 
 #define BEGIN_TESTS                       0x60
 #define REQUEST_NODE_ID                   0x61
-    
+
 #define REQUEST_BATTERY_LEVEL             0x63
 #define REQUEST_TEMPERATURE_LEVEL         0x64
 #define REQUEST_START_FLASH_GREEN_LED     0x65
@@ -42,6 +42,9 @@ extern "C" {
 #define REQUEST_GET_BGRSSI_VALUE          0x78
 #define REQUEST_CAPTURE_HUB               0x79
 #define BUTTONS_INITIALISED               0x80
+#define REQUEST_SLEEP                     0x81
+#define REQUEST_TEST_EXT_SK3              0x82
+    
 
 #define TEST_END                                  0x50    
 #define PARSE_ERROR                               0x51
@@ -67,12 +70,14 @@ extern "C" {
         { .commandId = REQUEST_SET_RTC_VALUE, .length = 9},
         { .commandId = REQUEST_GET_BGRSSI_VALUE, .length = 3},
         { .commandId = REQUEST_CAPTURE_HUB, .length = 3},
+        { .commandId = REQUEST_SLEEP, .length = 3},
+        { .commandId = REQUEST_TEST_EXT_SK3, .length = 4},
     };
 
 #define MAX_PAY_LOAD 30
 
     static unsigned char payload[MAX_PAY_LOAD];
-    
+
     void begin_production_tests();
     void clear_payload_array();
 

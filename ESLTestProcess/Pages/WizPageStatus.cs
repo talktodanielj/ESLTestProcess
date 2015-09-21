@@ -56,9 +56,10 @@ namespace ESLTestProcess
                 _testParameters.Clear();
                 _testParameters.Add(new Tuple<string, string>("Node Id", TestViewParameters.NODE_ID));
                 _testParameters.Add(new Tuple<string, string>("Hub Id", TestViewParameters.HUB_ID));
-                _testParameters.Add(new Tuple<string, string>("Volatge Supply", TestViewParameters.VOLTAGE_SUPPLY));
-                _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestViewParameters.BATTERY_VOLTAGE));
+                _testParameters.Add(new Tuple<string, string>("Voltage Supply", TestViewParameters.VOLTAGE_SUPPLY));
+                _testParameters.Add(new Tuple<string, string>("Battery Voltage", TestViewParameters.BATTERY_VOLTAGE));
                 _testParameters.Add(new Tuple<string, string>("Temperature", TestViewParameters.TEMPERATURE_READING));
+                _testParameters.Add(new Tuple<string, string>("Ext SK3 test 1", TestViewParameters.EXT_SK3_TEST1));
 
                 _activeTblLayoutPanel = tbllnitialStatus;
                 GenerateTable(_testParameters.ToArray());
@@ -75,9 +76,10 @@ namespace ESLTestProcess
             _testParameters.Clear();
             _testParameters.Add(new Tuple<string, string>("Node Id", TestViewParameters.NODE_ID));
             _testParameters.Add(new Tuple<string, string>("Hub Id", TestViewParameters.HUB_ID));
-            _testParameters.Add(new Tuple<string, string>("Volatge Supply", TestViewParameters.VOLTAGE_SUPPLY));
-            _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestViewParameters.BATTERY_VOLTAGE));
+            _testParameters.Add(new Tuple<string, string>("Voltage Supply", TestViewParameters.VOLTAGE_SUPPLY));
+            _testParameters.Add(new Tuple<string, string>("Battery Voltage", TestViewParameters.BATTERY_VOLTAGE));
             _testParameters.Add(new Tuple<string, string>("Temperature", TestViewParameters.TEMPERATURE_READING));
+            _testParameters.Add(new Tuple<string, string>("Ext SK3 test 1", TestViewParameters.EXT_SK3_TEST1));
 
             _activeTblLayoutPanel = tbllnitialStatus;
 
@@ -108,6 +110,10 @@ namespace ESLTestProcess
         }
 
         private double _testJigVoltage = 0;
+        private bool _requestingGreenLED;
+        private bool _requestingRedLED;
+        private bool _detectedGreenLED;
+        private bool _detectedRedLED;
 
         void wizardPageResultsStatus_ProcessResponseEventHandler(object sender, ByteStreamHandler.ProcessResponseEventArgs e)
         {
@@ -127,7 +133,7 @@ namespace ESLTestProcess
                     break;
 
                 case TestParameters.TEST_ID_NODE_ID:
-                    string nodeId = new string(new[] { (char)e.RawData[3], (char)e.RawData[2], (char)e.RawData[5], (char)e.RawData[4], (char)e.RawData[7], (char)e.RawData[6] });
+                    string nodeId = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7] });
                     SetTestResponse(nodeId, TestViewParameters.NODE_ID, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_HUB_ID);
                     break;
@@ -135,31 +141,49 @@ namespace ESLTestProcess
                 case TestParameters.TEST_ID_HUB_ID:
                     string hubId = new string(new[] { (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[2], (char)e.RawData[3] });
                     SetTestResponse(hubId, TestViewParameters.HUB_ID, e.RawData, TestStatus.Pass);
-                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_VSUPPLY_DUT);
+                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_VSUPPLY_DUT);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_EXT_SK3_TEST);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_DAC1);
+                    break;
+
+                case TestParameters.TEST_ID_EXT_SK3:
+                    _log.Info("ext3");
+
+
+
+                    break;
+
+                case TestParameters.TESTJIG_DAC1:
+                    _log.Info("dac");
+
+
+
                     break;
 
                 case TestParameters.TESTJIG_VSUPPLY_DUT:
-                    
+
                     var result = (int)e.RawData[2];
-                    _testJigVoltage = result * 0.039215686;
-                    var voltageSupplyData = string.Format("{0:0.##} V", _testJigVoltage.ToString());
+                    //_testJigVoltage = result * 0.039215686;
+                    _testJigVoltage = result * 0.02588;
+                    var voltageSupplyData = string.Format("{0} V", _testJigVoltage.ToString("F"));
                     SetTestResponse(voltageSupplyData, TestViewParameters.VOLTAGE_SUPPLY, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BATTERY_LEVEL);
                     break;
 
                 case TestParameters.TEST_ID_BATTERY_LEVEL:
-                    rawData = e.RawData.Skip(2).Take(3).ToArray();
-                    string batteryData = new string(new[] { (char)rawData[0], (char)rawData[1], (char)rawData[2] });
-                    int batLevel10mV = Convert.ToInt32(batteryData, 16);
-                    double batteryLevel = batLevel10mV / 100.0;
 
-                    if(batLevel10mV == _testJigVoltage)
-                        SetTestResponse(string.Format("{0:0.00}V", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Pass);
+                    string batLevelData = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7], (char)e.RawData[8] });
+                    int batLevel10mV = int.Parse(batLevelData);
+
+                    double batteryLevel = batLevel10mV / 10.0;
+
+                    if (batteryLevel < (_testJigVoltage + 0.1) && batteryLevel > (_testJigVoltage - 0.1))
+                        SetTestResponse(string.Format("{0:0.00} V", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Pass);
                     else
-                        SetTestResponse(string.Format("{0:0.00}V", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Fail);
+                        SetTestResponse(string.Format("{0:0.00} V", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Fail);
 
                     _log.Info("Got battery level result");
-                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_TEMPERATURE_LEVEL); 
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_TEMPERATURE_LEVEL);
                     break;
 
                 case TestParameters.TEST_ID_TEMPERATURE_LEVEL:
@@ -169,24 +193,66 @@ namespace ESLTestProcess
 
                     _log.Info("Got temperature level");
 
-                    SetTestResponse(string.Format("{0:0.0}C", temperature), TestViewParameters.TEMPERATURE_READING, e.RawData, TestStatus.Pass);
+                    SetTestResponse(string.Format("{0:0.0} C", temperature), TestViewParameters.TEMPERATURE_READING, e.RawData, TestStatus.Pass);
                     _altColour = false;
                     _activeLEDBtn = 0;
                     _flashLedBtnTimer.Change(0, 500);
+
+                    _detectedGreenLED = false;
+                    _requestingGreenLED = true;
+                    _requestingRedLED = false;
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_FLASH_GREEN_LED);
+                    Thread.Sleep(100);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_LED_STATUS);
+                    break;
+
+                case TestParameters.TESTJIG_LED_STATUS:
+
+                    _log.Info("Got LED status");
+
+                    int ledGreenStatus = e.RawData[3];
+                    int ledRedStatus = e.RawData[2];
+
+                    if (_requestingGreenLED)
+                    {
+                        _detectedGreenLED = ledGreenStatus == 1;
+                    }
+
+                    if (_requestingRedLED)
+                    {
+                        _detectedRedLED = ledRedStatus == 1;
+                    }
+
                     break;
 
                 case TestParameters.TEST_ID_START_FLASH_GREEN_LED:
                     _flashLedBtnTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     _altColour = true;
                     FlashLEDBtnCallback(null);
-                    pictureBoxLED1.Image = ESLTestProcess.Properties.Resources.tick;
 
-                    SetTestResponse("PASS", TestViewParameters.LED_GREEN_FLASH, e.RawData, TestStatus.Pass);
+                    if (_detectedGreenLED)
+                    {
+                        pictureBoxLED1.Image = ESLTestProcess.Properties.Resources.tick;
+                        SetTestResponse("PASS", TestViewParameters.LED_GREEN_FLASH, e.RawData, TestStatus.Pass);
+                    }
+                    else
+                    {
+                        pictureBoxLED1.Image = ESLTestProcess.Properties.Resources.cross;
+                        SetTestResponse("FAIL", TestViewParameters.LED_GREEN_FLASH, e.RawData, TestStatus.Fail);
+                    }
+
                     _altColour = false;
                     _activeLEDBtn = 1;
                     _flashLedBtnTimer.Change(0, 500);
+
+                    _detectedRedLED = false;
+                    _requestingGreenLED = false;
+                    _requestingRedLED = true;
+
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_FLASH_RED_LED);
+                    Thread.Sleep(100);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_LED_STATUS);
+
                     break;
 
                 case TestParameters.TEST_ID_START_FLASH_RED_LED:
@@ -197,8 +263,16 @@ namespace ESLTestProcess
 
                     _flashLedBtnTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
-                    SetTestResponse("PASS", TestViewParameters.LED_RED_FLASH, e.RawData, TestStatus.Pass);
-                    _log.Info("Got green RED flash");
+                    if (_detectedRedLED)
+                    {
+                        pictureBoxLED2.Image = ESLTestProcess.Properties.Resources.tick;
+                        SetTestResponse("PASS", TestViewParameters.LED_RED_FLASH, e.RawData, TestStatus.Pass);
+                    }
+                    else
+                    {
+                        pictureBoxLED2.Image = ESLTestProcess.Properties.Resources.cross;
+                        SetTestResponse("FAIL", TestViewParameters.LED_RED_FLASH, e.RawData, TestStatus.Fail);
+                    }
 
                     AllowResultsPageToMoveNext();
                     _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
