@@ -47,7 +47,7 @@ namespace ESLTestProcess
 
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageAccelTestStep2_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-            _timeOutTimer.Change(5000, Timeout.Infinite);
+            _timeOutTimer.Change(8000, Timeout.Infinite);
         }
 
         private string _accelerometerStep2XData;

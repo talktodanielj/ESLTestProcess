@@ -40,24 +40,24 @@ SELECT technician_name
 		,rf_hub_ack
 		,rf_ack_rsi
 		,CASE WHEN rf_ack_rsi_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [rf_ack_rsi_outcome]
-		,acceleromter_x_base
-		,CASE WHEN acceleromter_x_base_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_x_base_outcome]
-		,acceleromter_y_base
-		,CASE WHEN acceleromter_y_base_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_y_base_outcome]
-		,acceleromter_z_base
-		,CASE WHEN acceleromter_z_base_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_z_base_outcome]
-		,acceleromter_x_long_edge
-		,CASE WHEN acceleromter_x_long_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_x_long_edge_outcome]
-		,acceleromter_y_long_edge
-		,CASE WHEN acceleromter_y_long_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_y_long_edge_outcome]
-		,acceleromter_z_long_edge
-		,CASE WHEN acceleromter_z_long_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_z_long_edge_outcome]
-		,acceleromter_x_short_edge
-		,CASE WHEN acceleromter_x_short_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_x_short_edge_outcome]
-		,acceleromter_y_short_edge
-		,CASE WHEN acceleromter_y_short_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_y_short_edge_outcome]
-		,acceleromter_z_short_edge
-		,CASE WHEN acceleromter_z_short_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_z_short_edge_outcome]
+		,accelerometer_x_base
+		,CASE WHEN accelerometer_x_base_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [accelerometer_x_base_outcome]
+		,accelerometer_y_base
+		,CASE WHEN accelerometer_y_base_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [accelerometer_y_base_outcome]
+		,accelerometer_z_base
+		,CASE WHEN accelerometer_z_base_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [accelerometer_z_base_outcome]
+		,accelerometer_x_long_edge
+		,CASE WHEN accelerometer_x_long_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [accelerometer_x_long_edge_outcome]
+		,accelerometer_y_long_edge
+		,CASE WHEN accelerometer_y_long_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [accelerometer_y_long_edge_outcome]
+		,accelerometer_z_long_edge
+		,CASE WHEN accelerometer_z_long_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [accelerometer_z_long_edge_outcome]
+		,accelerometer_x_short_edge
+		,CASE WHEN accelerometer_x_short_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [accelerometer_x_short_edge_outcome]
+		,accelerometer_y_short_edge
+		,CASE WHEN accelerometer_y_short_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [accelerometer_y_short_edge_outcome]
+		,accelerometer_z_short_edge
+		,CASE WHEN accelerometer_z_short_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [accelerometer_z_short_edge_outcome]
 FROM
 	
 	(SELECT  pcb_unit_id, pcb_unit_serial_number, pcb_unit_serial_sticker_manufacture, 
@@ -117,32 +117,32 @@ FROM
       	MAX(CASE WHEN response_parameter = 'rf_ack_rsi' THEN response_value ELSE NULL END) [rf_ack_rsi],
       	MAX(CASE WHEN response_parameter = 'rf_ack_rsi' THEN response_outcome ELSE NULL END) [rf_ack_rsi_outcome],
       	
-      	MAX(CASE WHEN response_parameter = 'acceleromter_x_base' THEN response_value ELSE NULL END) [acceleromter_x_base],
-      	MAX(CASE WHEN response_parameter = 'acceleromter_x_base' THEN response_outcome ELSE NULL END) [acceleromter_x_base_outcome],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_x_base' THEN response_value ELSE NULL END) [accelerometer_x_base],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_x_base' THEN response_outcome ELSE NULL END) [accelerometer_x_base_outcome],
       	
-      	MAX(CASE WHEN response_parameter = 'acceleromter_y_base' THEN response_value ELSE NULL END) [acceleromter_y_base],
-      	MAX(CASE WHEN response_parameter = 'acceleromter_y_base' THEN response_outcome ELSE NULL END) [acceleromter_y_base_outcome],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_y_base' THEN response_value ELSE NULL END) [accelerometer_y_base],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_y_base' THEN response_outcome ELSE NULL END) [accelerometer_y_base_outcome],
       	
-      	MAX(CASE WHEN response_parameter = 'acceleromter_z_base' THEN response_value ELSE NULL END) [acceleromter_z_base],
-      	MAX(CASE WHEN response_parameter = 'acceleromter_z_base' THEN response_outcome ELSE NULL END) [acceleromter_z_base_outcome],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_z_base' THEN response_value ELSE NULL END) [accelerometer_z_base],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_z_base' THEN response_outcome ELSE NULL END) [accelerometer_z_base_outcome],
       	
-      	MAX(CASE WHEN response_parameter = 'acceleromter_x_long_edge' THEN response_value ELSE NULL END) [acceleromter_x_long_edge],
-      	MAX(CASE WHEN response_parameter = 'acceleromter_x_long_edge' THEN response_outcome ELSE NULL END) [acceleromter_x_long_edge_outcome],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_x_long_edge' THEN response_value ELSE NULL END) [accelerometer_x_long_edge],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_x_long_edge' THEN response_outcome ELSE NULL END) [accelerometer_x_long_edge_outcome],
       	
-      	MAX(CASE WHEN response_parameter = 'acceleromter_y_long_edge' THEN response_value ELSE NULL END) [acceleromter_y_long_edge],
-      	MAX(CASE WHEN response_parameter = 'acceleromter_y_long_edge' THEN response_outcome ELSE NULL END) [acceleromter_y_long_edge_outcome],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_y_long_edge' THEN response_value ELSE NULL END) [accelerometer_y_long_edge],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_y_long_edge' THEN response_outcome ELSE NULL END) [accelerometer_y_long_edge_outcome],
       	
-      	MAX(CASE WHEN response_parameter = 'acceleromter_z_long_edge' THEN response_value ELSE NULL END) [acceleromter_z_long_edge],
-      	MAX(CASE WHEN response_parameter = 'acceleromter_z_long_edge' THEN response_outcome ELSE NULL END) [acceleromter_z_long_edge_outcome],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_z_long_edge' THEN response_value ELSE NULL END) [accelerometer_z_long_edge],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_z_long_edge' THEN response_outcome ELSE NULL END) [accelerometer_z_long_edge_outcome],
       	
-      	MAX(CASE WHEN response_parameter = 'acceleromter_x_short_edge' THEN response_value ELSE NULL END) [acceleromter_x_short_edge],
-      	MAX(CASE WHEN response_parameter = 'acceleromter_x_short_edge' THEN response_outcome ELSE NULL END) [acceleromter_x_short_edge_outcome],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_x_short_edge' THEN response_value ELSE NULL END) [accelerometer_x_short_edge],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_x_short_edge' THEN response_outcome ELSE NULL END) [accelerometer_x_short_edge_outcome],
       	
-      	MAX(CASE WHEN response_parameter = 'acceleromter_y_short_edge' THEN response_value ELSE NULL END) [acceleromter_y_short_edge],
-      	MAX(CASE WHEN response_parameter = 'acceleromter_y_short_edge' THEN response_outcome ELSE NULL END) [acceleromter_y_short_edge_outcome],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_y_short_edge' THEN response_value ELSE NULL END) [accelerometer_y_short_edge],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_y_short_edge' THEN response_outcome ELSE NULL END) [accelerometer_y_short_edge_outcome],
       	
-      	MAX(CASE WHEN response_parameter = 'acceleromter_z_short_edge' THEN response_value ELSE NULL END) [acceleromter_z_short_edge],
-      	MAX(CASE WHEN response_parameter = 'acceleromter_z_short_edge' THEN response_outcome ELSE NULL END) [acceleromter_z_short_edge_outcome]
+      	MAX(CASE WHEN response_parameter = 'accelerometer_z_short_edge' THEN response_value ELSE NULL END) [accelerometer_z_short_edge],
+      	MAX(CASE WHEN response_parameter = 'accelerometer_z_short_edge' THEN response_outcome ELSE NULL END) [accelerometer_z_short_edge_outcome]
 	FROM responses
 		JOIN runs
 			ON  run_run_id = run_id

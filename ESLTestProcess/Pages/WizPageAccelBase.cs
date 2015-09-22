@@ -77,7 +77,7 @@ namespace ESLTestProcess
                     _log.Info("Got begin test command");
                     Thread.Sleep(100);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_ACCELEROMETER_TEST);
-                    _timeOutTimer.Change(5000, Timeout.Infinite);
+                    _timeOutTimer.Change(8000, Timeout.Infinite);
                     break;
 
                 case TestParameters.TEST_END:
@@ -120,9 +120,9 @@ namespace ESLTestProcess
             int.TryParse(actualValueData.Trim(), out actualValue);
 
             if (actualValue <= expectedMax && actualValue >= expectedMin)
-                SetTestResponse(actualValueData, testParamater, rawData, TestStatus.Pass);
+                SetTestResponse(actualValueData.Trim(), testParamater, rawData, TestStatus.Pass);
             else
-                SetTestResponse(actualValueData, testParamater, rawData, TestStatus.Fail);
+                SetTestResponse(actualValueData.Trim(), testParamater, rawData, TestStatus.Fail);
         }
         
         private void wizardPageAccelerometerBase_Leave(object sender, EventArgs e)
