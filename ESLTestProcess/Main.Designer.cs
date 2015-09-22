@@ -45,7 +45,6 @@
             this.wizardPageProgramPCB = new AeroWizard.WizardPage();
             this.tblPCBUnitId = new System.Windows.Forms.TableLayoutPanel();
             this.themedLabel11 = new AeroWizard.ThemedLabel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.themedLabel10 = new AeroWizard.ThemedLabel();
             this.themedLabel9 = new AeroWizard.ThemedLabel();
             this.themedLabel8 = new AeroWizard.ThemedLabel();
@@ -90,11 +89,14 @@
             this.themedLabel16 = new AeroWizard.ThemedLabel();
             this.tblTransceiverTest = new System.Windows.Forms.TableLayoutPanel();
             this.wizardPageSummaryPart1 = new AeroWizard.WizardPage();
-            this.lblTestSummaryPart1 = new System.Windows.Forms.Label();
             this.tblSummaryPart1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTestSummaryPart1 = new System.Windows.Forms.Label();
             this.wizardPageSummaryPart2 = new AeroWizard.WizardPage();
             this.lblTestSummaryPart2 = new System.Windows.Forms.Label();
             this.tblSummaryPart2 = new System.Windows.Forms.TableLayoutPanel();
+            this.wizardPageSummaryPart3 = new AeroWizard.WizardPage();
+            this.tblSummaryPart3 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblTestSummary3 = new System.Windows.Forms.Label();
             this.wizardPageProgramForRelease = new AeroWizard.WizardPage();
             this.lblSerial = new System.Windows.Forms.Label();
             this.btnProgramNode = new System.Windows.Forms.Button();
@@ -104,11 +106,11 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tblProgramForRelease = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
             this.wizardPageProgramPCB.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.wizardPageResultsStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED1)).BeginInit();
@@ -126,6 +128,7 @@
             this.wizardPageTransceiver.SuspendLayout();
             this.wizardPageSummaryPart1.SuspendLayout();
             this.wizardPageSummaryPart2.SuspendLayout();
+            this.wizardPageSummaryPart3.SuspendLayout();
             this.wizardPageProgramForRelease.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -149,6 +152,7 @@
             this.stepWizardControl1.Pages.Add(this.wizardPageTransceiver);
             this.stepWizardControl1.Pages.Add(this.wizardPageSummaryPart1);
             this.stepWizardControl1.Pages.Add(this.wizardPageSummaryPart2);
+            this.stepWizardControl1.Pages.Add(this.wizardPageSummaryPart3);
             this.stepWizardControl1.Pages.Add(this.wizardPageProgramForRelease);
             this.stepWizardControl1.Size = new System.Drawing.Size(866, 666);
             this.stepWizardControl1.StepListFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
@@ -288,7 +292,6 @@
             // 
             this.wizardPageProgramPCB.Controls.Add(this.tblPCBUnitId);
             this.wizardPageProgramPCB.Controls.Add(this.themedLabel11);
-            this.wizardPageProgramPCB.Controls.Add(this.pictureBox1);
             this.wizardPageProgramPCB.Controls.Add(this.themedLabel10);
             this.wizardPageProgramPCB.Controls.Add(this.themedLabel9);
             this.wizardPageProgramPCB.Controls.Add(this.themedLabel8);
@@ -318,20 +321,11 @@
             // themedLabel11
             // 
             this.themedLabel11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.themedLabel11.Location = new System.Drawing.Point(147, 260);
+            this.themedLabel11.Location = new System.Drawing.Point(61, 260);
             this.themedLabel11.Name = "themedLabel11";
             this.themedLabel11.Size = new System.Drawing.Size(275, 23);
             this.themedLabel11.TabIndex = 4;
             this.themedLabel11.Text = "Waiting for a response from the PCB";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::ESLTestProcess.Properties.Resources.spinner;
-            this.pictureBox1.Location = new System.Drawing.Point(58, 223);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(65, 65);
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
             // 
             // themedLabel10
             // 
@@ -382,7 +376,7 @@
             // 
             // pictureBoxLED2
             // 
-            this.pictureBoxLED2.Location = new System.Drawing.Point(272, 409);
+            this.pictureBoxLED2.Location = new System.Drawing.Point(363, 440);
             this.pictureBoxLED2.Name = "pictureBoxLED2";
             this.pictureBoxLED2.Size = new System.Drawing.Size(42, 38);
             this.pictureBoxLED2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -391,7 +385,7 @@
             // 
             // pictureBoxLED1
             // 
-            this.pictureBoxLED1.Location = new System.Drawing.Point(193, 409);
+            this.pictureBoxLED1.Location = new System.Drawing.Point(155, 440);
             this.pictureBoxLED1.Name = "pictureBoxLED1";
             this.pictureBoxLED1.Size = new System.Drawing.Size(42, 38);
             this.pictureBoxLED1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -401,7 +395,7 @@
             // btnLED2
             // 
             this.btnLED2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLED2.Location = new System.Drawing.Point(256, 349);
+            this.btnLED2.Location = new System.Drawing.Point(282, 424);
             this.btnLED2.Name = "btnLED2";
             this.btnLED2.Size = new System.Drawing.Size(75, 54);
             this.btnLED2.TabIndex = 4;
@@ -411,7 +405,7 @@
             // btnLED1
             // 
             this.btnLED1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLED1.Location = new System.Drawing.Point(177, 349);
+            this.btnLED1.Location = new System.Drawing.Point(203, 424);
             this.btnLED1.Name = "btnLED1";
             this.btnLED1.Size = new System.Drawing.Size(75, 54);
             this.btnLED1.TabIndex = 3;
@@ -422,7 +416,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(206, 313);
+            this.label1.Location = new System.Drawing.Point(232, 388);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(92, 21);
             this.label1.TabIndex = 2;
@@ -431,7 +425,7 @@
             // themedLabel12
             // 
             this.themedLabel12.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.themedLabel12.Location = new System.Drawing.Point(43, 41);
+            this.themedLabel12.Location = new System.Drawing.Point(23, 12);
             this.themedLabel12.Name = "themedLabel12";
             this.themedLabel12.Size = new System.Drawing.Size(409, 30);
             this.themedLabel12.TabIndex = 1;
@@ -443,7 +437,7 @@
             this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.tbllnitialStatus.Location = new System.Drawing.Point(43, 99);
+            this.tbllnitialStatus.Location = new System.Drawing.Point(28, 49);
             this.tbllnitialStatus.Name = "tbllnitialStatus";
             this.tbllnitialStatus.RowCount = 1;
             this.tbllnitialStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -837,8 +831,8 @@
             // 
             // wizardPageSummaryPart1
             // 
-            this.wizardPageSummaryPart1.Controls.Add(this.lblTestSummaryPart1);
             this.wizardPageSummaryPart1.Controls.Add(this.tblSummaryPart1);
+            this.wizardPageSummaryPart1.Controls.Add(this.lblTestSummaryPart1);
             this.wizardPageSummaryPart1.Name = "wizardPageSummaryPart1";
             this.wizardPageSummaryPart1.NextPage = this.wizardPageSummaryPart2;
             this.wizardPageSummaryPart1.Size = new System.Drawing.Size(568, 512);
@@ -849,33 +843,33 @@
             this.wizardPageSummaryPart1.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageSummaryPart1_Rollback);
             this.wizardPageSummaryPart1.Enter += new System.EventHandler(this.wizardPageSummaryPart1_Enter);
             // 
-            // lblTestSummaryPart1
-            // 
-            this.lblTestSummaryPart1.AutoSize = true;
-            this.lblTestSummaryPart1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTestSummaryPart1.Location = new System.Drawing.Point(3, 5);
-            this.lblTestSummaryPart1.Name = "lblTestSummaryPart1";
-            this.lblTestSummaryPart1.Size = new System.Drawing.Size(184, 25);
-            this.lblTestSummaryPart1.TabIndex = 1;
-            this.lblTestSummaryPart1.Text = "Test Summary Part 1";
-            // 
             // tblSummaryPart1
             // 
             this.tblSummaryPart1.ColumnCount = 1;
             this.tblSummaryPart1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblSummaryPart1.Location = new System.Drawing.Point(3, 36);
+            this.tblSummaryPart1.Location = new System.Drawing.Point(3, 64);
             this.tblSummaryPart1.Name = "tblSummaryPart1";
             this.tblSummaryPart1.RowCount = 1;
             this.tblSummaryPart1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblSummaryPart1.Size = new System.Drawing.Size(562, 455);
+            this.tblSummaryPart1.Size = new System.Drawing.Size(562, 379);
             this.tblSummaryPart1.TabIndex = 0;
+            // 
+            // lblTestSummaryPart1
+            // 
+            this.lblTestSummaryPart1.AutoSize = true;
+            this.lblTestSummaryPart1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTestSummaryPart1.Location = new System.Drawing.Point(192, 5);
+            this.lblTestSummaryPart1.Name = "lblTestSummaryPart1";
+            this.lblTestSummaryPart1.Size = new System.Drawing.Size(184, 25);
+            this.lblTestSummaryPart1.TabIndex = 1;
+            this.lblTestSummaryPart1.Text = "Test Summary Part 1";
             // 
             // wizardPageSummaryPart2
             // 
             this.wizardPageSummaryPart2.Controls.Add(this.lblTestSummaryPart2);
             this.wizardPageSummaryPart2.Controls.Add(this.tblSummaryPart2);
             this.wizardPageSummaryPart2.Name = "wizardPageSummaryPart2";
-            this.wizardPageSummaryPart2.NextPage = this.wizardPageProgramForRelease;
+            this.wizardPageSummaryPart2.NextPage = this.wizardPageSummaryPart3;
             this.wizardPageSummaryPart2.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageSummaryPart2, "Test Summary Part 2");
             this.wizardPageSummaryPart2.TabIndex = 13;
@@ -888,7 +882,7 @@
             // 
             this.lblTestSummaryPart2.AutoSize = true;
             this.lblTestSummaryPart2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTestSummaryPart2.Location = new System.Drawing.Point(17, 11);
+            this.lblTestSummaryPart2.Location = new System.Drawing.Point(192, 11);
             this.lblTestSummaryPart2.Name = "lblTestSummaryPart2";
             this.lblTestSummaryPart2.Size = new System.Drawing.Size(184, 25);
             this.lblTestSummaryPart2.TabIndex = 1;
@@ -898,20 +892,57 @@
             // 
             this.tblSummaryPart2.ColumnCount = 1;
             this.tblSummaryPart2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblSummaryPart2.Location = new System.Drawing.Point(3, 43);
+            this.tblSummaryPart2.Location = new System.Drawing.Point(3, 52);
             this.tblSummaryPart2.Name = "tblSummaryPart2";
             this.tblSummaryPart2.RowCount = 1;
             this.tblSummaryPart2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblSummaryPart2.Size = new System.Drawing.Size(562, 464);
+            this.tblSummaryPart2.Size = new System.Drawing.Size(562, 370);
             this.tblSummaryPart2.TabIndex = 0;
+            // 
+            // wizardPageSummaryPart3
+            // 
+            this.wizardPageSummaryPart3.Controls.Add(this.tblSummaryPart3);
+            this.wizardPageSummaryPart3.Controls.Add(this.lblTestSummary3);
+            this.wizardPageSummaryPart3.Name = "wizardPageSummaryPart3";
+            this.wizardPageSummaryPart3.NextPage = this.wizardPageProgramForRelease;
+            this.wizardPageSummaryPart3.Size = new System.Drawing.Size(568, 512);
+            this.stepWizardControl1.SetStepText(this.wizardPageSummaryPart3, "Test Summary Part 3");
+            this.wizardPageSummaryPart3.TabIndex = 15;
+            this.wizardPageSummaryPart3.Text = "Test Summary Part 3";
+            this.wizardPageSummaryPart3.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageSummaryPart3_Initialize);
+            this.wizardPageSummaryPart3.Rollback += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageSummaryPart3_Rollback);
+            this.wizardPageSummaryPart3.Enter += new System.EventHandler(this.wizardPageSummaryPart3_Enter);
+            // 
+            // tblSummaryPart3
+            // 
+            this.tblSummaryPart3.ColumnCount = 1;
+            this.tblSummaryPart3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblSummaryPart3.Location = new System.Drawing.Point(14, 63);
+            this.tblSummaryPart3.Name = "tblSummaryPart3";
+            this.tblSummaryPart3.RowCount = 1;
+            this.tblSummaryPart3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblSummaryPart3.Size = new System.Drawing.Size(541, 310);
+            this.tblSummaryPart3.TabIndex = 1;
+            // 
+            // lblTestSummary3
+            // 
+            this.lblTestSummary3.AutoSize = true;
+            this.lblTestSummary3.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTestSummary3.Location = new System.Drawing.Point(192, 4);
+            this.lblTestSummary3.Name = "lblTestSummary3";
+            this.lblTestSummary3.Size = new System.Drawing.Size(184, 25);
+            this.lblTestSummary3.TabIndex = 0;
+            this.lblTestSummary3.Text = "Test Summary Part 3";
             // 
             // wizardPageProgramForRelease
             // 
+            this.wizardPageProgramForRelease.Controls.Add(this.tblProgramForRelease);
             this.wizardPageProgramForRelease.Controls.Add(this.lblSerial);
             this.wizardPageProgramForRelease.Controls.Add(this.btnProgramNode);
             this.wizardPageProgramForRelease.Controls.Add(this.lblProgramHubId);
             this.wizardPageProgramForRelease.Controls.Add(this.lblProgramNodeId);
             this.wizardPageProgramForRelease.Controls.Add(this.lblProgramForRelease);
+            this.wizardPageProgramForRelease.IsFinishPage = true;
             this.wizardPageProgramForRelease.Name = "wizardPageProgramForRelease";
             this.wizardPageProgramForRelease.Size = new System.Drawing.Size(568, 512);
             this.stepWizardControl1.SetStepText(this.wizardPageProgramForRelease, "Program for release");
@@ -998,6 +1029,17 @@
             this.exportResultsToolStripMenuItem.Text = "Export Results";
             this.exportResultsToolStripMenuItem.Click += new System.EventHandler(this.exportResultsToolStripMenuItem_Click);
             // 
+            // tblProgramForRelease
+            // 
+            this.tblProgramForRelease.ColumnCount = 1;
+            this.tblProgramForRelease.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblProgramForRelease.Location = new System.Drawing.Point(61, 269);
+            this.tblProgramForRelease.Name = "tblProgramForRelease";
+            this.tblProgramForRelease.RowCount = 1;
+            this.tblProgramForRelease.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblProgramForRelease.Size = new System.Drawing.Size(482, 140);
+            this.tblProgramForRelease.TabIndex = 5;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1014,7 +1056,6 @@
             this.wizardPageInsertPCB.ResumeLayout(false);
             this.wizardPageInsertPCB.PerformLayout();
             this.wizardPageProgramPCB.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.wizardPageResultsStatus.ResumeLayout(false);
             this.wizardPageResultsStatus.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED2)).EndInit();
@@ -1038,6 +1079,8 @@
             this.wizardPageSummaryPart1.PerformLayout();
             this.wizardPageSummaryPart2.ResumeLayout(false);
             this.wizardPageSummaryPart2.PerformLayout();
+            this.wizardPageSummaryPart3.ResumeLayout(false);
+            this.wizardPageSummaryPart3.PerformLayout();
             this.wizardPageProgramForRelease.ResumeLayout(false);
             this.wizardPageProgramForRelease.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -1066,7 +1109,6 @@
         private AeroWizard.ThemedLabel themedLabel10;
         private AeroWizard.ThemedLabel themedLabel9;
         private AeroWizard.ThemedLabel themedLabel8;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private AeroWizard.ThemedLabel themedLabel11;
         private AeroWizard.WizardPage wizardPageResultsStatus;
         private System.Windows.Forms.TableLayoutPanel tbllnitialStatus;
@@ -1124,6 +1166,10 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportResultsToolStripMenuItem;
+        private AeroWizard.WizardPage wizardPageSummaryPart3;
+        private System.Windows.Forms.TableLayoutPanel tblSummaryPart3;
+        private System.Windows.Forms.Label lblTestSummary3;
+        private System.Windows.Forms.TableLayoutPanel tblProgramForRelease;
 
 
     }

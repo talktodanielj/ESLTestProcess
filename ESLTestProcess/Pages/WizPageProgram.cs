@@ -56,7 +56,7 @@ namespace ESLTestProcess
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageProgramPCB_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
             //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
-            _timeOutTimer.Change(13000, Timeout.Infinite);
+            _timeOutTimer.Change(10000, Timeout.Infinite);
 
             Task.Run(() =>
             {
@@ -100,9 +100,16 @@ namespace ESLTestProcess
                     // Multiply by conversion factor to get current in mV
                     double current = result * 0.294117647;
                     var currentData = string.Format("{0} mA", current.ToString("F"));
-                    SetTestResponse(currentData, TestViewParameters.RUN_CURRENT, e.RawData, TestStatus.Pass);
+
+                    double runCurrentMax = double.Parse(ConfigurationManager.AppSettings["run_current_max"]);
+                    double runCurrentMin = double.Parse(ConfigurationManager.AppSettings["run_current_min"]);
+
+                    if(current <= runCurrentMax && current >= runCurrentMin)
+                        SetTestResponse(currentData, TestViewParameters.RUN_CURRENT, e.RawData, TestStatus.Pass);
+                    else
+                        SetTestResponse(currentData, TestViewParameters.RUN_CURRENT, e.RawData, TestStatus.Fail);
+
                     Thread.Sleep(100);
-                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_SLEEP);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SLEEP_CUR);
                     break;
@@ -115,7 +122,10 @@ namespace ESLTestProcess
 
                     var sleepCurrentData = string.Format("{0} uA", sleepCurrent.ToString("F"));
 
-                    if (sleepCurrent > 10 && sleepCurrent < 50)
+                    double sleepCurrentMax = double.Parse(ConfigurationManager.AppSettings["sleep_current_max"]);
+                    double sleepCurrentMin = double.Parse(ConfigurationManager.AppSettings["sleep_current_min"]);
+
+                    if (sleepCurrent <= sleepCurrentMax && sleepCurrent >= sleepCurrentMin)
                         SetTestResponse(sleepCurrentData, TestViewParameters.SLEEP_CURRENT, e.RawData, TestStatus.Pass);
                     else
                         SetTestResponse(sleepCurrentData, TestViewParameters.SLEEP_CURRENT, e.RawData, TestStatus.Fail);

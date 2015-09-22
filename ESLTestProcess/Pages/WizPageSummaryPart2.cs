@@ -18,21 +18,17 @@ namespace ESLTestProcess
             {
                 _testParameters.Clear();
 
-                _testParameters.Add(new Tuple<string, string>("Background RSSI", TestViewParameters.RF_BGR_RSSI));
-                _testParameters.Add(new Tuple<string, string>("HUB Acknowledgment", TestViewParameters.RF_HUB_ACK));
-                _testParameters.Add(new Tuple<string, string>("Ack RSSI value", TestViewParameters.RF_ACK_RSSI));
+                _testParameters.Add(new Tuple<string, string>("Piezo test", TestViewParameters.PIEZO_TEST));
+                _testParameters.Add(new Tuple<string, string>("Reed test", TestViewParameters.REED_TEST));
+                _testParameters.Add(new Tuple<string, string>("Set RTC", TestViewParameters.RTC_SET));
+                _testParameters.Add(new Tuple<string, string>("Get RTC", TestViewParameters.RTC_GET));
 
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Base X", TestViewParameters.ACCELEROMETER_X_BASE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Base Y", TestViewParameters.ACCELEROMETER_Y_BASE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Base Z", TestViewParameters.ACCELEROMETER_Z_BASE));
-
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Long Edge X", TestViewParameters.ACCELEROMETER_X_LONG_EDGE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Long Edge Y", TestViewParameters.ACCELEROMETER_Y_LONG_EDGE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Long Edge Z", TestViewParameters.ACCELEROMETER_Z_LONG_EDGE));
-
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Short Edge X", TestViewParameters.ACCELEROMETER_X_SHORT_EDGE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Short Edge Y", TestViewParameters.ACCELEROMETER_Y_SHORT_EDGE));
-                _testParameters.Add(new Tuple<string, string>("Accelerometer Short Edge Z", TestViewParameters.ACCELEROMETER_Z_SHORT_EDGE));
+                _testParameters.Add(new Tuple<string, string>("Key ENT", TestViewParameters.KEY_ENT));
+                _testParameters.Add(new Tuple<string, string>("Key 1/6", TestViewParameters.KEY_1_6));
+                _testParameters.Add(new Tuple<string, string>("Key 2/7", TestViewParameters.KEY_2_7));
+                _testParameters.Add(new Tuple<string, string>("Key 3/8", TestViewParameters.KEY_3_8));
+                _testParameters.Add(new Tuple<string, string>("Key 4/9", TestViewParameters.KEY_4_9));
+                _testParameters.Add(new Tuple<string, string>("Key 5/0", TestViewParameters.KEY_5_0));
 
                 _activeTblLayoutPanel = tblSummaryPart2;
                 GenerateTable(_testParameters.ToArray());
@@ -43,19 +39,13 @@ namespace ESLTestProcess
         {
             AddRetestLabelToWizard(wizardPageSummaryPart2);
             _activeTblLayoutPanel = tblSummaryPart2;
-            _rollbackFromSummaryPage2 = false;
-            Task.Run(() =>
-            {
-                Thread.Sleep(2000);
-                if(!_rollBackFromProgramPage)
-                    TimeOutCallback(null);
-            });
+            TimeOutCallback(false);
         }
 
-        private bool _rollbackFromSummaryPage2;
+
         private void wizardPageSummaryPart2_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)
         {
-            _rollbackFromSummaryPage2 = true;
+
         }
 
     }

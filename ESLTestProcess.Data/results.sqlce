@@ -1,21 +1,103 @@
 
-SELECT technician_name, run_id,pcb_unit_id
-		,run_start_timestamp, pcb_unit_serial_number, pcb_unit_serial_sticker_manufacture
-		, DATEDIFF(s, run_start_timestamp, run_complete_timestamp) AS test_duration_sec
-		,battery_voltage, temperature_reading, piezo_test, reed_test, rtc_set, rtc_get
-		,key_1_6, key_2_7, key_3_8, key_4_9, key_5_0, key_ENT
-		,rf_bgr_rssi, rf_hub_ack, rf_ack_rsi
-		,acceleromter_x_base, acceleromter_y_base, acceleromter_z_base
-		,acceleromter_x_long_edge, acceleromter_y_long_edge, acceleromter_z_long_edge
-		,acceleromter_x_short_edge, acceleromter_y_short_edge, acceleromter_z_short_edge
+SELECT technician_name
+		,run_id,pcb_unit_id
+		,run_start_timestamp
+		,pcb_unit_serial_number
+		,pcb_unit_serial_sticker_manufacture
+		,DATEDIFF(s, run_start_timestamp, run_complete_timestamp) AS test_duration_sec
+		,battery_voltage
+		,temperature_reading
+		,ext_sk3_test_1
+		,CASE WHEN ext_sk3_test_1_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk3_test_1_outcome]
+		,ext_sk3_test_2
+		,CASE WHEN ext_sk3_test_2_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk3_test_2_outcome]
+		,ext_sk5_test_1
+		,CASE WHEN ext_sk5_test_1_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk5_test_1_outcome]
+		,ext_sk5_test_2
+		,CASE WHEN ext_sk5_test_2_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk5_test_2_outcome]
+		,ext_sk5_test_adc
+		,CASE WHEN ext_sk5_test_adc_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk5_test_adc_outcome]
+		,led_green_flash
+		,led_red_flash
+		,release_hub_id
+		,release_node_id
+		,run_current_milli_amps
+		,CASE WHEN run_current_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [run_current_outcome]
+		,sleep_current_mico_amps
+		,CASE WHEN sleep_current_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [sleep_current_outcome]
+	    ,piezo_test
+		,reed_test
+		,rtc_set
+		,rtc_get
+		,key_1_6
+		,key_2_7
+		,key_3_8
+		,key_4_9
+		,key_5_0
+		,key_ENT
+		,rf_bgr_rssi
+		,CASE WHEN rf_bgr_rssi_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [rf_bgr_rssi_outcome]
+		,rf_hub_ack
+		,rf_ack_rsi
+		,CASE WHEN rf_ack_rsi_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [rf_ack_rsi_outcome]
+		,acceleromter_x_base
+		,CASE WHEN acceleromter_x_base_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_x_base_outcome]
+		,acceleromter_y_base
+		,CASE WHEN acceleromter_y_base_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_y_base_outcome]
+		,acceleromter_z_base
+		,CASE WHEN acceleromter_z_base_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_z_base_outcome]
+		,acceleromter_x_long_edge
+		,CASE WHEN acceleromter_x_long_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_x_long_edge_outcome]
+		,acceleromter_y_long_edge
+		,CASE WHEN acceleromter_y_long_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_y_long_edge_outcome]
+		,acceleromter_z_long_edge
+		,CASE WHEN acceleromter_z_long_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_z_long_edge_outcome]
+		,acceleromter_x_short_edge
+		,CASE WHEN acceleromter_x_short_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_x_short_edge_outcome]
+		,acceleromter_y_short_edge
+		,CASE WHEN acceleromter_y_short_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_y_short_edge_outcome]
+		,acceleromter_z_short_edge
+		,CASE WHEN acceleromter_z_short_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [acceleromter_z_short_edge_outcome]
 FROM
 	
 	(SELECT  pcb_unit_id, pcb_unit_serial_number, pcb_unit_serial_sticker_manufacture, 
 		run_id, technician_name, run_start_timestamp, run_complete_timestamp,
       	MAX(CASE WHEN response_parameter = 'node_id' THEN response_value ELSE NULL END) [node_id],
       	MAX(CASE WHEN response_parameter = 'hub_id' THEN response_value ELSE NULL END) [hub_id],
+      	
       	MAX(CASE WHEN response_parameter = 'battery_voltage' THEN response_value ELSE NULL END) [battery_voltage],
+      	MAX(CASE WHEN response_parameter = 'battery_voltage' THEN response_outcome ELSE NULL END) [battery_voltage_outcome],
+      	
       	MAX(CASE WHEN response_parameter = 'temperature_reading' THEN response_value ELSE NULL END) [temperature_reading],
+      	MAX(CASE WHEN response_parameter = 'temperature_reading' THEN response_outcome ELSE NULL END) [temperature_reading_outcome],
+      	
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_1' THEN response_value ELSE NULL END) [ext_sk3_test_1],
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_1' THEN response_outcome ELSE NULL END) [ext_sk3_test_1_outcome],
+      	
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_2' THEN response_value ELSE NULL END) [ext_sk3_test_2],
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_2' THEN response_outcome ELSE NULL END) [ext_sk3_test_2_outcome],
+      	
+      	MAX(CASE WHEN response_parameter = 'ext_sk5_test_1' THEN response_value ELSE NULL END) [ext_sk5_test_1],
+      	MAX(CASE WHEN response_parameter = 'ext_sk5_test_1' THEN response_outcome ELSE NULL END) [ext_sk5_test_1_outcome],
+      	
+      	MAX(CASE WHEN response_parameter = 'ext_sk5_test_2' THEN response_value ELSE NULL END) [ext_sk5_test_2],
+      	MAX(CASE WHEN response_parameter = 'ext_sk5_test_2' THEN response_outcome ELSE NULL END) [ext_sk5_test_2_outcome],
+      	
+      	MAX(CASE WHEN response_parameter = 'ext_sk5_test_adc' THEN response_value ELSE NULL END) [ext_sk5_test_adc],
+      	MAX(CASE WHEN response_parameter = 'ext_sk5_test_adc' THEN response_outcome ELSE NULL END) [ext_sk5_test_adc_outcome],
+      	
+      	MAX(CASE WHEN response_parameter = 'led_green_flash' THEN response_value ELSE NULL END) [led_green_flash],
+      	MAX(CASE WHEN response_parameter = 'led_red_flash' THEN response_value ELSE NULL END) [led_red_flash],
+      	
+      	MAX(CASE WHEN response_parameter = 'release_hub_id' THEN response_value ELSE NULL END) [release_hub_id],
+      	MAX(CASE WHEN response_parameter = 'release_node_id' THEN response_value ELSE NULL END) [release_node_id],
+      	
+      	MAX(CASE WHEN response_parameter = 'run_current' THEN response_value ELSE NULL END) [run_current_milli_amps],
+      	MAX(CASE WHEN response_parameter = 'run_current' THEN response_outcome ELSE NULL END) [run_current_outcome],
+      	
+      	MAX(CASE WHEN response_parameter = 'sleep_current' THEN response_value ELSE NULL END) [sleep_current_mico_amps],
+      	MAX(CASE WHEN response_parameter = 'sleep_current' THEN response_outcome ELSE NULL END) [sleep_current_outcome],
+      	
       	MAX(CASE WHEN response_parameter = 'piezo_test' THEN response_value ELSE NULL END) [piezo_test],
       	MAX(CASE WHEN response_parameter = 'reed_test' THEN response_value ELSE NULL END) [reed_test],
       	MAX(CASE WHEN response_parameter = 'rtc_set' THEN response_value ELSE NULL END) [rtc_set],
@@ -26,18 +108,41 @@ FROM
       	MAX(CASE WHEN response_parameter = 'key_4_9' THEN response_value ELSE NULL END) [key_4_9],
       	MAX(CASE WHEN response_parameter = 'key_5_0' THEN response_value ELSE NULL END) [key_5_0],
       	MAX(CASE WHEN response_parameter = 'key_ENT' THEN response_value ELSE NULL END) [key_ENT],
+      	
       	MAX(CASE WHEN response_parameter = 'rf_bgr_rssi' THEN response_value ELSE NULL END) [rf_bgr_rssi],
+      	MAX(CASE WHEN response_parameter = 'rf_bgr_rssi' THEN response_outcome ELSE NULL END) [rf_bgr_rssi_outcome],
+      	
       	MAX(CASE WHEN response_parameter = 'rf_hub_ack' THEN response_value ELSE NULL END) [rf_hub_ack],
+      	
       	MAX(CASE WHEN response_parameter = 'rf_ack_rsi' THEN response_value ELSE NULL END) [rf_ack_rsi],
+      	MAX(CASE WHEN response_parameter = 'rf_ack_rsi' THEN response_outcome ELSE NULL END) [rf_ack_rsi_outcome],
+      	
       	MAX(CASE WHEN response_parameter = 'acceleromter_x_base' THEN response_value ELSE NULL END) [acceleromter_x_base],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_x_base' THEN response_outcome ELSE NULL END) [acceleromter_x_base_outcome],
+      	
       	MAX(CASE WHEN response_parameter = 'acceleromter_y_base' THEN response_value ELSE NULL END) [acceleromter_y_base],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_y_base' THEN response_outcome ELSE NULL END) [acceleromter_y_base_outcome],
+      	
       	MAX(CASE WHEN response_parameter = 'acceleromter_z_base' THEN response_value ELSE NULL END) [acceleromter_z_base],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_z_base' THEN response_outcome ELSE NULL END) [acceleromter_z_base_outcome],
+      	
       	MAX(CASE WHEN response_parameter = 'acceleromter_x_long_edge' THEN response_value ELSE NULL END) [acceleromter_x_long_edge],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_x_long_edge' THEN response_outcome ELSE NULL END) [acceleromter_x_long_edge_outcome],
+      	
       	MAX(CASE WHEN response_parameter = 'acceleromter_y_long_edge' THEN response_value ELSE NULL END) [acceleromter_y_long_edge],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_y_long_edge' THEN response_outcome ELSE NULL END) [acceleromter_y_long_edge_outcome],
+      	
       	MAX(CASE WHEN response_parameter = 'acceleromter_z_long_edge' THEN response_value ELSE NULL END) [acceleromter_z_long_edge],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_z_long_edge' THEN response_outcome ELSE NULL END) [acceleromter_z_long_edge_outcome],
+      	
       	MAX(CASE WHEN response_parameter = 'acceleromter_x_short_edge' THEN response_value ELSE NULL END) [acceleromter_x_short_edge],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_x_short_edge' THEN response_outcome ELSE NULL END) [acceleromter_x_short_edge_outcome],
+      	
       	MAX(CASE WHEN response_parameter = 'acceleromter_y_short_edge' THEN response_value ELSE NULL END) [acceleromter_y_short_edge],
-      	MAX(CASE WHEN response_parameter = 'acceleromter_z_short_edge' THEN response_value ELSE NULL END) [acceleromter_z_short_edge]
+      	MAX(CASE WHEN response_parameter = 'acceleromter_y_short_edge' THEN response_outcome ELSE NULL END) [acceleromter_y_short_edge_outcome],
+      	
+      	MAX(CASE WHEN response_parameter = 'acceleromter_z_short_edge' THEN response_value ELSE NULL END) [acceleromter_z_short_edge],
+      	MAX(CASE WHEN response_parameter = 'acceleromter_z_short_edge' THEN response_outcome ELSE NULL END) [acceleromter_z_short_edge_outcome]
 	FROM responses
 		JOIN runs
 			ON  run_run_id = run_id

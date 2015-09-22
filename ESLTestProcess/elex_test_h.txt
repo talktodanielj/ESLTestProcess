@@ -41,9 +41,10 @@ extern "C" {
 #define REQUEST_SET_RTC_VALUE             0x77  
 #define REQUEST_GET_BGRSSI_VALUE          0x78
 #define REQUEST_CAPTURE_HUB               0x79
-#define BUTTONS_INITIALISED               0x80
+#define RESPONSE_BUTTONS_INITIALISED      0x80
 #define REQUEST_SLEEP                     0x81
 #define REQUEST_TEST_EXT_SK3              0x82
+#define RESPONSE_TEST_EXT_SK5_ADC         0x83
     
 
 #define TEST_END                                  0x50    

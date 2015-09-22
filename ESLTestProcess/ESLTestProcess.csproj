@@ -130,6 +130,9 @@
     <Compile Include="Pages\WizPageSummaryPart2.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Pages\WizPageSummaryPart3.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AddTechnician.resx">

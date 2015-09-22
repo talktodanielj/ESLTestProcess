@@ -22,36 +22,24 @@ namespace ESLTestProcess
                 _testParameters.Add(new Tuple<string, string>("Hub Id", TestViewParameters.HUB_ID));
                 _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestViewParameters.BATTERY_VOLTAGE));
                 _testParameters.Add(new Tuple<string, string>("Temperature", TestViewParameters.TEMPERATURE_READING));
-
-                _testParameters.Add(new Tuple<string, string>("Piezo test", TestViewParameters.PIEZO_TEST));
-                _testParameters.Add(new Tuple<string, string>("Reed test", TestViewParameters.REED_TEST));
-                _testParameters.Add(new Tuple<string, string>("Set RTC", TestViewParameters.RTC_SET));
-                _testParameters.Add(new Tuple<string, string>("Get RTC", TestViewParameters.RTC_GET));
-
-                _testParameters.Add(new Tuple<string, string>("Key ENT", TestViewParameters.KEY_ENT));
-                _testParameters.Add(new Tuple<string, string>("Key 1/6", TestViewParameters.KEY_1_6));
-                _testParameters.Add(new Tuple<string, string>("Key 2/7", TestViewParameters.KEY_2_7));
-                _testParameters.Add(new Tuple<string, string>("Key 3/8", TestViewParameters.KEY_3_8));
-                _testParameters.Add(new Tuple<string, string>("Key 4/9", TestViewParameters.KEY_4_9));
-                _testParameters.Add(new Tuple<string, string>("Key 5/0", TestViewParameters.KEY_5_0));
+                _testParameters.Add(new Tuple<string, string>("Ext SK3 test 1", TestViewParameters.EXT_SK3_TEST1));
+                _testParameters.Add(new Tuple<string, string>("Ext SK3 test 2", TestViewParameters.EXT_SK3_TEST2));
+                _testParameters.Add(new Tuple<string, string>("Ext SK5 test 1", TestViewParameters.EXT_SK5_TEST1));
+                _testParameters.Add(new Tuple<string, string>("Ext SK5 test 2", TestViewParameters.EXT_SK5_TEST2));
+                _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC", TestViewParameters.EXT_SK5_TEST_ADC));
+                _testParameters.Add(new Tuple<string, string>("Red LED", TestViewParameters.LED_RED_FLASH));
+                _testParameters.Add(new Tuple<string, string>("Green LED", TestViewParameters.LED_GREEN_FLASH));
 
                 _activeTblLayoutPanel = tblSummaryPart1;
                 GenerateTable(_testParameters.ToArray());
             }
         }
 
-
         private void wizardPageSummaryPart1_Enter(object sender, EventArgs e)
         {
             _activeTblLayoutPanel = tblSummaryPart1;
             AddRetestLabelToWizard(wizardPageSummaryPart1);
-
-            Task.Run(() =>
-            {
-                Thread.Sleep(2000);
-                if (!_rollbackFromSummaryPage2)
-                    TimeOutCallback(null);
-            });
+            TimeOutCallback(false);
         }
 
         private void wizardPageSummaryPart1_Rollback(object sender, AeroWizard.WizardPageConfirmEventArgs e)

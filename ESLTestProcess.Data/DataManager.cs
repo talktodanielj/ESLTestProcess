@@ -158,7 +158,7 @@ namespace ESLTestProcess.Data
                 throw;
             }
         }
-        
+
         public session AddRun(session currentSession, run currentRun, bool isNewPCB)
         {
             try
@@ -178,7 +178,7 @@ namespace ESLTestProcess.Data
                     {
                         entities.responses.Add(responseItem);
                     }
-                                     
+
 
                     if (isNewPCB)
                     {
@@ -190,7 +190,7 @@ namespace ESLTestProcess.Data
                         entities.pcb_unit.Attach(currentRun.pcb_unit);
                     }
 
-                    
+
                     entities.SaveChanges();
                     return entities.sessions.First(s => s.session_id == currentSession.session_id);
 
@@ -234,7 +234,7 @@ namespace ESLTestProcess.Data
                         entities.responses.Attach(responseItem);
                         entities.Entry(responseItem).State = EntityState.Modified;
                     }
-                    
+
                     entities.SaveChanges();
                     return currentSession;
                 }
@@ -263,6 +263,59 @@ namespace ESLTestProcess.Data
             }
         }
 
+        /*
+         * 
+         * select count(response_outcome) from responses
+join runs
+ on run_id = run_run_id
+where run_run_id = 184 
+		and pcb_unit_pcb_unit_id = 421
+		and response_outcome <> 3
+         * */
+
+        public bool AllTestsPassed(int testRunId, int pcb_unit_id)
+        {
+            bool allPassed = false;
+
+            try
+            {
+                using (Entities entities = new Entities())
+                {
+                    using (var connection = new SqlCeConnection(entities.Database.Connection.ConnectionString))
+                    {
+                        // Detetct any test outcomes that don't have a value of PASSED
+                        string query = @"SELECT COUNT(response_outcome) FROM responses
+                                            JOIN runs
+                                            ON run_id = run_run_id
+                                            WHERE run_run_id = {0} 
+                                            AND pcb_unit_pcb_unit_id = {1}
+                                            AND response_outcome <> 3";
+
+                        string formattedQuery = string.Format(query, testRunId, pcb_unit_id);
+
+                        SqlCeCommand command = connection.CreateCommand();
+                        command.CommandText = formattedQuery;
+                        connection.Open();
+                        var result = command.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            int parseResult = (int)result;
+                            allPassed = parseResult == 0;
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Error(ex);
+                throw;
+            }
+
+            return allPassed;
+        }
+
         public void ExportTestData(string fileName)
         {
             try
@@ -287,7 +340,7 @@ namespace ESLTestProcess.Data
                                     sb.Append(reader.GetName(i));
                                 }
                                 exportFile.WriteLine(sb.ToString());
-                                
+
                                 // Write the data for each row
                                 while (reader.Read())
                                 {

@@ -158,11 +158,14 @@ namespace ESLTestProcess
                             }
                             else
                             {
-                                // If the spinner is currently active don't change the image
-                                // or else the animation gets reset
-                                if (iconControl.Image.Tag != "test_spinner")
-                                    iconControl.Image = ESLTestProcess.Properties.Resources.test_spinner;
-                                iconControl.Image.Tag = "test_spinner";
+                                if (iconControl.Image != null)
+                                {
+                                    // If the spinner is currently active don't change the image
+                                    // or else the animation gets reset
+                                    if (iconControl.Image.Tag != "test_spinner")
+                                        iconControl.Image = ESLTestProcess.Properties.Resources.test_spinner;
+                                    iconControl.Image.Tag = "test_spinner";
+                                }
                             }
                             break;
                         case TestStatus.Fail:
@@ -194,6 +197,11 @@ namespace ESLTestProcess
 
         private void TimeOutCallback(Object state)
         {
+            bool moveToNextPage = true;
+
+            if (state != null && state is bool)
+                moveToNextPage = (bool)state;
+
             var testRun = ProcessControl.Instance.GetCurrentTestRun();
             // Process timed out
             // Update the display to the current state
@@ -230,7 +238,7 @@ namespace ESLTestProcess
                 stepWizardControl1.SelectedPage.AllowNext = true;
             }));
 
-            if (allPassed)
+            if (allPassed && moveToNextPage)
             {
                 this.BeginInvoke(new MethodInvoker(delegate
                     {
@@ -379,6 +387,9 @@ namespace ESLTestProcess
                 Value = testResponse.response_value,
                 //RawValue = testResponse.response_raw
             });
+
+            ProcessControl.Instance.SaveTestSession();
+
         }
 
         private void btnSaveTest_Click(object sender, EventArgs e)
@@ -468,37 +479,11 @@ namespace ESLTestProcess
 
         }
 
-        private void btnProgramNode_Click(object sender, EventArgs e)
-        {
-            var currentRun = ProcessControl.Instance.GetCurrentTestRun().run_complete = true;
-            ProcessControl.Instance.SaveTestSession();
-           
-        }
 
         private void wizardPageSignIn_Enter(object sender, EventArgs e)
         {
             cbTechnician.Select();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }

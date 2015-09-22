@@ -302,6 +302,53 @@ namespace ESLTestProcess.Data
                 response_value = "Unknown"
             });
 
+            currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestViewParameters.EXT_SK3_TEST2,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
+
+            currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestViewParameters.EXT_SK5_TEST1,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
+
+            currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestViewParameters.EXT_SK5_TEST2,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
+
+            currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestViewParameters.EXT_SK5_TEST_ADC,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
+
+            currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestViewParameters.RELEASE_HUB_ID,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
+
+            currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestViewParameters.RELEASE_NODE_ID,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
 
         }
 

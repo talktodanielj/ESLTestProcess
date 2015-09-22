@@ -50,6 +50,7 @@ namespace ESLTestProcess.Data
         public const byte TEST_ID_BUTTONS_INITIALISED = 0x80;
         public const byte TEST_ID_SLEEP = 0x81;
         public const byte TEST_ID_EXT_SK3 = 0x82;
+        public const byte TEST_ID_RESPONSE_EXT_SK5_ADC = 0x83;
 
         public const byte TEST_END = 0x50;
         public const byte PARSE_ERROR = 0x51;
@@ -77,7 +78,7 @@ namespace ESLTestProcess.Data
         public static readonly byte[] REQUEST_GET_BGRSSI_VALUE = { 0x02, TEST_ID_GET_BGRSSI_VALUE, 0x03 };
         public static readonly byte[] REQUEST_CAPTURE_HUB = { 0x02, TEST_ID_CAPTURE_HUB, 0x03 };
         public static readonly byte[] REQUEST_START_SLEEP = { 0x02, TEST_ID_SLEEP, 0x03 };
-
+        public static readonly byte[] REQUEST_EXT_SK3_TEST = { 0x02, TEST_ID_EXT_SK3, 0x00, 0x03 }; 
         
         // Test Jig commands
         public static readonly byte[] REQUEST_LED_STATUS = { 0x02, TESTJIG_LED_STATUS, 0x03 };
@@ -92,7 +93,7 @@ namespace ESLTestProcess.Data
         public static readonly byte[] REQUEST_SET_PIEZO = { 0x02, TESTJIG_SET_PIEZO, 0x03 };
         public static readonly byte[] REQUEST_PWR_DUT = { 0x02, TESTJIG_PWR_DUT, 0x03 };
         public static readonly byte[] REQUEST_SHUTDOWN_DUT = { 0x02, TESTJIG_SHUTDOWN_DUT, 0x03 };
-        public static readonly byte[] REQUEST_EXT_SK3_TEST = { 0x02, TEST_ID_EXT_SK3, 0x00, 0x03 }; 
+
 
         public static Response[] ResponseValues = 
         {
@@ -119,6 +120,7 @@ namespace ESLTestProcess.Data
             new Response{ TestId = TEST_ID_BUTTONS_INITIALISED, ExpectedLength = 3},
             new Response{ TestId = TEST_ID_SLEEP, ExpectedLength = 7},
             new Response{ TestId = TEST_ID_EXT_SK3, ExpectedLength = 3},
+            new Response{ TestId = TEST_ID_RESPONSE_EXT_SK5_ADC, ExpectedLength = 15},
 
             new Response{ TestId = TESTJIG_LED_STATUS, ExpectedLength = 5},
             new Response{ TestId = TESTJIG_RUN_CUR, ExpectedLength = 4},

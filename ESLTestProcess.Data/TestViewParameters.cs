@@ -48,6 +48,13 @@ namespace ESLTestProcess.Data
         public static string SLEEP_CURRENT = "sleep_current";
         public static string VOLTAGE_SUPPLY = "voltage_supply";
         public static string EXT_SK3_TEST1 = "ext_sk3_test_1";
+        public static string EXT_SK3_TEST2 = "ext_sk3_test_2";
+        public static string EXT_SK5_TEST1 = "ext_sk5_test_1";
+        public static string EXT_SK5_TEST2 = "ext_sk5_test_2";
+        public static string EXT_SK5_TEST_ADC= "ext_sk5_test_adc";
+
+        public static string RELEASE_HUB_ID = "release_hub_id";
+        public static string RELEASE_NODE_ID = "release_node_id";
         
         public static string GetStatusName(string parameter)
         {

@@ -75,7 +75,7 @@ void red_led_test() {
 }
 
 void test_battery_level() {
-    int battLvl = read_batt()/10;
+    int battLvl = read_batt() / 10;
     clear_payload_array();
     putdecs_payload(payload, battLvl, 0);
     send_response(REQUEST_BATTERY_LEVEL, payload, 7);
@@ -108,7 +108,7 @@ void test_accelerometer(int sampleTime) {
         putdecs_payload(payload, yaccel, 9);
         payload[17] = ' ';
         putdecs_payload(payload, zaccel, 18);
-        delay(15);
+        delay(30);
         send_response(REQUEST_START_ACCELEROMETER_TEST, payload, 26);
     }
     sleep_accel();
@@ -271,7 +271,7 @@ void test_write_node_id() {
     eeaddr_offset = (unsigned int) &PEEMEM->id;
     iic_bwrite(eeaddr_offset, dattmp & 0xff);
     iic_bwrite(eeaddr_offset + 1, dattmp >> 8);
-    
+
     send_simple_response(REQUEST_SET_NODE_ID);
 }
 
@@ -289,7 +289,7 @@ void test_write_hub_id() {
     eeaddr_offset = (unsigned int) &PEEMEM->hub_id;
     iic_bwrite(eeaddr_offset, dattmp & 0xff);
     iic_bwrite(eeaddr_offset + 1, dattmp >> 8);
-    
+
     send_simple_response(REQUEST_SET_HUB_ID);
 }
 
@@ -365,7 +365,7 @@ void test_button_keys(int sampleTime, int expectedKey) {
         delay(1);
     }
 
-    send_simple_response(BUTTONS_INITIALISED);
+    send_simple_response(RESPONSE_BUTTONS_INITIALISED);
 
     pressed = 0;
 
@@ -445,49 +445,117 @@ void test_button_keys(int sampleTime, int expectedKey) {
 
 void rssi_test();
 
-unsigned int  sleep( void );
+unsigned int sleep(void);
 
-void test_sleep()
-{
-    int retVal = sleep();
-//    clear_payload_array();
-//    puthex16_payload(payload, retVal, 0);
-//    send_response(REQUEST_SLEEP , payload, 4);
+void test_sleep() {
+    sleep();
+    // A new character on the UART wakes the unit from sleep
 }
 
+unsigned int take_adc_reading(int adcChannel) {
+    di();
+    CORE.ad1chs = adcChannel;
+    CORE.ad1con1 |= 0x0002; /* start charging sampling capacitor */
+    int i = 0;
+    for (i = 0; i < 36; i++); /* sampling delay approx 12uS */
+    CORE.ad1con1 &= (~0x0002); /* start conversion */
+    ei();
 
+    while (!(CORE.ad1con1 & 0x0001));
+    return CORE.adc1buf0; /* read result */
+}
 
-void test_ext_header_sk3(int mode)
-{
+void test_ext_header_sk3(int mode) {
+
     unsigned short int latfOriginal = CORE.latf;
+    unsigned short int lateOriginal = CORE.late;
     unsigned short int trisfOriginal = CORE.trisf;
-   
-    // Set RF2 and RF3 to output
-    CORE.trisf |= 0x0004;
-    CORE.trisf |= 0x0008;
-    
-    if(mode == 0)
-    {
+    unsigned short int triseOriginal = CORE.trise;
+
+    unsigned short int latbOriginal = CORE.latb;
+    unsigned short int trisbOriginal = CORE.trisb;
+    unsigned short int ansbOriginal = CORE.ansb;
+
+    if (mode == 0) {
+        // SK3 Test
+        // Set RF2 and RF3 to output
+        CORE.trisf &= (~0x0004);
+        CORE.trisf &= (~0x0008);
         // Set RF2 = 1 and RF3 = 0, test jig DAC1 should read 2/3 * 255
         CORE.latf |= 0x0004;
         CORE.latf &= (~0x0008);
-    }
-    else if( mode == 1)
-    {
-        // Set RF2 = 0 and RF3 = 0, test jig DAC1 should read 1/3 * 255
+    } else if (mode == 1) {
+        // SK3 Test
+        // Set RF2 and RF3 to output
+        CORE.trisf &= (~0x0004);
+        CORE.trisf &= (~0x0008);
+        // Set RF2 = 0 and RF3 = 1, test jig DAC1 should read 1/3 * 255
         CORE.latf &= (~0x0004);
-        CORE.latf &= (~0x0008);
+        CORE.latf |= (0x0008);
+
+    } else if (mode == 2) {
+        // SK5 Test
+        // Set RE1 as an input and RE0 and RF1 as output
+        CORE.trise |= 0x0002;
+        CORE.trise &= (~0x0001);
+        CORE.trisf &= (~0x0002);
+        // Set RE0 high
+        CORE.late |= 0x0001;
+        // Make sure RF1 is low
+        CORE.latf &= (~0x0002);
+
+    } else if (mode == 3) {
+        // SK5 Test
+        // Set RE1 as an input and RE0 and RF1 as output
+        CORE.trise |= 0x0002;
+        CORE.trise &= (~0x0001);
+        CORE.trisf &= (~0x0002);
+        // Set RF1 high
+        CORE.latf |= 0x0002;
+        // Make sure RE0 is low
+        CORE.late &= (~0x0001);
+    } else if (mode == 4) {
+        // SK5 Test ADC 
+        // Set AN8, AN9 and AN10 to analog inputs
+
+        CORE.trisb |= 0x0100;
+        CORE.trisb |= 0x0200;
+        CORE.trisb |= 0x0400;
+        CORE.ansb |= 0x0100;
+        CORE.ansb |= 0x0200;
+        CORE.ansb |= 0x0400;
+
+        delay(20);
+        // Take the ADC readings
+        unsigned int adccnt8 = take_adc_reading(8);
+        unsigned int adccnt9 = take_adc_reading(9);
+        unsigned int adccnt10 = take_adc_reading(10);
+
+        // Send the readings back to the test process
+        clear_payload_array();
+        puthex16_payload(payload, adccnt8, 0);
+        puthex16_payload(payload, adccnt9, 4);
+        puthex16_payload(payload, adccnt10, 8);
+        send_response(RESPONSE_TEST_EXT_SK5_ADC, payload, 12);
+       
+        CORE.latb = latbOriginal;
+        CORE.trisb = trisbOriginal;
+        CORE.ansb = ansbOriginal;
     }
-    
-    delay(30);
+
+    delay(200);
+
     // Set back to the original values
     CORE.latf = latfOriginal;
-    CORE.trisf = trisfOriginal
+    CORE.trisf = trisfOriginal;
+    CORE.late = lateOriginal;
+    CORE.trise = triseOriginal;
+
     send_simple_response(REQUEST_TEST_EXT_SK3);
 }
 
-
 void process_test_command(const unsigned int commandId) {
+
     switch (commandId) {
         case BEGIN_TESTS:
             send_simple_response(BEGIN_TESTS);
