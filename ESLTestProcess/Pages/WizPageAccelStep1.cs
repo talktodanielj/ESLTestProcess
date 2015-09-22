@@ -108,6 +108,7 @@ namespace ESLTestProcess
 
         private void wizardPageAccelTestStep1_Leave(object sender, EventArgs e)
         {
+            _accelerometerTestStep1Running = false;
             _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
             ProcessControl.Instance.TestResponseHandler -= TestResponseHandler;
             _byteStreamHandler.ProcessResponseEventHandler -= wizardPageAccelTestStep1_ProcessResponseEventHandler;

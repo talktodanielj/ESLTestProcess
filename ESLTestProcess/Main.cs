@@ -42,6 +42,9 @@ namespace ESLTestProcess
         // Use an ISO 8859-1 encoder for extended ASCII
         //private Encoding _encoding = System.Text.Encoding.GetEncoding(28591);
 
+        public bool CaptureNodeStartupString { get; set; }
+        public string NodeStartupString { get; set; }
+
         void SerialPort_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
             int rxCount = CommunicationManager.Instance.SerialPort.BytesToRead;
@@ -50,6 +53,11 @@ namespace ESLTestProcess
 
             if (readCount > 0)
             {
+                if (CaptureNodeStartupString)
+                {
+                    NodeStartupString = NodeStartupString + Encoding.ASCII.GetString(rxData);
+                }
+
                 _byteStreamHandler.AddToBytesQueue(rxData);
             }
         }

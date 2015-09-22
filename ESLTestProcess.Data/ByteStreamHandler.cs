@@ -159,6 +159,8 @@ namespace ESLTestProcess.Data
             _queueProcessorTask = null;
             return true;
         }
+
+        public bool CaptureNodeStartupString { get; set; }
     }
 }
 

@@ -43,6 +43,14 @@ namespace ESLTestProcess.Data
 
         private void CreateNewTestRunResponses(run currentTestRun)
         {
+            currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestViewParameters.FIRMWARE_VERSION,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
+
 
             currentTestRun.responses.Add(new response
             {

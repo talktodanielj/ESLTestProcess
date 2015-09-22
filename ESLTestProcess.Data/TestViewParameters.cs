@@ -8,6 +8,7 @@ namespace ESLTestProcess.Data
 {
     public static class TestViewParameters
     {
+        public const string FIRMWARE_VERSION = "firmware_version";
         public const string NODE_ID = "node_id";
         public const string HUB_ID     = "hub_id";
         public const string BATTERY_VOLTAGE     = "battery_voltage";

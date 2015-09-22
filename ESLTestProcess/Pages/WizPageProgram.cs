@@ -55,7 +55,7 @@ namespace ESLTestProcess
 
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageProgramPCB_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-            //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
+            
             _timeOutTimer.Change(10000, Timeout.Infinite);
 
             Task.Run(() =>
@@ -64,6 +64,7 @@ namespace ESLTestProcess
                 Thread.Sleep(1000);
                 CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_PWR_DUT);
                 Thread.Sleep(3000);
+                //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_FLASH_GREEN_LED);
                 CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_RUN_CUR);
             });
         }

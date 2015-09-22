@@ -1,7 +1,9 @@
 
 SELECT technician_name
-		,run_id,pcb_unit_id
+		,run_id
+		,pcb_unit_id
 		,run_start_timestamp
+		,firmware_version
 		,pcb_unit_serial_number
 		,pcb_unit_serial_sticker_manufacture
 		,DATEDIFF(s, run_start_timestamp, run_complete_timestamp) AS test_duration_sec
@@ -63,6 +65,7 @@ FROM
 	(SELECT  pcb_unit_id, pcb_unit_serial_number, pcb_unit_serial_sticker_manufacture, 
 		run_id, technician_name, run_start_timestamp, run_complete_timestamp,
       	MAX(CASE WHEN response_parameter = 'node_id' THEN response_value ELSE NULL END) [node_id],
+      	MAX(CASE WHEN response_parameter = 'firmware_version' THEN response_value ELSE NULL END) [firmware_version],
       	MAX(CASE WHEN response_parameter = 'hub_id' THEN response_value ELSE NULL END) [hub_id],
       	
       	MAX(CASE WHEN response_parameter = 'battery_voltage' THEN response_value ELSE NULL END) [battery_voltage],

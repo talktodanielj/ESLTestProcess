@@ -17,7 +17,7 @@ namespace ESLTestProcess
             if (tblSummaryPart1.RowCount == 1)
             {
                 _testParameters.Clear();
-
+                _testParameters.Add(new Tuple<string, string>("Firmware version", TestViewParameters.FIRMWARE_VERSION));
                 _testParameters.Add(new Tuple<string, string>("Node Id", TestViewParameters.NODE_ID));
                 _testParameters.Add(new Tuple<string, string>("Hub Id", TestViewParameters.HUB_ID));
                 _testParameters.Add(new Tuple<string, string>("Battery Volatge", TestViewParameters.BATTERY_VOLTAGE));
