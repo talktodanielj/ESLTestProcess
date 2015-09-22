@@ -1,6 +1,7 @@
 ﻿using ESLTestProcess.Data;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -52,8 +53,7 @@ namespace ESLTestProcess
         }
 
         int _rssiStage = 0;
-        string _initialRssi = "0";
-
+        
         void wizardPageTransceiver_ProcessResponseEventHandler(object sender, ByteStreamHandler.ProcessResponseEventArgs e)
         {
             var testRun = ProcessControl.Instance.GetCurrentTestRun();
@@ -77,27 +77,33 @@ namespace ESLTestProcess
                     if (_rssiStage == 0)
                     {
                         string initialRssi = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7], (char)e.RawData[8] }).Trim();
-                        SetTestResponse(initialRssi, TestViewParameters.RF_BGR_RSSI, e.RawData, TestStatus.Pass);
+
+                        int bkgrRssi = int.Parse(initialRssi.Trim());
+
+                        int bkgrRssiMax = int.Parse(ConfigurationManager.AppSettings["rssi_bkgr_max"]);
+                        int bkgrRssiMin = int.Parse(ConfigurationManager.AppSettings["rssi_bkgr_min"]);
+                        
+                        if(bkgrRssi >= bkgrRssiMax && bkgrRssi <= bkgrRssiMin)
+                            SetTestResponse(initialRssi, TestViewParameters.RF_BGR_RSSI, e.RawData, TestStatus.Pass);
+                        else
+                            SetTestResponse(initialRssi, TestViewParameters.RF_BGR_RSSI, e.RawData, TestStatus.Fail);
+
                         CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_CAPTURE_HUB);
                     }
                     else
                     {
                         string ackRssiData = new string(new[] { (char)e.RawData[9], (char)e.RawData[10], (char)e.RawData[11], (char)e.RawData[12], (char)e.RawData[13], (char)e.RawData[14], (char)e.RawData[15] }).Trim();
 
-                        var rssi = int.Parse(_initialRssi);
-                        var ackRssi = int.Parse(ackRssiData);
+                        var ackRssi = int.Parse(ackRssiData.Trim());
 
-                        var responseOutcome = TestStatus.Unknown;
+                        int ackRssiMax = int.Parse(ConfigurationManager.AppSettings["rssi_ack_max"]);
+                        int ackRssiMin = int.Parse(ConfigurationManager.AppSettings["rssi_ack_min"]);
 
-                        if ((rssi - ackRssi) > -70)
-                        {
-                            responseOutcome = TestStatus.Pass;
-                        }
+                        if (ackRssi >= ackRssiMax && ackRssi <= ackRssiMin)
+                            SetTestResponse(ackRssiData, TestViewParameters.RF_ACK_RSSI, e.RawData, TestStatus.Pass);
                         else
-                        {
-                            responseOutcome = TestStatus.Fail;
-                        }
-                        SetTestResponse(ackRssiData, TestViewParameters.RF_ACK_RSSI, e.RawData, responseOutcome);
+                            SetTestResponse(ackRssiData, TestViewParameters.RF_ACK_RSSI, e.RawData, TestStatus.Fail);
+
                     }
                     break;
 

@@ -46,16 +46,16 @@ namespace ESLTestProcess
 
             var testRun = ProcessControl.Instance.GetCurrentTestRun();
 
-            //if (!DataManager.Instance.AllTestsPassed(testRun.run_id, testRun.pcb_unit.pcb_unit_id))
-            //{
-            //    stepWizardControl1.SelectedPage.AllowNext = false;
-            //    stepWizardControl1.SelectedPage.IsFinishPage = true;
-            //}
-            //else
-            //{
-            //    stepWizardControl1.SelectedPage.AllowNext = true;
-            //    stepWizardControl1.SelectedPage.IsFinishPage = false;
-            //}
+            if (!DataManager.Instance.AllTestsPassed(testRun.run_id, testRun.pcb_unit.pcb_unit_id))
+            {
+                stepWizardControl1.SelectedPage.AllowNext = false;
+                stepWizardControl1.SelectedPage.IsFinishPage = true;
+            }
+            else
+            {
+                stepWizardControl1.SelectedPage.AllowNext = true;
+                stepWizardControl1.SelectedPage.IsFinishPage = false;
+            }
 
             TimeOutCallback(false);
             

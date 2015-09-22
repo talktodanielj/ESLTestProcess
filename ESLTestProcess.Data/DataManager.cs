@@ -263,16 +263,6 @@ namespace ESLTestProcess.Data
             }
         }
 
-        /*
-         * 
-         * select count(response_outcome) from responses
-join runs
- on run_id = run_run_id
-where run_run_id = 184 
-		and pcb_unit_pcb_unit_id = 421
-		and response_outcome <> 3
-         * */
-
         public bool AllTestsPassed(int testRunId, int pcb_unit_id)
         {
             bool allPassed = false;
@@ -289,6 +279,8 @@ where run_run_id = 184
                                             ON run_id = run_run_id
                                             WHERE run_run_id = {0} 
                                             AND pcb_unit_pcb_unit_id = {1}
+                                            AND response_parameter <> 'release_node_id'
+                                            AND response_parameter <> 'release_hub_id'
                                             AND response_outcome <> 3";
 
                         string formattedQuery = string.Format(query, testRunId, pcb_unit_id);
