@@ -62,7 +62,9 @@ namespace ESLTestProcess
                 _testParameters.Add(new Tuple<string, string>("Ext SK3 test 2", TestViewParameters.EXT_SK3_TEST2));
                 _testParameters.Add(new Tuple<string, string>("Ext SK5 test 1", TestViewParameters.EXT_SK5_TEST1));
                 _testParameters.Add(new Tuple<string, string>("Ext SK5 test 2", TestViewParameters.EXT_SK5_TEST2));
-                _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC", TestViewParameters.EXT_SK5_TEST_ADC));
+                _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC", TestViewParameters.EXT_SK3_TEST_ADC8));
+                _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC", TestViewParameters.EXT_SK3_TEST_ADC9));
+                _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC", TestViewParameters.EXT_SK3_TEST_ADC10));
 
                 _activeTblLayoutPanel = tbllnitialStatus;
                 GenerateTable(_testParameters.ToArray());
@@ -84,7 +86,9 @@ namespace ESLTestProcess
             _testParameters.Add(new Tuple<string, string>("Ext SK3 test 2", TestViewParameters.EXT_SK3_TEST2));
             _testParameters.Add(new Tuple<string, string>("Ext SK5 test 1", TestViewParameters.EXT_SK5_TEST1));
             _testParameters.Add(new Tuple<string, string>("Ext SK5 test 2", TestViewParameters.EXT_SK5_TEST2));
-            _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC", TestViewParameters.EXT_SK5_TEST_ADC));
+            _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC 8", TestViewParameters.EXT_SK3_TEST_ADC8));
+            _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC 9", TestViewParameters.EXT_SK3_TEST_ADC9));
+            _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC 10", TestViewParameters.EXT_SK3_TEST_ADC10));
 
             _activeTblLayoutPanel = tbllnitialStatus;
 
@@ -94,7 +98,9 @@ namespace ESLTestProcess
             ResetTestParameter(TestViewParameters.EXT_SK3_TEST2);
             ResetTestParameter(TestViewParameters.EXT_SK5_TEST1);
             ResetTestParameter(TestViewParameters.EXT_SK5_TEST2);
-            ResetTestParameter(TestViewParameters.EXT_SK5_TEST_ADC);
+            ResetTestParameter(TestViewParameters.EXT_SK3_TEST_ADC8);
+            ResetTestParameter(TestViewParameters.EXT_SK3_TEST_ADC9);
+            ResetTestParameter(TestViewParameters.EXT_SK3_TEST_ADC10);
 
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageResultsStatus_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
@@ -124,26 +130,26 @@ namespace ESLTestProcess
                     _log.Info("Got begin test command");
 
                     _extHeaderTestStage = 0;
-                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_EXT_SK3_TEST);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_EXT_TEST);
                     Thread.Sleep(100);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_DAC1);
 
                     break;
 
-                case TestParameters.TEST_ID_EXT_SK3:
-                    _log.Info("ext3");
+                case TestParameters.TEST_ID_EXT:
+                    _log.Info("ext");
                     if (_extHeaderTestStage == 0)
                     {
                         _extHeaderTestStage = 1;
-                        byte[] requestExtSk3Test = TestParameters.REQUEST_EXT_SK3_TEST;
-                        requestExtSk3Test[2] = 1; // Set the mode to 1
-                        CommunicationManager.Instance.SendCommand(requestExtSk3Test);
+                        byte[] requestExtSk5Test = TestParameters.REQUEST_EXT_TEST;
+                        requestExtSk5Test[2] = 1; // Set the mode to 1
+                        CommunicationManager.Instance.SendCommand(requestExtSk5Test);
                         CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_DAC1);
                     }
                     else if (_extHeaderTestStage == 1)
                     {
                         _extHeaderTestStage = 2;
-                        byte[] requestExtSkTest = TestParameters.REQUEST_EXT_SK3_TEST;
+                        byte[] requestExtSkTest = TestParameters.REQUEST_EXT_TEST;
                         requestExtSkTest[2] = 2; // Set the mode to 2
                         CommunicationManager.Instance.SendCommand(requestExtSkTest);
                         Thread.Sleep(10);
@@ -152,7 +158,7 @@ namespace ESLTestProcess
                     else if (_extHeaderTestStage == 2)
                     {
                         _extHeaderTestStage = 3;
-                        byte[] requestExtSkTest = TestParameters.REQUEST_EXT_SK3_TEST;
+                        byte[] requestExtSkTest = TestParameters.REQUEST_EXT_TEST;
                         requestExtSkTest[2] = 3; // Set the mode to 3
                         CommunicationManager.Instance.SendCommand(requestExtSkTest);
                         Thread.Sleep(10);
@@ -161,8 +167,8 @@ namespace ESLTestProcess
                     else if (_extHeaderTestStage == 3)
                     {
                         _extHeaderTestStage = 4;
-                        byte[] requestExtSkTest = TestParameters.REQUEST_EXT_SK3_TEST;
-                        requestExtSkTest[2] = 4; // Set the mode to 4
+                        byte[] requestExtSkTest = TestParameters.REQUEST_EXT_TEST;
+                        requestExtSkTest[2] = 4; // Set the mode to 4. This triggers the TEST_ID_RESPONSE_EXT_SK3_ADC
                         CommunicationManager.Instance.SendCommand(requestExtSkTest);
                     }
                     else
@@ -177,22 +183,22 @@ namespace ESLTestProcess
 
                     if (_extHeaderTestStage == 0)
                     {
-                        var expectedSk3Test1 = int.Parse(ConfigurationManager.AppSettings["ext_sk3_test1"]);
+                        var expectedSk5Test1 = int.Parse(ConfigurationManager.AppSettings["ext_sk5_test1"]);
                         int modeZeroResult = e.RawData[2];
-                        if (modeZeroResult > (expectedSk3Test1 - 20) && modeZeroResult < (expectedSk3Test1 + 20))
-                            SetTestResponse(modeZeroResult.ToString(), TestViewParameters.EXT_SK3_TEST1, e.RawData, TestStatus.Pass);
+                        if (modeZeroResult > (expectedSk5Test1 - 20) && modeZeroResult < (expectedSk5Test1 + 20))
+                            SetTestResponse(modeZeroResult.ToString(), TestViewParameters.EXT_SK5_TEST1, e.RawData, TestStatus.Pass);
                         else
-                            SetTestResponse(modeZeroResult.ToString(), TestViewParameters.EXT_SK3_TEST1, e.RawData, TestStatus.Fail);
+                            SetTestResponse(modeZeroResult.ToString(), TestViewParameters.EXT_SK5_TEST1, e.RawData, TestStatus.Fail);
                     }
 
                     if (_extHeaderTestStage == 1)
                     {
                         int modeOneResult = e.RawData[2];
-                        var expectedSk3Test2 = int.Parse(ConfigurationManager.AppSettings["ext_sk3_test2"]);
-                        if (modeOneResult > (expectedSk3Test2 - 20) && modeOneResult < (expectedSk3Test2 + 20))
-                            SetTestResponse(modeOneResult.ToString(), TestViewParameters.EXT_SK3_TEST2, e.RawData, TestStatus.Pass);
+                        var expectedSk5Test2 = int.Parse(ConfigurationManager.AppSettings["ext_sk5_test2"]);
+                        if (modeOneResult > (expectedSk5Test2 - 20) && modeOneResult < (expectedSk5Test2 + 20))
+                            SetTestResponse(modeOneResult.ToString(), TestViewParameters.EXT_SK5_TEST2, e.RawData, TestStatus.Pass);
                         else
-                            SetTestResponse(modeOneResult.ToString(), TestViewParameters.EXT_SK3_TEST2, e.RawData, TestStatus.Fail);
+                            SetTestResponse(modeOneResult.ToString(), TestViewParameters.EXT_SK5_TEST2, e.RawData, TestStatus.Fail);
                     }
 
                     break;
@@ -203,26 +209,26 @@ namespace ESLTestProcess
                     if (_extHeaderTestStage == 2)
                     {
                         int modeTwoResult = e.RawData[2];
-                        var expectedSk5Test1 = int.Parse(ConfigurationManager.AppSettings["ext_sk5_test1"]);
+                        var expectedSk5Test1 = int.Parse(ConfigurationManager.AppSettings["ext_sk3_test1"]);
                         if (modeTwoResult > (expectedSk5Test1 - 20) && modeTwoResult < (expectedSk5Test1 + 20))
-                            SetTestResponse(modeTwoResult.ToString(), TestViewParameters.EXT_SK5_TEST1, e.RawData, TestStatus.Pass);
+                            SetTestResponse(modeTwoResult.ToString(), TestViewParameters.EXT_SK3_TEST1, e.RawData, TestStatus.Pass);
                         else
-                            SetTestResponse(modeTwoResult.ToString(), TestViewParameters.EXT_SK5_TEST1, e.RawData, TestStatus.Fail);
+                            SetTestResponse(modeTwoResult.ToString(), TestViewParameters.EXT_SK3_TEST1, e.RawData, TestStatus.Fail);
                     }
 
                     if (_extHeaderTestStage == 3)
                     {
                         int modeThreeResult = e.RawData[2];
-                        var expectedSk5Test2 = int.Parse(ConfigurationManager.AppSettings["ext_sk5_test2"]);
+                        var expectedSk5Test2 = int.Parse(ConfigurationManager.AppSettings["ext_sk3_test2"]);
                         if (modeThreeResult > (expectedSk5Test2 - 20) && modeThreeResult < (expectedSk5Test2 + 20))
-                            SetTestResponse(modeThreeResult.ToString(), TestViewParameters.EXT_SK5_TEST2, e.RawData, TestStatus.Pass);
+                            SetTestResponse(modeThreeResult.ToString(), TestViewParameters.EXT_SK3_TEST2, e.RawData, TestStatus.Pass);
                         else
-                            SetTestResponse(modeThreeResult.ToString(), TestViewParameters.EXT_SK5_TEST2, e.RawData, TestStatus.Fail);
+                            SetTestResponse(modeThreeResult.ToString(), TestViewParameters.EXT_SK3_TEST2, e.RawData, TestStatus.Fail);
                     }
 
                     break;
 
-                case TestParameters.TEST_ID_RESPONSE_EXT_SK5_ADC:
+                case TestParameters.TEST_ID_RESPONSE_EXT_SK3_ADC:
 
                     string adcChannel8Data = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5] });
                     int adcChannel8 = Convert.ToInt32(adcChannel8Data, 16);
@@ -232,18 +238,26 @@ namespace ESLTestProcess
                     int adcChannel10 = Convert.ToInt32(adcChannel10Data, 16);
 
 
-                    var expectedAdc8 = int.Parse(ConfigurationManager.AppSettings["ext_sk5_adc_channel8"]);
-                    var expectedAdc9 = int.Parse(ConfigurationManager.AppSettings["ext_sk5_adc_channel9"]);
-                    var expectedAdc10 = int.Parse(ConfigurationManager.AppSettings["ext_sk5_adc_channel10"]);
+                    var expectedAdc8 = int.Parse(ConfigurationManager.AppSettings["ext_sk3_adc_channel8"]);
+                    var expectedAdc9 = int.Parse(ConfigurationManager.AppSettings["ext_sk3_adc_channel9"]);
+                    var expectedAdc10 = int.Parse(ConfigurationManager.AppSettings["ext_sk3_adc_channel10"]);
 
                     string data = adcChannel8.ToString() + "/" + adcChannel9.ToString() + "/" + adcChannel10.ToString();
 
-                    if ((adcChannel8 > (expectedAdc8 - 20) && adcChannel8 < (expectedAdc8 + 20))
-                        && (adcChannel9 > (expectedAdc9 - 20) && adcChannel9 < (expectedAdc9 + 20))
-                        && (adcChannel10 > (expectedAdc10 - 20) && adcChannel10 < (expectedAdc10 + 20)))
-                        SetTestResponse(data, TestViewParameters.EXT_SK5_TEST_ADC, e.RawData, TestStatus.Pass);
+                    if (adcChannel8 > (expectedAdc8 - 20) && adcChannel8 < (expectedAdc8 + 20))
+                        SetTestResponse(adcChannel8.ToString(), TestViewParameters.EXT_SK3_TEST_ADC8, e.RawData, TestStatus.Pass);
                     else
-                        SetTestResponse(data, TestViewParameters.EXT_SK5_TEST_ADC, e.RawData, TestStatus.Fail);
+                        SetTestResponse(adcChannel8.ToString(), TestViewParameters.EXT_SK3_TEST_ADC9, e.RawData, TestStatus.Fail);
+
+                     if (adcChannel9 > (expectedAdc9 - 20) && adcChannel9 < (expectedAdc9 + 20))
+                         SetTestResponse(adcChannel9.ToString(), TestViewParameters.EXT_SK3_TEST_ADC9, e.RawData, TestStatus.Pass);
+                    else
+                         SetTestResponse(adcChannel9.ToString(), TestViewParameters.EXT_SK3_TEST_ADC9, e.RawData, TestStatus.Fail);
+
+                    if (adcChannel10 > (expectedAdc10 - 20) && adcChannel10 < (expectedAdc10 + 20))
+                        SetTestResponse(adcChannel10.ToString(), TestViewParameters.EXT_SK3_TEST_ADC10, e.RawData, TestStatus.Pass);
+                    else
+                        SetTestResponse(adcChannel10.ToString(), TestViewParameters.EXT_SK3_TEST_ADC10, e.RawData, TestStatus.Fail);
 
                     break;
 

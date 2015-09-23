@@ -154,7 +154,7 @@ namespace ESLTestProcess
                 case TestParameters.TEST_ID_NODE_ID:
 
                     // Value should be the same as what was set initially
-                    string nodeId = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7] });
+                    string nodeId = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7] }).Trim();
 
                     int nodeIdForTest = int.Parse(ConfigurationManager.AppSettings["test_node_id"]);
                     int actualNodeId = int.Parse(nodeId);
@@ -186,7 +186,7 @@ namespace ESLTestProcess
                 case TestParameters.TEST_ID_HUB_ID:
 
                     // Value should be the same as what was set initially
-                    string hubId = new string(new[] { (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[2], (char)e.RawData[3] });
+                    string hubId = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7] }).Trim();
 
                     int hubIdForTest = int.Parse(ConfigurationManager.AppSettings["test_node_id"]);
                     int actualHubId = int.Parse(hubId);

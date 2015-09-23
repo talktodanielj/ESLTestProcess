@@ -337,7 +337,21 @@ namespace ESLTestProcess.Data
             currentTestRun.responses.Add(new response
             {
                 response_outcome = (Int16)TestStatus.Unknown,
-                response_parameter = TestViewParameters.EXT_SK5_TEST_ADC,
+                response_parameter = TestViewParameters.EXT_SK3_TEST_ADC8,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
+            currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestViewParameters.EXT_SK3_TEST_ADC9,
+                response_report_column = 17,
+                response_value = "Unknown"
+            });
+            currentTestRun.responses.Add(new response
+            {
+                response_outcome = (Int16)TestStatus.Unknown,
+                response_parameter = TestViewParameters.EXT_SK3_TEST_ADC10,
                 response_report_column = 17,
                 response_value = "Unknown"
             });

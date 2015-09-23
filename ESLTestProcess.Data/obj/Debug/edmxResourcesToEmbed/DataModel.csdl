@@ -34,7 +34,7 @@
     <NavigationProperty Name="session" Relationship="Model.sessionrun" FromRole="run" ToRole="session" />
     <NavigationProperty Name="responses" Relationship="Model.runresult" FromRole="run" ToRole="result" />
     <NavigationProperty Name="pcb_unit" Relationship="Model.pcb_unitrun" FromRole="run" ToRole="pcb_unit" />
-    <Property Type="Boolean" Name="run_complete" Nullable="false" />
+    <Property Type="Int16" Name="run_complete" Nullable="false" />
   </EntityType>
   <EntityType Name="response">
     <Key>

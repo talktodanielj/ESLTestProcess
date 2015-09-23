@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server Compact Edition
 -- --------------------------------------------------
--- Date Created: 09/17/2015 19:43:27
+-- Date Created: 09/23/2015 18:26:43
 -- Generated from EDMX file: C:\development\elex\trap_network\ESLTestProcess\ESLTestProcess.Data\DataModel.edmx
 -- --------------------------------------------------
 
@@ -48,7 +48,7 @@ CREATE TABLE [runs] (
     [run_id] int IDENTITY(1,1) NOT NULL,
     [run_start_timestamp] datetime  NOT NULL,
     [run_complete_timestamp] datetime  NOT NULL,
-    [run_complete] bit  NOT NULL,
+    [run_complete] smallint  NOT NULL,
     [session_session_id] int  NOT NULL,
     [pcb_unit_pcb_unit_id] int  NOT NULL
 );

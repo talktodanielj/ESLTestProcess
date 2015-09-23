@@ -46,8 +46,15 @@
             this.tblPCBUnitId = new System.Windows.Forms.TableLayoutPanel();
             this.themedLabel11 = new AeroWizard.ThemedLabel();
             this.themedLabel10 = new AeroWizard.ThemedLabel();
-            this.themedLabel9 = new AeroWizard.ThemedLabel();
             this.themedLabel8 = new AeroWizard.ThemedLabel();
+            this.wizardPageLEDTest = new AeroWizard.WizardPage();
+            this.pictureBoxLED2 = new System.Windows.Forms.PictureBox();
+            this.pictureBoxLED1 = new System.Windows.Forms.PictureBox();
+            this.btnLED2 = new System.Windows.Forms.Button();
+            this.btnLED1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tblLEDTest = new System.Windows.Forms.TableLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
             this.wizardPageResultsStatus = new AeroWizard.WizardPage();
             this.themedLabel12 = new AeroWizard.ThemedLabel();
             this.tbllnitialStatus = new System.Windows.Forms.TableLayoutPanel();
@@ -99,21 +106,17 @@
             this.lblProgramHubId = new System.Windows.Forms.Label();
             this.lblProgramNodeId = new System.Windows.Forms.Label();
             this.lblProgramForRelease = new System.Windows.Forms.Label();
-            this.wizardPageLEDTest = new AeroWizard.WizardPage();
-            this.tblLEDTest = new System.Windows.Forms.TableLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBoxLED2 = new System.Windows.Forms.PictureBox();
-            this.pictureBoxLED1 = new System.Windows.Forms.PictureBox();
-            this.btnLED2 = new System.Windows.Forms.Button();
-            this.btnLED1 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.themedLabel9 = new AeroWizard.ThemedLabel();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
             this.wizardPageProgramPCB.SuspendLayout();
+            this.wizardPageLEDTest.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED1)).BeginInit();
             this.wizardPageResultsStatus.SuspendLayout();
             this.wizardPagePiezo.SuspendLayout();
             this.wizardPageKeyPress.SuspendLayout();
@@ -131,10 +134,7 @@
             this.wizardPageSummaryPart2.SuspendLayout();
             this.wizardPageSummaryPart3.SuspendLayout();
             this.wizardPageProgramForRelease.SuspendLayout();
-            this.wizardPageLEDTest.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED1)).BeginInit();
             this.SuspendLayout();
             // 
             // stepWizardControl1
@@ -235,6 +235,7 @@
             // wizardPageInsertPCB
             // 
             this.wizardPageInsertPCB.AllowBack = false;
+            this.wizardPageInsertPCB.Controls.Add(this.themedLabel9);
             this.wizardPageInsertPCB.Controls.Add(this.themedLabel6);
             this.wizardPageInsertPCB.Controls.Add(this.themedLabel5);
             this.wizardPageInsertPCB.Controls.Add(this.txtManufactureSerial);
@@ -298,7 +299,6 @@
             this.wizardPageProgramPCB.Controls.Add(this.tblPCBUnitId);
             this.wizardPageProgramPCB.Controls.Add(this.themedLabel11);
             this.wizardPageProgramPCB.Controls.Add(this.themedLabel10);
-            this.wizardPageProgramPCB.Controls.Add(this.themedLabel9);
             this.wizardPageProgramPCB.Controls.Add(this.themedLabel8);
             this.wizardPageProgramPCB.Name = "wizardPageProgramPCB";
             this.wizardPageProgramPCB.NextPage = this.wizardPageLEDTest;
@@ -341,15 +341,6 @@
             this.themedLabel10.Text = "The next step is to receive the internal serial number of the PCB.  If a serial n" +
     "umber is already present it signals that the current process is a retest.";
             // 
-            // themedLabel9
-            // 
-            this.themedLabel9.Location = new System.Drawing.Point(53, 82);
-            this.themedLabel9.Name = "themedLabel9";
-            this.themedLabel9.Size = new System.Drawing.Size(359, 67);
-            this.themedLabel9.TabIndex = 1;
-            this.themedLabel9.Text = "Program the trap node PCB with the Microchip PickIt2 programmer.  Once the PCB is" +
-    " repowered it will begin the test process.";
-            // 
             // themedLabel8
             // 
             this.themedLabel8.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -358,6 +349,94 @@
             this.themedLabel8.Size = new System.Drawing.Size(259, 23);
             this.themedLabel8.TabIndex = 0;
             this.themedLabel8.Text = "Program the trap node PCB";
+            // 
+            // wizardPageLEDTest
+            // 
+            this.wizardPageLEDTest.Controls.Add(this.pictureBoxLED2);
+            this.wizardPageLEDTest.Controls.Add(this.pictureBoxLED1);
+            this.wizardPageLEDTest.Controls.Add(this.btnLED2);
+            this.wizardPageLEDTest.Controls.Add(this.btnLED1);
+            this.wizardPageLEDTest.Controls.Add(this.label1);
+            this.wizardPageLEDTest.Controls.Add(this.tblLEDTest);
+            this.wizardPageLEDTest.Controls.Add(this.label2);
+            this.wizardPageLEDTest.Name = "wizardPageLEDTest";
+            this.wizardPageLEDTest.NextPage = this.wizardPageResultsStatus;
+            this.wizardPageLEDTest.Size = new System.Drawing.Size(568, 512);
+            this.stepWizardControl1.SetStepText(this.wizardPageLEDTest, "LED Test");
+            this.wizardPageLEDTest.TabIndex = 16;
+            this.wizardPageLEDTest.Text = "LED Test";
+            this.wizardPageLEDTest.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageLEDTest_Initialize);
+            this.wizardPageLEDTest.Enter += new System.EventHandler(this.wizardPageLEDTest_Enter);
+            this.wizardPageLEDTest.Leave += new System.EventHandler(this.wizardPageLEDTest_Leave);
+            // 
+            // pictureBoxLED2
+            // 
+            this.pictureBoxLED2.Location = new System.Drawing.Point(367, 312);
+            this.pictureBoxLED2.Name = "pictureBoxLED2";
+            this.pictureBoxLED2.Size = new System.Drawing.Size(42, 38);
+            this.pictureBoxLED2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxLED2.TabIndex = 11;
+            this.pictureBoxLED2.TabStop = false;
+            // 
+            // pictureBoxLED1
+            // 
+            this.pictureBoxLED1.Location = new System.Drawing.Point(159, 312);
+            this.pictureBoxLED1.Name = "pictureBoxLED1";
+            this.pictureBoxLED1.Size = new System.Drawing.Size(42, 38);
+            this.pictureBoxLED1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBoxLED1.TabIndex = 10;
+            this.pictureBoxLED1.TabStop = false;
+            // 
+            // btnLED2
+            // 
+            this.btnLED2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLED2.Location = new System.Drawing.Point(286, 296);
+            this.btnLED2.Name = "btnLED2";
+            this.btnLED2.Size = new System.Drawing.Size(75, 54);
+            this.btnLED2.TabIndex = 9;
+            this.btnLED2.Text = "LED 2";
+            this.btnLED2.UseVisualStyleBackColor = true;
+            // 
+            // btnLED1
+            // 
+            this.btnLED1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLED1.Location = new System.Drawing.Point(207, 296);
+            this.btnLED1.Name = "btnLED1";
+            this.btnLED1.Size = new System.Drawing.Size(75, 54);
+            this.btnLED1.TabIndex = 8;
+            this.btnLED1.Text = "LED 1";
+            this.btnLED1.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(236, 260);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(92, 21);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Detect LEDs";
+            // 
+            // tblLEDTest
+            // 
+            this.tblLEDTest.ColumnCount = 1;
+            this.tblLEDTest.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblLEDTest.Location = new System.Drawing.Point(24, 65);
+            this.tblLEDTest.Name = "tblLEDTest";
+            this.tblLEDTest.RowCount = 1;
+            this.tblLEDTest.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tblLEDTest.Size = new System.Drawing.Size(523, 101);
+            this.tblLEDTest.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(19, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(83, 25);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "LED Test";
             // 
             // wizardPageResultsStatus
             // 
@@ -967,46 +1046,6 @@
             this.lblProgramForRelease.TabIndex = 0;
             this.lblProgramForRelease.Text = "Program the Trap Node and Hub IDs for release";
             // 
-            // wizardPageLEDTest
-            // 
-            this.wizardPageLEDTest.Controls.Add(this.pictureBoxLED2);
-            this.wizardPageLEDTest.Controls.Add(this.pictureBoxLED1);
-            this.wizardPageLEDTest.Controls.Add(this.btnLED2);
-            this.wizardPageLEDTest.Controls.Add(this.btnLED1);
-            this.wizardPageLEDTest.Controls.Add(this.label1);
-            this.wizardPageLEDTest.Controls.Add(this.tblLEDTest);
-            this.wizardPageLEDTest.Controls.Add(this.label2);
-            this.wizardPageLEDTest.Name = "wizardPageLEDTest";
-            this.wizardPageLEDTest.NextPage = this.wizardPageResultsStatus;
-            this.wizardPageLEDTest.Size = new System.Drawing.Size(568, 512);
-            this.stepWizardControl1.SetStepText(this.wizardPageLEDTest, "LED Test");
-            this.wizardPageLEDTest.TabIndex = 16;
-            this.wizardPageLEDTest.Text = "LED Test";
-            this.wizardPageLEDTest.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageLEDTest_Initialize);
-            this.wizardPageLEDTest.Enter += new System.EventHandler(this.wizardPageLEDTest_Enter);
-            this.wizardPageLEDTest.Leave += new System.EventHandler(this.wizardPageLEDTest_Leave);
-            // 
-            // tblLEDTest
-            // 
-            this.tblLEDTest.ColumnCount = 1;
-            this.tblLEDTest.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblLEDTest.Location = new System.Drawing.Point(24, 65);
-            this.tblLEDTest.Name = "tblLEDTest";
-            this.tblLEDTest.RowCount = 1;
-            this.tblLEDTest.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblLEDTest.Size = new System.Drawing.Size(523, 101);
-            this.tblLEDTest.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(19, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 25);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "LED Test";
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1032,53 +1071,14 @@
             this.exportResultsToolStripMenuItem.Text = "Export Results";
             this.exportResultsToolStripMenuItem.Click += new System.EventHandler(this.exportResultsToolStripMenuItem_Click);
             // 
-            // pictureBoxLED2
+            // themedLabel9
             // 
-            this.pictureBoxLED2.Location = new System.Drawing.Point(367, 312);
-            this.pictureBoxLED2.Name = "pictureBoxLED2";
-            this.pictureBoxLED2.Size = new System.Drawing.Size(42, 38);
-            this.pictureBoxLED2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxLED2.TabIndex = 11;
-            this.pictureBoxLED2.TabStop = false;
-            // 
-            // pictureBoxLED1
-            // 
-            this.pictureBoxLED1.Location = new System.Drawing.Point(159, 312);
-            this.pictureBoxLED1.Name = "pictureBoxLED1";
-            this.pictureBoxLED1.Size = new System.Drawing.Size(42, 38);
-            this.pictureBoxLED1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxLED1.TabIndex = 10;
-            this.pictureBoxLED1.TabStop = false;
-            // 
-            // btnLED2
-            // 
-            this.btnLED2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLED2.Location = new System.Drawing.Point(286, 296);
-            this.btnLED2.Name = "btnLED2";
-            this.btnLED2.Size = new System.Drawing.Size(75, 54);
-            this.btnLED2.TabIndex = 9;
-            this.btnLED2.Text = "LED 2";
-            this.btnLED2.UseVisualStyleBackColor = true;
-            // 
-            // btnLED1
-            // 
-            this.btnLED1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLED1.Location = new System.Drawing.Point(207, 296);
-            this.btnLED1.Name = "btnLED1";
-            this.btnLED1.Size = new System.Drawing.Size(75, 54);
-            this.btnLED1.TabIndex = 8;
-            this.btnLED1.Text = "LED 1";
-            this.btnLED1.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(236, 260);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 21);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Detect LEDs";
+            this.themedLabel9.Location = new System.Drawing.Point(115, 270);
+            this.themedLabel9.Name = "themedLabel9";
+            this.themedLabel9.Size = new System.Drawing.Size(359, 67);
+            this.themedLabel9.TabIndex = 5;
+            this.themedLabel9.Text = "Program the trap node PCB with the Microchip PickIt2 programmer.  Once the PCB is" +
+    " repowered it will begin the test process.";
             // 
             // Main
             // 
@@ -1096,6 +1096,10 @@
             this.wizardPageInsertPCB.ResumeLayout(false);
             this.wizardPageInsertPCB.PerformLayout();
             this.wizardPageProgramPCB.ResumeLayout(false);
+            this.wizardPageLEDTest.ResumeLayout(false);
+            this.wizardPageLEDTest.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED1)).EndInit();
             this.wizardPageResultsStatus.ResumeLayout(false);
             this.wizardPagePiezo.ResumeLayout(false);
             this.wizardPagePiezo.PerformLayout();
@@ -1120,12 +1124,8 @@
             this.wizardPageSummaryPart3.PerformLayout();
             this.wizardPageProgramForRelease.ResumeLayout(false);
             this.wizardPageProgramForRelease.PerformLayout();
-            this.wizardPageLEDTest.ResumeLayout(false);
-            this.wizardPageLEDTest.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLED1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1148,7 +1148,6 @@
         private AeroWizard.ThemedLabel themedLabel7;
         private AeroWizard.WizardPage wizardPageProgramPCB;
         private AeroWizard.ThemedLabel themedLabel10;
-        private AeroWizard.ThemedLabel themedLabel9;
         private AeroWizard.ThemedLabel themedLabel8;
         private AeroWizard.ThemedLabel themedLabel11;
         private AeroWizard.WizardPage wizardPageResultsStatus;
@@ -1214,6 +1213,7 @@
         private System.Windows.Forms.Button btnLED2;
         private System.Windows.Forms.Button btnLED1;
         private System.Windows.Forms.Label label1;
+        private AeroWizard.ThemedLabel themedLabel9;
 
 
     }

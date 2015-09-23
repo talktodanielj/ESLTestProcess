@@ -75,14 +75,14 @@ namespace ESLTestProcess
                     CaptureNodeStartupString = true;
                     NodeStartupString = "";
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_PWR_DUT);
-                    Thread.Sleep(2000);
+                    Thread.Sleep(3000);
                     CaptureNodeStartupString = false;
 
 
                     if (!string.IsNullOrEmpty(NodeStartupString))
                     {
-                        NodeStartupString = NodeStartupString.Trim().Replace(Environment.NewLine, string.Empty);
-                        NodeStartupString = NodeStartupString.Trim().Replace("?", string.Empty);
+                        NodeStartupString = NodeStartupString.Replace(Environment.NewLine, " ");
+                        NodeStartupString = NodeStartupString.Replace("?", string.Empty).Trim();
                         SetTestResponse(NodeStartupString, TestViewParameters.FIRMWARE_VERSION, ASCIIEncoding.ASCII.GetBytes(NodeStartupString), TestStatus.Pass);
                     }
                     else
@@ -95,7 +95,7 @@ namespace ESLTestProcess
                 });
             
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
-            _timeOutTimer.Change(15000, Timeout.Infinite);
+            _timeOutTimer.Change(16000, Timeout.Infinite);
         }
 
         private bool _requestingGreenLED;

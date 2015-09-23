@@ -52,7 +52,9 @@ namespace ESLTestProcess.Data
         public static string EXT_SK3_TEST2 = "ext_sk3_test_2";
         public static string EXT_SK5_TEST1 = "ext_sk5_test_1";
         public static string EXT_SK5_TEST2 = "ext_sk5_test_2";
-        public static string EXT_SK5_TEST_ADC= "ext_sk5_test_adc";
+        public static string EXT_SK3_TEST_ADC8 = "ext_sk3_test_adc8";
+        public static string EXT_SK3_TEST_ADC9 = "ext_sk3_test_adc9";
+        public static string EXT_SK3_TEST_ADC10 = "ext_sk3_test_adc10";
 
         public static string RELEASE_HUB_ID = "release_hub_id";
         public static string RELEASE_NODE_ID = "release_node_id";

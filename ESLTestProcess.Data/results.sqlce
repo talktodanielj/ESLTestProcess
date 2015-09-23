@@ -7,18 +7,24 @@ SELECT technician_name
 		,pcb_unit_serial_number
 		,pcb_unit_serial_sticker_manufacture
 		,DATEDIFF(s, run_start_timestamp, run_complete_timestamp) AS test_duration_sec
+		,voltage_supply
 		,battery_voltage
+		,CASE WHEN battery_voltage_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [battery_voltage_outcome]
 		,temperature_reading
-		,ext_sk3_test_1
-		,CASE WHEN ext_sk3_test_1_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk3_test_1_outcome]
-		,ext_sk3_test_2
-		,CASE WHEN ext_sk3_test_2_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk3_test_2_outcome]
 		,ext_sk5_test_1
 		,CASE WHEN ext_sk5_test_1_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk5_test_1_outcome]
 		,ext_sk5_test_2
 		,CASE WHEN ext_sk5_test_2_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk5_test_2_outcome]
-		,ext_sk5_test_adc
-		,CASE WHEN ext_sk5_test_adc_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk5_test_adc_outcome]
+		,ext_sk3_test_1
+		,CASE WHEN ext_sk3_test_1_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk3_test_1_outcome]
+		,ext_sk3_test_2
+		,CASE WHEN ext_sk3_test_2_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk3_test_2_outcome]
+		,ext_sk3_test_adc8
+		,CASE WHEN ext_sk3_test_adc8_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk3_test_adc8_outcome]
+		,ext_sk3_test_adc9
+		,CASE WHEN ext_sk3_test_adc9_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk3_test_adc9_outcome]
+		,ext_sk3_test_adc10
+		,CASE WHEN ext_sk3_test_adc10_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [ext_sk3_test_adc10_outcome]
 		,led_green_flash
 		,led_red_flash
 		,release_hub_id
@@ -41,7 +47,7 @@ SELECT technician_name
 		,CASE WHEN rf_bgr_rssi_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [rf_bgr_rssi_outcome]
 		,rf_hub_ack
 		,rf_ack_rsi
-		,CASE WHEN rf_ack_rsi_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [rf_ack_rsi_outcome]
+		,CASE WHEN rf_ack_rsi_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [rf_ack_rssi_outcome]
 		,accelerometer_x_base
 		,CASE WHEN accelerometer_x_base_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [accelerometer_x_base_outcome]
 		,accelerometer_y_base
@@ -70,15 +76,10 @@ FROM
       	
       	MAX(CASE WHEN response_parameter = 'battery_voltage' THEN response_value ELSE NULL END) [battery_voltage],
       	MAX(CASE WHEN response_parameter = 'battery_voltage' THEN response_outcome ELSE NULL END) [battery_voltage_outcome],
-      	
+      	MAX(CASE WHEN response_parameter = 'voltage_supply' THEN response_value ELSE NULL END) [voltage_supply],
+
       	MAX(CASE WHEN response_parameter = 'temperature_reading' THEN response_value ELSE NULL END) [temperature_reading],
       	MAX(CASE WHEN response_parameter = 'temperature_reading' THEN response_outcome ELSE NULL END) [temperature_reading_outcome],
-      	
-      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_1' THEN response_value ELSE NULL END) [ext_sk3_test_1],
-      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_1' THEN response_outcome ELSE NULL END) [ext_sk3_test_1_outcome],
-      	
-      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_2' THEN response_value ELSE NULL END) [ext_sk3_test_2],
-      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_2' THEN response_outcome ELSE NULL END) [ext_sk3_test_2_outcome],
       	
       	MAX(CASE WHEN response_parameter = 'ext_sk5_test_1' THEN response_value ELSE NULL END) [ext_sk5_test_1],
       	MAX(CASE WHEN response_parameter = 'ext_sk5_test_1' THEN response_outcome ELSE NULL END) [ext_sk5_test_1_outcome],
@@ -86,9 +87,21 @@ FROM
       	MAX(CASE WHEN response_parameter = 'ext_sk5_test_2' THEN response_value ELSE NULL END) [ext_sk5_test_2],
       	MAX(CASE WHEN response_parameter = 'ext_sk5_test_2' THEN response_outcome ELSE NULL END) [ext_sk5_test_2_outcome],
       	
-      	MAX(CASE WHEN response_parameter = 'ext_sk5_test_adc' THEN response_value ELSE NULL END) [ext_sk5_test_adc],
-      	MAX(CASE WHEN response_parameter = 'ext_sk5_test_adc' THEN response_outcome ELSE NULL END) [ext_sk5_test_adc_outcome],
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_1' THEN response_value ELSE NULL END) [ext_sk3_test_1],
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_1' THEN response_outcome ELSE NULL END) [ext_sk3_test_1_outcome],
       	
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_2' THEN response_value ELSE NULL END) [ext_sk3_test_2],
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_2' THEN response_outcome ELSE NULL END) [ext_sk3_test_2_outcome],
+      	
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_adc8' THEN response_value ELSE NULL END) [ext_sk3_test_adc8],
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_adc8' THEN response_outcome ELSE NULL END) [ext_sk3_test_adc8_outcome],
+
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_adc9' THEN response_value ELSE NULL END) [ext_sk3_test_adc9],
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_adc9' THEN response_outcome ELSE NULL END) [ext_sk3_test_adc9_outcome],
+
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_adc10' THEN response_value ELSE NULL END) [ext_sk3_test_adc10],
+      	MAX(CASE WHEN response_parameter = 'ext_sk3_test_adc10' THEN response_outcome ELSE NULL END) [ext_sk3_test_adc10_outcome],
+
       	MAX(CASE WHEN response_parameter = 'led_green_flash' THEN response_value ELSE NULL END) [led_green_flash],
       	MAX(CASE WHEN response_parameter = 'led_red_flash' THEN response_value ELSE NULL END) [led_red_flash],
       	
@@ -117,8 +130,8 @@ FROM
       	
       	MAX(CASE WHEN response_parameter = 'rf_hub_ack' THEN response_value ELSE NULL END) [rf_hub_ack],
       	
-      	MAX(CASE WHEN response_parameter = 'rf_ack_rsi' THEN response_value ELSE NULL END) [rf_ack_rsi],
-      	MAX(CASE WHEN response_parameter = 'rf_ack_rsi' THEN response_outcome ELSE NULL END) [rf_ack_rsi_outcome],
+      	MAX(CASE WHEN response_parameter = 'rf_ack_rssi' THEN response_value ELSE NULL END) [rf_ack_rsi],
+      	MAX(CASE WHEN response_parameter = 'rf_ack_rssi' THEN response_outcome ELSE NULL END) [rf_ack_rsi_outcome],
       	
       	MAX(CASE WHEN response_parameter = 'accelerometer_x_base' THEN response_value ELSE NULL END) [accelerometer_x_base],
       	MAX(CASE WHEN response_parameter = 'accelerometer_x_base' THEN response_outcome ELSE NULL END) [accelerometer_x_base_outcome],

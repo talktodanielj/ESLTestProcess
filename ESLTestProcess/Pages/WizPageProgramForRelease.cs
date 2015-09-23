@@ -90,9 +90,6 @@ namespace ESLTestProcess
             commandProgramNodeID[4] = releaseNodeId[2];
 
             CommunicationManager.Instance.SendCommand(commandProgramNodeID);
-            var currentRun = ProcessControl.Instance.GetCurrentTestRun().run_complete = true;
-            ProcessControl.Instance.SaveTestSession();
-
             CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
 
         }
@@ -124,6 +121,11 @@ namespace ESLTestProcess
                     string hubId = new string(new[] { (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[2], (char)e.RawData[3] });
                     SetTestResponse(hubId, TestViewParameters.RELEASE_HUB_ID, e.RawData, TestStatus.Pass);
                     _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
+
+                    // The process is complete - mark the test
+                    var currentRun = ProcessControl.Instance.GetCurrentTestRun().run_complete = 1;
+                    ProcessControl.Instance.SaveTestSession();
+
                     TimeOutCallback(false);
                     break;
 

@@ -396,7 +396,7 @@ namespace ESLTestProcess
                 //RawValue = testResponse.response_raw
             });
 
-            ProcessControl.Instance.SaveTestSession();
+            //ProcessControl.Instance.SaveTestSession();
 
         }
 
@@ -447,6 +447,7 @@ namespace ESLTestProcess
 
         private void stepWizardControl1_Finished(object sender, EventArgs e)
         {
+            CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SHUTDOWN_DUT);
             stepWizardControl1.NextPage(wizardPageInsertPCB);
         }
 
