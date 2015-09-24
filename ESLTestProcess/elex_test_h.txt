@@ -53,13 +53,11 @@ extern "C" {
     static const TESTCOMMAND commands[] = {
         { .commandId = BEGIN_TESTS, .length = 3},
         { .commandId = REQUEST_NODE_ID, .length = 3},
-
         { .commandId = REQUEST_BATTERY_LEVEL, .length = 3},
         { .commandId = REQUEST_TEMPERATURE_LEVEL, .length = 3},
         { .commandId = REQUEST_START_FLASH_GREEN_LED, .length = 3},
         { .commandId = REQUEST_START_FLASH_RED_LED, .length = 3},
         { .commandId = REQUEST_BUTTON_TEST, .length = 5},
-
         { .commandId = REQUEST_START_ACCELEROMETER_TEST, .length = 4},
         { .commandId = REQUEST_START_PIEZO_TEST, .length = 4},
         { .commandId = REQUEST_HUB_ID, .length = 3},

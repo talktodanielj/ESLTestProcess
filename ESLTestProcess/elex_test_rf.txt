@@ -10,7 +10,6 @@
 #include "rtc.h"
 #include "accel.h"
 #include "maths.h"
-#include "main.h"
 #include "elex_test.h"
 
 
