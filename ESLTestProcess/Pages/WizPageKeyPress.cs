@@ -128,7 +128,7 @@ namespace ESLTestProcess
                 commandBytes[2] = 10; // Give 15 seconds to complete the test
                 commandBytes[3] = (byte)KEY_5_0; // The final key in the sequence that indicates the test should stop
                 CommunicationManager.Instance.SendCommand(commandBytes);
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
                 CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BUTTON_PRESS_SEQ);
             }
             //else if (e.ResponseId == TestParameters.TEST_ID_BUTTONS_INITIALISED)

@@ -502,6 +502,20 @@ void test_button_keys_version_2(int sampleTime, int expectedKey) {
     int diff[6];
     unsigned char ch;
 
+    int KEY_ENT = 32;
+    int KEY_1_6 = 1;
+    int KEY_2_7 = 2;
+    int KEY_3_8 = 4;
+    int KEY_4_9 = 8;
+    int KEY_5_0 = 16;
+    int gotKEY_ENT = 0;
+    int gotKEY_1_6 = 0;
+    int gotKEY_2_7 = 0;
+    int gotKEY_3_8 = 0;
+    int gotKEY_4_9 = 0;
+    int gotKEY_5_0 = 0;
+    int sendMessage = 0;
+
     adcinit();
 
     recalibrate_keys();
@@ -513,7 +527,7 @@ void test_button_keys_version_2(int sampleTime, int expectedKey) {
     while (async_tmr < SEC(sampleTime)) {
         if (kbhit()) {
             getc(&ch);
-            recalibrate_keys();
+            //recalibrate_keys();
             pressed = 0;
             delay(1);
             abort_tmr = 0;
@@ -545,16 +559,51 @@ void test_button_keys_version_2(int sampleTime, int expectedKey) {
         }
 
         if (pressed > 0) {
-            clear_payload_array();
-            payload[0] = pressed;
-            send_response(REQUEST_BUTTON_TEST, payload, 1);
 
-            // If we got what we were looking for return early
-            if (pressed == expectedKey) {
-                ledoff2();
-                send_simple_response(TEST_END);
-                return;
+            if (pressed == KEY_ENT && gotKEY_ENT == 0) {
+                gotKEY_ENT = 1;
+                sendMessage = 1;
             }
+
+            if (pressed == KEY_1_6 && gotKEY_1_6 == 0) {
+                gotKEY_1_6 = 1;
+                sendMessage = 1;
+            }
+
+            if (pressed == KEY_2_7 && gotKEY_2_7 == 0) {
+                gotKEY_2_7 = 1;
+                sendMessage = 1;
+            }
+
+            if (pressed == KEY_3_8 && gotKEY_3_8 == 0) {
+                gotKEY_3_8 = 1;
+                sendMessage = 1;
+            }
+
+            if (pressed == KEY_4_9 && gotKEY_4_9 == 0) {
+                gotKEY_4_9 = 1;
+                sendMessage = 1;
+            }
+
+            if (pressed == KEY_5_0 && gotKEY_5_0 == 0) {
+                gotKEY_5_0 = 1;
+                sendMessage = 1;
+            }
+
+            if (sendMessage == 1) {
+                clear_payload_array();
+                payload[0] = pressed;
+                send_response(REQUEST_BUTTON_TEST, payload, 1);
+
+                // If we got what we were looking for return early
+                if (pressed == expectedKey) {
+                    ledoff2();
+                    send_simple_response(TEST_END);
+                    return;
+                }
+            }
+
+            sendMessage = 0;
         }
         wd_retrig();
         delay(1);
