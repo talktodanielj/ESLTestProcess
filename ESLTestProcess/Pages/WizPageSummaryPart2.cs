@@ -18,11 +18,12 @@ namespace ESLTestProcess
             {
                 _testParameters.Clear();
 
+                _testParameters.Add(new Tuple<string, string>("Red LED", TestViewParameters.LED_RED_FLASH));
+                _testParameters.Add(new Tuple<string, string>("Green LED", TestViewParameters.LED_GREEN_FLASH));
                 _testParameters.Add(new Tuple<string, string>("Piezo test", TestViewParameters.PIEZO_TEST));
                 _testParameters.Add(new Tuple<string, string>("Reed test", TestViewParameters.REED_TEST));
                 _testParameters.Add(new Tuple<string, string>("Set RTC", TestViewParameters.RTC_SET));
                 _testParameters.Add(new Tuple<string, string>("Get RTC", TestViewParameters.RTC_GET));
-
                 _testParameters.Add(new Tuple<string, string>("Key ENT", TestViewParameters.KEY_ENT));
                 _testParameters.Add(new Tuple<string, string>("Key 1/6", TestViewParameters.KEY_1_6));
                 _testParameters.Add(new Tuple<string, string>("Key 2/7", TestViewParameters.KEY_2_7));

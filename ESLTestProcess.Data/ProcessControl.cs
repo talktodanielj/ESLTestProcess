@@ -431,6 +431,12 @@ namespace ESLTestProcess.Data
             _currentSession = DataManager.Instance.AddSession(_currentSession);
         }
 
+        public void MarkCurrentRunComplete()
+        {
+            DataManager.Instance.SetCurrentRunComplete(_currentSession);
+        }
+
+
         public void SaveTestSession()
         {
             DataManager.Instance.SaveResponses(_currentSession);

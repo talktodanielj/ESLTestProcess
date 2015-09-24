@@ -55,16 +55,16 @@ namespace ESLTestProcess
             if (tbllnitialStatus.RowCount == 1)
             {
                 _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("Voltage Supply", TestViewParameters.VOLTAGE_SUPPLY));
-                _testParameters.Add(new Tuple<string, string>("Battery Voltage", TestViewParameters.BATTERY_VOLTAGE));
-                _testParameters.Add(new Tuple<string, string>("Temperature", TestViewParameters.TEMPERATURE_READING));
+                _testParameters.Add(new Tuple<string, string>("Voltage Supply V", TestViewParameters.VOLTAGE_SUPPLY));
+                _testParameters.Add(new Tuple<string, string>("Battery Voltage V", TestViewParameters.BATTERY_VOLTAGE));
+                _testParameters.Add(new Tuple<string, string>("Temperature C", TestViewParameters.TEMPERATURE_READING));
                 _testParameters.Add(new Tuple<string, string>("Ext SK3 test 1", TestViewParameters.EXT_SK3_TEST1));
                 _testParameters.Add(new Tuple<string, string>("Ext SK3 test 2", TestViewParameters.EXT_SK3_TEST2));
                 _testParameters.Add(new Tuple<string, string>("Ext SK5 test 1", TestViewParameters.EXT_SK5_TEST1));
                 _testParameters.Add(new Tuple<string, string>("Ext SK5 test 2", TestViewParameters.EXT_SK5_TEST2));
-                _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC", TestViewParameters.EXT_SK3_TEST_ADC8));
-                _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC", TestViewParameters.EXT_SK3_TEST_ADC9));
-                _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC", TestViewParameters.EXT_SK3_TEST_ADC10));
+                _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC 8", TestViewParameters.EXT_SK3_TEST_ADC8));
+                _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC 9", TestViewParameters.EXT_SK3_TEST_ADC9));
+                _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC 10", TestViewParameters.EXT_SK3_TEST_ADC10));
 
                 _activeTblLayoutPanel = tbllnitialStatus;
                 GenerateTable(_testParameters.ToArray());
@@ -79,9 +79,9 @@ namespace ESLTestProcess
             AddRetestLabelToWizard(wizardPageResultsStatus);
 
             _testParameters.Clear();
-            _testParameters.Add(new Tuple<string, string>("Voltage Supply", TestViewParameters.VOLTAGE_SUPPLY));
-            _testParameters.Add(new Tuple<string, string>("Battery Voltage", TestViewParameters.BATTERY_VOLTAGE));
-            _testParameters.Add(new Tuple<string, string>("Temperature", TestViewParameters.TEMPERATURE_READING));
+            _testParameters.Add(new Tuple<string, string>("Voltage Supply V", TestViewParameters.VOLTAGE_SUPPLY));
+            _testParameters.Add(new Tuple<string, string>("Battery Voltage V", TestViewParameters.BATTERY_VOLTAGE));
+            _testParameters.Add(new Tuple<string, string>("Temperature C", TestViewParameters.TEMPERATURE_READING));
             _testParameters.Add(new Tuple<string, string>("Ext SK3 test 1", TestViewParameters.EXT_SK3_TEST1));
             _testParameters.Add(new Tuple<string, string>("Ext SK3 test 2", TestViewParameters.EXT_SK3_TEST2));
             _testParameters.Add(new Tuple<string, string>("Ext SK5 test 1", TestViewParameters.EXT_SK5_TEST1));
@@ -92,6 +92,7 @@ namespace ESLTestProcess
 
             _activeTblLayoutPanel = tbllnitialStatus;
 
+            ResetTestParameter(TestViewParameters.VOLTAGE_SUPPLY);
             ResetTestParameter(TestViewParameters.BATTERY_VOLTAGE);
             ResetTestParameter(TestViewParameters.TEMPERATURE_READING);
             ResetTestParameter(TestViewParameters.EXT_SK3_TEST1);
@@ -123,7 +124,7 @@ namespace ESLTestProcess
             {
                 case TestParameters.PARSE_ERROR:
                     _log.Info("Got a parse error");
-                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
+                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     break;
 
                 case TestParameters.TEST_ID_BEGIN_TEST:
@@ -265,7 +266,7 @@ namespace ESLTestProcess
 
                     var result = (int)e.RawData[2];
                     _testJigVoltage = result * 0.02588;
-                    var voltageSupplyData = string.Format("{0} V", _testJigVoltage.ToString("F"));
+                    var voltageSupplyData = string.Format("{0}", _testJigVoltage.ToString("F"));
                     SetTestResponse(voltageSupplyData, TestViewParameters.VOLTAGE_SUPPLY, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BATTERY_LEVEL);
                     break;
@@ -280,9 +281,9 @@ namespace ESLTestProcess
                     double voltageDiffernce = double.Parse(ConfigurationManager.AppSettings["voltage_difference"]);
 
                     if (batteryLevel < (_testJigVoltage + voltageDiffernce) && batteryLevel > (_testJigVoltage - voltageDiffernce))
-                        SetTestResponse(string.Format("{0:0.00} V", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Pass);
+                        SetTestResponse(string.Format("{0:0.00}", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Pass);
                     else
-                        SetTestResponse(string.Format("{0:0.00} V", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Fail);
+                        SetTestResponse(string.Format("{0:0.00}", batteryLevel), TestViewParameters.BATTERY_VOLTAGE, e.RawData, TestStatus.Fail);
 
                     _log.Info("Got battery level result");
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_TEMPERATURE_LEVEL);
@@ -299,9 +300,9 @@ namespace ESLTestProcess
                     double temperatureMin = double.Parse(ConfigurationManager.AppSettings["temperature_min"]);
 
                     if (temperature >= temperatureMin && temperature <= temperatureMax)
-                        SetTestResponse(string.Format("{0:0.0} C", temperature), TestViewParameters.TEMPERATURE_READING, e.RawData, TestStatus.Pass);
+                        SetTestResponse(string.Format("{0:0.0}", temperature), TestViewParameters.TEMPERATURE_READING, e.RawData, TestStatus.Pass);
                     else
-                        SetTestResponse(string.Format("{0:0.0} C", temperature), TestViewParameters.TEMPERATURE_READING, e.RawData, TestStatus.Pass);
+                        SetTestResponse(string.Format("{0:0.0}", temperature), TestViewParameters.TEMPERATURE_READING, e.RawData, TestStatus.Pass);
 
 
                     AllowResultsPageToMoveNext();

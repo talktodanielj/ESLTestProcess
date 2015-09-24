@@ -64,7 +64,7 @@ namespace ESLTestProcess
                 case TestParameters.PARSE_ERROR:
                     _log.Info("Got a parse error");
                     Thread.Sleep(10);
-                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
+                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     break;
 
                 case TestParameters.TEST_ID_BEGIN_TEST:

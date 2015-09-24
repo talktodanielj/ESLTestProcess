@@ -61,6 +61,7 @@ namespace ESLTestProcess
             _testExpired = false;
             _testParameters.Clear();
             stepWizardControl1.SelectedPage.AllowNext = false;
+            wizardPageKeyPress.AllowBack = false;
             _activeTblLayoutPanel = null;
 
             AddRetestLabelToWizard(wizardPageKeyPress);
@@ -88,16 +89,19 @@ namespace ESLTestProcess
                 this.BeginInvoke(new MethodInvoker(delegate
                     {
                         wizardPageKeyPress.AllowNext = true;
+                        wizardPageKeyPress.AllowBack = true;
                     }));
             });
         }
 
-        private const int KEY_ENT = 2;
+        private const int KEY_ENT = 32;
         private const int KEY_1_6 = 1;
-        private const int KEY_2_7 = 32;
-        private const int KEY_3_8 = 16;
+        private const int KEY_2_7 = 2;
+        private const int KEY_3_8 = 4;
         private const int KEY_4_9 = 8;
-        private const int KEY_5_0 = 4;
+        private const int KEY_5_0 = 16;
+
+
         private const int KEY_END_TEST = 100;
 
         private bool gotKEY_ENT;
@@ -121,16 +125,18 @@ namespace ESLTestProcess
                 Console.WriteLine("Sending keypress test command");
 
                 byte[] commandBytes = TestParameters.REQUEST_START_BUTTON_TEST;
-                commandBytes[2] = 10; // Give 10 seconds to complete the test
+                commandBytes[2] = 10; // Give 15 seconds to complete the test
                 commandBytes[3] = (byte)KEY_5_0; // The final key in the sequence that indicates the test should stop
                 CommunicationManager.Instance.SendCommand(commandBytes);
-            }
-            else if (e.ResponseId == TestParameters.TEST_ID_BUTTONS_INITIALISED)
-            {
-                // Send the command to the test jig to begin testing
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
                 CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BUTTON_PRESS_SEQ);
             }
+            //else if (e.ResponseId == TestParameters.TEST_ID_BUTTONS_INITIALISED)
+            //{
+            // Send the command to the test jig to begin testing
+            //    Thread.Sleep(100);
+            //    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BUTTON_PRESS_SEQ);
+            //}
             else if (e.ResponseId == TestParameters.TEST_END)
             {
                 _log.Info("Detected end of test");
@@ -150,6 +156,7 @@ namespace ESLTestProcess
                     this.BeginInvoke(new MethodInvoker(delegate
                     {
                         wizardPageKeyPress.AllowNext = true;
+                        wizardPageKeyPress.AllowBack = true;
 
                         if (gotKEY_1_6 && gotKEY_2_7 && gotKEY_3_8 && gotKEY_4_9 && gotKEY_5_0 && gotKEY_ENT)
                             stepWizardControl1.NextPage();
@@ -161,43 +168,66 @@ namespace ESLTestProcess
             {
                 var currentKey = _activeKey;
 
+                Console.WriteLine("Pressed key was {0}", e.RawData[2]);
+
+
                 switch (e.RawData[2])
                 {
                     case KEY_1_6:
-                        gotKEY_1_6 = true;
-                        _log.Info("Key 1/6");
-                        RecordKeyResponse(TestViewParameters.KEY_1_6, e.RawData);
-                        _activeKey = KEY_2_7;
+                        if (!gotKEY_1_6)
+                        {
+                            gotKEY_1_6 = true;
+                            _log.Info("Key 1/6");
+
+                            RecordKeyResponse(TestViewParameters.KEY_1_6, e.RawData);
+                            _activeKey = KEY_2_7;
+                        }
                         break;
                     case KEY_ENT:
-                        gotKEY_ENT = true;
-                        _log.Info("Key ENT");
-                        RecordKeyResponse(TestViewParameters.KEY_ENT, e.RawData);
-                        _activeKey = KEY_1_6;
+                        if (!gotKEY_ENT)
+                        {
+                            gotKEY_ENT = true;
+                            _log.Info("Key ENT");
+
+                            RecordKeyResponse(TestViewParameters.KEY_ENT, e.RawData);
+                            _activeKey = KEY_1_6;
+                        }
                         break;
                     case KEY_5_0:
-                        gotKEY_5_0 = true;
-                        _log.Info("Key 5/0");
-                        RecordKeyResponse(TestViewParameters.KEY_5_0, e.RawData);
-                        _activeKey = KEY_END_TEST;
+                        if (!gotKEY_5_0)
+                        {
+                            gotKEY_5_0 = true;
+                            _log.Info("Key 5/0");
+                            RecordKeyResponse(TestViewParameters.KEY_5_0, e.RawData);
+                            _activeKey = KEY_END_TEST;
+                        }
                         break;
                     case KEY_4_9:
-                        gotKEY_4_9 = true;
-                        _log.Info("Key 4/9");
-                        RecordKeyResponse(TestViewParameters.KEY_4_9, e.RawData);
-                        _activeKey = KEY_5_0;
+                        if (!gotKEY_4_9)
+                        {
+                            gotKEY_4_9 = true;
+                            _log.Info("Key 4/9");
+                            RecordKeyResponse(TestViewParameters.KEY_4_9, e.RawData);
+                            _activeKey = KEY_5_0;
+                        }
                         break;
                     case KEY_3_8:
-                        gotKEY_3_8 = true;
-                        _log.Info("Key 3/8");
-                        RecordKeyResponse(TestViewParameters.KEY_3_8, e.RawData);
-                        _activeKey = KEY_4_9;
+                        if (!gotKEY_3_8)
+                        {
+                            gotKEY_3_8 = true;
+                            _log.Info("Key 3/8");
+                            RecordKeyResponse(TestViewParameters.KEY_3_8, e.RawData);
+                            _activeKey = KEY_4_9;
+                        }
                         break;
                     case KEY_2_7:
-                        gotKEY_2_7 = true;
-                        _log.Info("Key 2/7");
-                        RecordKeyResponse(TestViewParameters.KEY_2_7, e.RawData);
-                        _activeKey = KEY_3_8;
+                        if (!gotKEY_2_7)
+                        {
+                            gotKEY_2_7 = true;
+                            _log.Info("Key 2/7");
+                            RecordKeyResponse(TestViewParameters.KEY_2_7, e.RawData);
+                            _activeKey = KEY_3_8;
+                        }
                         break;
                     default:
                         _log.Info("Invalid key code");

@@ -183,6 +183,7 @@
     <Content Include="elex_test.txt" />
     <Content Include="elex_test_h.txt" />
     <Content Include="elex_test_rf.txt" />
+    <Content Include="main.txt" />
     <Content Include="question.png" />
     <Content Include="test_spinner.gif" />
     <Content Include="tick.gif" />

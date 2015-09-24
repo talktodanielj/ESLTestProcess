@@ -1,0 +1,26 @@
+﻿
+/*----------Electronic Partners Production Test Process -----------------------------*/
+// To begin tests with Node PCB in the test jig:
+// Set RE0 to input with pull-up enabled.
+// RF1 set to output and driven low => the RF0 should be low => begin the test process.
+//CORE.trise |= 0x0001;
+//CORE.cnpu4 |= 0x0400;
+//
+//if(!(CORE.porte & 0x0001))
+//{
+//    // Setup the UART for RS232 communication
+//    // UART setup N81, 115200 baud, no flow control
+//    CORE.u1mode = 0xa888;  
+//    CORE.u1sta = 0x8400;
+//    asm("nop");
+//    asm("nop");
+//    asm("nop");
+//    asm("nop");
+//    begin_production_tests(NAME, VERSION);
+//}
+/*----------------------------------------------------------------------------------*/
+
+
+/* 
+    if RTC not valid or not running init time to 1 Jan 2010, a date/time request is also queued.
+*/

@@ -51,6 +51,29 @@ namespace ESLTestProcess
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
 
             cameFromFinishCommand = true;
+
+            //Task.Run(() =>
+            //{
+            //    //while (true)
+            //    //{
+
+            //    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SHUTDOWN_DUT);
+            //    Thread.Sleep(500);
+            //    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_PWR_DUT);
+            //    //Thread.Sleep(300);
+            //    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_RUN_CUR);
+            //    //Thread.Sleep(300);
+            //    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_SLEEP);
+            //    //Thread.Sleep(100);
+            //    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SLEEP_CUR);
+            //    //Thread.Sleep(300);
+            //    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
+            //    //Thread.Sleep(500);
+            //    //}
+
+            //});
+
+
         }
 
 
@@ -94,6 +117,7 @@ namespace ESLTestProcess
 
         }
 
+        private string _nodeId = "";
 
         void wizardPageProgramForRelease_ProcessResponseEventHandler(object sender, ByteStreamHandler.ProcessResponseEventArgs e)
         {
@@ -103,7 +127,7 @@ namespace ESLTestProcess
             {
                 case TestParameters.PARSE_ERROR:
                     _log.Info("Got a parse error");
-                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
+                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     break;
 
                 case TestParameters.TEST_ID_BEGIN_TEST:
@@ -112,19 +136,18 @@ namespace ESLTestProcess
                     break;
 
                 case TestParameters.TEST_ID_NODE_ID:
-                    string nodeId = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7] });
-                    SetTestResponse(nodeId, TestViewParameters.RELEASE_NODE_ID, e.RawData, TestStatus.Pass);
+                    _nodeId = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7] }).Trim();
+                    SetTestResponse(_nodeId, TestViewParameters.RELEASE_NODE_ID, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_HUB_ID);
                     break;
 
                 case TestParameters.TEST_ID_HUB_ID:
-                    string hubId = new string(new[] { (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[2], (char)e.RawData[3] });
+                    string hubId = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7] }).Trim();
                     SetTestResponse(hubId, TestViewParameters.RELEASE_HUB_ID, e.RawData, TestStatus.Pass);
                     _timeOutTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
                     // The process is complete - mark the test
-                    var currentRun = ProcessControl.Instance.GetCurrentTestRun().run_complete = 1;
-                    ProcessControl.Instance.SaveTestSession();
+                    ProcessControl.Instance.MarkCurrentRunComplete();
 
                     TimeOutCallback(false);
                     break;

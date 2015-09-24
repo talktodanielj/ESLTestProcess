@@ -31,8 +31,7 @@ namespace ESLTestProcess
                 _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC 8", TestViewParameters.EXT_SK3_TEST_ADC8));
                 _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC 9", TestViewParameters.EXT_SK3_TEST_ADC9));
                 _testParameters.Add(new Tuple<string, string>("Ext SK5 test ADC 10", TestViewParameters.EXT_SK3_TEST_ADC10));
-                _testParameters.Add(new Tuple<string, string>("Red LED", TestViewParameters.LED_RED_FLASH));
-                _testParameters.Add(new Tuple<string, string>("Green LED", TestViewParameters.LED_GREEN_FLASH));
+
 
                 _activeTblLayoutPanel = tblSummaryPart1;
                 GenerateTable(_testParameters.ToArray());

@@ -37,6 +37,7 @@
             this.cbTechnician = new System.Windows.Forms.ComboBox();
             this.themedLabel1 = new AeroWizard.ThemedLabel();
             this.wizardPageInsertPCB = new AeroWizard.WizardPage();
+            this.themedLabel9 = new AeroWizard.ThemedLabel();
             this.themedLabel6 = new AeroWizard.ThemedLabel();
             this.themedLabel5 = new AeroWizard.ThemedLabel();
             this.txtManufactureSerial = new System.Windows.Forms.TextBox();
@@ -109,7 +110,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.themedLabel9 = new AeroWizard.ThemedLabel();
             ((System.ComponentModel.ISupportInitialize)(this.stepWizardControl1)).BeginInit();
             this.wizardPageSignIn.SuspendLayout();
             this.wizardPageInsertPCB.SuspendLayout();
@@ -250,6 +250,15 @@
             this.wizardPageInsertPCB.Commit += new System.EventHandler<AeroWizard.WizardPageConfirmEventArgs>(this.wizardPageInsertPCB_Commit);
             this.wizardPageInsertPCB.Initialize += new System.EventHandler<AeroWizard.WizardPageInitEventArgs>(this.wizardPageInsertPCB_Initialize);
             this.wizardPageInsertPCB.Enter += new System.EventHandler(this.wizardPageInsertPCB_Enter);
+            // 
+            // themedLabel9
+            // 
+            this.themedLabel9.Location = new System.Drawing.Point(115, 270);
+            this.themedLabel9.Name = "themedLabel9";
+            this.themedLabel9.Size = new System.Drawing.Size(359, 67);
+            this.themedLabel9.TabIndex = 5;
+            this.themedLabel9.Text = "Program the trap node PCB with the Microchip PickIt2 programmer.  Once the PCB is" +
+    " repowered it will begin the test process.";
             // 
             // themedLabel6
             // 
@@ -456,7 +465,7 @@
             // themedLabel12
             // 
             this.themedLabel12.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.themedLabel12.Location = new System.Drawing.Point(23, 12);
+            this.themedLabel12.Location = new System.Drawing.Point(6, 2);
             this.themedLabel12.Name = "themedLabel12";
             this.themedLabel12.Size = new System.Drawing.Size(409, 30);
             this.themedLabel12.TabIndex = 1;
@@ -468,7 +477,7 @@
             this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tbllnitialStatus.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.tbllnitialStatus.Location = new System.Drawing.Point(28, 49);
+            this.tbllnitialStatus.Location = new System.Drawing.Point(14, 31);
             this.tbllnitialStatus.Name = "tbllnitialStatus";
             this.tbllnitialStatus.RowCount = 1;
             this.tbllnitialStatus.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -878,11 +887,11 @@
             // 
             this.tblSummaryPart1.ColumnCount = 1;
             this.tblSummaryPart1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblSummaryPart1.Location = new System.Drawing.Point(3, 64);
+            this.tblSummaryPart1.Location = new System.Drawing.Point(2, 37);
             this.tblSummaryPart1.Name = "tblSummaryPart1";
             this.tblSummaryPart1.RowCount = 1;
             this.tblSummaryPart1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tblSummaryPart1.Size = new System.Drawing.Size(562, 379);
+            this.tblSummaryPart1.Size = new System.Drawing.Size(562, 408);
             this.tblSummaryPart1.TabIndex = 0;
             // 
             // lblTestSummaryPart1
@@ -1070,15 +1079,6 @@
             this.exportResultsToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.exportResultsToolStripMenuItem.Text = "Export Results";
             this.exportResultsToolStripMenuItem.Click += new System.EventHandler(this.exportResultsToolStripMenuItem_Click);
-            // 
-            // themedLabel9
-            // 
-            this.themedLabel9.Location = new System.Drawing.Point(115, 270);
-            this.themedLabel9.Name = "themedLabel9";
-            this.themedLabel9.Size = new System.Drawing.Size(359, 67);
-            this.themedLabel9.TabIndex = 5;
-            this.themedLabel9.Text = "Program the trap node PCB with the Microchip PickIt2 programmer.  Once the PCB is" +
-    " repowered it will begin the test process.";
             // 
             // Main
             // 

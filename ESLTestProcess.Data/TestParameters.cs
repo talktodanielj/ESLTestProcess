@@ -99,7 +99,7 @@ namespace ESLTestProcess.Data
         {
             new Response{ TestId = TEST_END, ExpectedLength = 3},
             new Response{ TestId = PARSE_ERROR, ExpectedLength = 3},
-            new Response{ TestId = TEST_ID_BEGIN_TEST, ExpectedLength = 3},
+            new Response{ TestId = TEST_ID_BEGIN_TEST, ExpectedLength = 18},
             new Response{ TestId = TEST_ID_NODE_ID, ExpectedLength = 10},
             new Response{ TestId = TEST_ID_BATTERY_LEVEL, ExpectedLength = 10},
             new Response{ TestId = TEST_ID_TEMPERATURE_LEVEL, ExpectedLength = 7},

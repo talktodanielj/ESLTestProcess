@@ -246,6 +246,29 @@ namespace ESLTestProcess.Data
             }
         }
 
+        public session SetCurrentRunComplete(session currentSession)
+        {
+            try
+            {
+                using (Entities entities = new Entities())
+                {
+                    entities.sessions.Attach(currentSession);
+                    entities.runs.Attach(currentSession.runs.Last());
+                    currentSession.runs.Last().run_complete_timestamp = DateTime.Now; // Update on every save
+                    currentSession.runs.Last().run_complete = 1;
+
+                    entities.SaveChanges();
+                    return currentSession;
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Error(ex);
+                throw;
+            }
+        }
+
+
         public bool SaveSession(session currentSession)
         {
             try

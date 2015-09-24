@@ -57,39 +57,22 @@ namespace ESLTestProcess
 
             _flashLedBtnTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
-            ResetTestParameter(TestViewParameters.BATTERY_VOLTAGE);
-            ResetTestParameter(TestViewParameters.TEMPERATURE_READING);
+            ResetTestParameter(TestViewParameters.FIRMWARE_VERSION);
+            ResetTestParameter(TestViewParameters.NODE_ID);
+            ResetTestParameter(TestViewParameters.HUB_ID);
             ResetTestParameter(TestViewParameters.LED_GREEN_FLASH);
             ResetTestParameter(TestViewParameters.LED_RED_FLASH);
 
             pictureBoxLED1.Image = ESLTestProcess.Properties.Resources.test_spinner;
             pictureBoxLED2.Image = ESLTestProcess.Properties.Resources.test_spinner;
 
-
-
             Task.Run(() =>
                 {
 
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SHUTDOWN_DUT);
                     Thread.Sleep(500);
-                    CaptureNodeStartupString = true;
-                    NodeStartupString = "";
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_PWR_DUT);
                     Thread.Sleep(3000);
-                    CaptureNodeStartupString = false;
-
-
-                    if (!string.IsNullOrEmpty(NodeStartupString))
-                    {
-                        NodeStartupString = NodeStartupString.Replace(Environment.NewLine, " ");
-                        NodeStartupString = NodeStartupString.Replace("?", string.Empty).Trim();
-                        SetTestResponse(NodeStartupString, TestViewParameters.FIRMWARE_VERSION, ASCIIEncoding.ASCII.GetBytes(NodeStartupString), TestStatus.Pass);
-                    }
-                    else
-                    {
-                        SetTestResponse("", TestViewParameters.FIRMWARE_VERSION, ASCIIEncoding.ASCII.GetBytes(""), TestStatus.Fail);
-                    }
-
                     _byteStreamHandler.ProcessResponseEventHandler += wizardPageLEDTest_ProcessResponseEventHandler;
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                 });
@@ -113,22 +96,30 @@ namespace ESLTestProcess
             {
                 case TestParameters.PARSE_ERROR:
                     _log.Info("Got a parse error");
-                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
+                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
                     break;
 
                 case TestParameters.TEST_ID_BEGIN_TEST:
                     _log.Info("Got begin test command");
+
+                    string firmwareVersion = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7], (char)e.RawData[8], (char)e.RawData[9], (char)e.RawData[10], (char)e.RawData[11], (char)e.RawData[12], (char)e.RawData[13], (char)e.RawData[14], (char)e.RawData[15], (char)e.RawData[16]}).Trim();
+                    firmwareVersion = firmwareVersion.Replace("\0", "");
+
+                    SetTestResponse(firmwareVersion, TestViewParameters.FIRMWARE_VERSION, e.RawData, TestStatus.Pass);
+
+
+
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_NODE_ID);
                     break;
 
                 case TestParameters.TEST_ID_NODE_ID:
-                    string nodeId = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7] });
+                    string nodeId = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7] }).Trim();
                     SetTestResponse(nodeId, TestViewParameters.NODE_ID, e.RawData, TestStatus.Pass);
                     CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_HUB_ID);
                     break;
 
                 case TestParameters.TEST_ID_HUB_ID:
-                    string hubId = new string(new[] { (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[2], (char)e.RawData[3] });
+                    string hubId = new string(new[] { (char)e.RawData[2], (char)e.RawData[3], (char)e.RawData[4], (char)e.RawData[5], (char)e.RawData[6], (char)e.RawData[7] }).Trim();
                     SetTestResponse(hubId, TestViewParameters.HUB_ID, e.RawData, TestStatus.Pass);
 
                     _altColour = false;

@@ -3,10 +3,11 @@ SELECT technician_name
 		,run_id
 		,pcb_unit_id
 		,run_start_timestamp
+		,DATEDIFF(s, run_start_timestamp, run_complete_timestamp) AS test_duration_sec
+		,run_complete
 		,firmware_version
 		,pcb_unit_serial_number
 		,pcb_unit_serial_sticker_manufacture
-		,DATEDIFF(s, run_start_timestamp, run_complete_timestamp) AS test_duration_sec
 		,voltage_supply
 		,battery_voltage
 		,CASE WHEN battery_voltage_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [battery_voltage_outcome]
@@ -68,7 +69,7 @@ SELECT technician_name
 		,CASE WHEN accelerometer_z_short_edge_outcome = 3 THEN 'PASS' ELSE 'FAIL' END [accelerometer_z_short_edge_outcome]
 FROM
 	
-	(SELECT  pcb_unit_id, pcb_unit_serial_number, pcb_unit_serial_sticker_manufacture, 
+	(SELECT  pcb_unit_id, pcb_unit_serial_number, pcb_unit_serial_sticker_manufacture, run_complete,
 		run_id, technician_name, run_start_timestamp, run_complete_timestamp,
       	MAX(CASE WHEN response_parameter = 'node_id' THEN response_value ELSE NULL END) [node_id],
       	MAX(CASE WHEN response_parameter = 'firmware_version' THEN response_value ELSE NULL END) [firmware_version],
@@ -169,5 +170,5 @@ FROM
 		JOIN technicians
 			ON technicain_id = technician_technicain_id
 		GROUP BY run_id, pcb_unit_id, technician_name, run_start_timestamp, run_complete_timestamp, 
-				pcb_unit_serial_number, pcb_unit_serial_sticker_manufacture
+				pcb_unit_serial_number, pcb_unit_serial_sticker_manufacture, run_complete
 	) AS results	

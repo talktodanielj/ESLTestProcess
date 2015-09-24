@@ -20,8 +20,8 @@ namespace ESLTestProcess
                 _activeTblLayoutPanel = tblPCBUnitId;
 
                 _testParameters.Clear();
-                _testParameters.Add(new Tuple<string, string>("Run Current", TestViewParameters.RUN_CURRENT));
-                _testParameters.Add(new Tuple<string, string>("Sleep Current", TestViewParameters.SLEEP_CURRENT));
+                _testParameters.Add(new Tuple<string, string>("Run Current mA", TestViewParameters.RUN_CURRENT));
+                _testParameters.Add(new Tuple<string, string>("Sleep Current uA", TestViewParameters.SLEEP_CURRENT));
                 _testParameters.Add(new Tuple<string, string>("Test Node Id", TestViewParameters.NODE_ID));
                 _testParameters.Add(new Tuple<string, string>("Test Hub Id", TestViewParameters.HUB_ID));
 
@@ -42,8 +42,8 @@ namespace ESLTestProcess
             stepWizardControl1.SelectedPage.AllowNext = false;
 
             _testParameters.Clear();
-            _testParameters.Add(new Tuple<string, string>("Run Current", TestViewParameters.RUN_CURRENT));
-            _testParameters.Add(new Tuple<string, string>("Sleep Current", TestViewParameters.SLEEP_CURRENT));
+            _testParameters.Add(new Tuple<string, string>("Run Current mA", TestViewParameters.RUN_CURRENT));
+            _testParameters.Add(new Tuple<string, string>("Sleep Current uA", TestViewParameters.SLEEP_CURRENT));
             _testParameters.Add(new Tuple<string, string>("Test Node Id", TestViewParameters.NODE_ID));
             _testParameters.Add(new Tuple<string, string>("Test Hub Id", TestViewParameters.HUB_ID));
             _activeTblLayoutPanel = tblPCBUnitId;
@@ -56,16 +56,27 @@ namespace ESLTestProcess
             _byteStreamHandler.ProcessResponseEventHandler += wizardPageProgramPCB_ProcessResponseEventHandler;
             ProcessControl.Instance.TestResponseHandler += TestResponseHandler;
             
-            _timeOutTimer.Change(10000, Timeout.Infinite);
+            _timeOutTimer.Change(12000, Timeout.Infinite);
 
             Task.Run(() =>
             {
-                CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SHUTDOWN_DUT);
-                Thread.Sleep(1000);
-                CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_PWR_DUT);
-                Thread.Sleep(3000);
-                //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_FLASH_GREEN_LED);
-                CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_RUN_CUR);
+                //while (true)
+                //{
+
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SHUTDOWN_DUT);
+                    Thread.Sleep(500);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_PWR_DUT);
+                    Thread.Sleep(300);
+                    CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_RUN_CUR);
+                    //Thread.Sleep(300);
+                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_START_SLEEP);
+                    //Thread.Sleep(100);
+                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_SLEEP_CUR);
+                    //Thread.Sleep(300);
+                    //CommunicationManager.Instance.SendCommand(TestParameters.REQUEST_BEGIN_TEST);
+                    //Thread.Sleep(500);
+                //}
+
             });
         }
 
@@ -100,7 +111,7 @@ namespace ESLTestProcess
                     var result = (int)e.RawData[2];
                     // Multiply by conversion factor to get current in mV
                     double current = result * 0.294117647;
-                    var currentData = string.Format("{0} mA", current.ToString("F"));
+                    var currentData = string.Format("{0}", current.ToString("F"));
 
                     double runCurrentMax = double.Parse(ConfigurationManager.AppSettings["run_current_max"]);
                     double runCurrentMin = double.Parse(ConfigurationManager.AppSettings["run_current_min"]);
@@ -121,7 +132,7 @@ namespace ESLTestProcess
 
                     double sleepCurrent = sleepCurrentResponse * (129.4 / 1000);
 
-                    var sleepCurrentData = string.Format("{0} uA", sleepCurrent.ToString("F"));
+                    var sleepCurrentData = string.Format("{0}", sleepCurrent.ToString("F"));
 
                     double sleepCurrentMax = double.Parse(ConfigurationManager.AppSettings["sleep_current_max"]);
                     double sleepCurrentMin = double.Parse(ConfigurationManager.AppSettings["sleep_current_min"]);
